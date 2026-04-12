@@ -1,256 +1,181 @@
-# ALTAS Workflow 快速启动指南
+# ALTAS Workflow 快速启动方案
 
-## 决策树：选择正确的工作流深度
-
-```
-你有一个任务要完成
-        │
-        ▼
-   改动有多复杂？
-        │
-   ┌─────┼─────┬───────────┐
-   │     │     │           │
-  单点   2-3   多文件      架构/
-  修改   文件   改动       跨模块
-   │     │     │           │
-   ▼     ▼     ▼           ▼
- zero   fast  standard    deep
-```
-
-## 场景化快速命令
-
-### 场景 1: 修复一个 typo
-
-```text
->> 修复 UserService.java 第 42 行的 typo: "Useer" → "User"
-```
-
-**流程**: 执行 → 1 行 summary
+欢迎使用 **ALTAS Workflow** — 融合 Spec-Driven Development、Checkpoint-Driven 与 Superpowers (TDD+Subagent) 的现代 AI 结对编程规范。
 
 ---
 
-### 场景 2: 修改配置文件
+## 1. 环境配置
 
-```text
->> 把 DEBUG mode 改成 false
-```
+### 安装 Skill/Prompt
 
-**流程**: 确认理解 → 执行 → summary
-
----
-
-### 场景 3: 小功能: 添加日志
-
-```text
->> 给 UserService 添加访问日志
-```
-
-**流程**: micro-spec (1-3句) → 批准 → 执行 → summary
-
----
-
-### 场景 4: 中等功能: 用户登录
-
-```text
-**用户**: `请使用 ALTAS standard:
-- task: 用户 Email/Password 登录
-- goal: 支持 JWT Token
-- scope: src/auth/*
-```
-
-**流程**:
-```
-sdd_bootstrap → create_codemap → build_context_bundle → Spec → Plan → Execute → Review → Verify
-```
-
----
-
-### 场景 5: 复杂重构
-
-```text
-请使用**用户**: `请使用 ALTAS deep:
-- task: 重构订单模块
-- goal: 拆分为独立服务
-- scope: src/order/*, src/payment/*
-```
-
-**流程**:
-```
-Research → Innovate(方案比较) → Plan(详细) → Subagent Execute → Review → Verify
-```
-
----
-
-### 场景 6: Bug 排查
-
-```text
-DEBUG: 用户反馈订单支付成功后页面显示"支付失败"
-log_path: ./logs/app.log
-```
-
-**流程**:
-```
-Phase 1: Root Cause (读日志+追踪)
-Phase 2: Pattern (找相似)
-Phase 3: Hypothesis (形成假设)
-Phase 4: Fix + Test
-```
-
----
-
-### 场景 7: 多项目协作
-
-```text
-请使用**用户**: `请使用 ALTAS 多项目模式：
-- mode=multi_project
-- task=前后端联动发布
-- goal=web-console 和 api-service 联合发布功能
-```
-
-**流程**:
-```
-自动发现项目 → 确认 Registry → 生成 Codemap → Plan(按项目分组) → Execute(Provider优先) → Review
-```
-
----
-
-### 场景 8: 测试开发任务
-
-```text
-我要为登录功能设计测试方案
-```
-
-**触发**: 自动识别测试需求，加载 `references/test-dev-workflow/test-dev-workflow.md`
-
-**流程**:
-```
-需求理解 ──→ Code Map ──→ Spec(测试策略) ──→ Plan(任务分解) ──→ TDD循环 ──→ Review ──→ Archive
-```
-
-**测试开发铁律**:
-| 铁律 | 含义 |
-|------|------|
-| **No Spec, No Test** | 未设计测试策略不写测试代码 |
-| **No Production Code Without Failing Test First** | 先写失败测试，再写实现 |
-| **Done Contract** | 明确定义"完成"的证据和边界 |
-
----
-
-## 6 个原生命令详解
-
-详见: `references/spec-driven-development/commands.md`
-
-| 命令 | 完整说明 |
+| 平台 | 安装方式 |
 |------|----------|
-| **create_codemap** | 生成代码索引地图，支持 feature/project 模式 |
-| **build_context_bundle** | 整理需求上下文，支持 Lite/Standard 两种粒度 |
-| **altas_bootstrap** | RIPER 启动命令，进入 Research 第一步（原 sdd_bootstrap） |
-| **review_spec** | 执行前规格评审，输出 GO/NO-GO 建议 |
-| **review_execute** | 执行后三轴评审，Spec 质量/代码一致性/代码质量 |
-| **archive** | 知识沉淀，输出 Human + LLM 双视角文档 |
+| **Cursor / Trae** | 将 `SKILL.md` 内容复制到 `.cursorrules` 或全局 AI Rules |
+| **Claude / OpenAI Agent** | 将 `SKILL.md` 内容作为 System Prompt 注入 |
+| **Qoder** | 将 `SKILL.md` 放入项目 `.qoder/skills/` 目录 |
+
+### 项目配置
+
+在项目根目录创建 `mydocs/` 文件夹（AI也会在需要时自动创建）：
+
+```
+mydocs/
+├── codemap/       # 长期代码索引资产
+├── context/       # 一次性需求整理
+├── specs/         # 核心Spec（组织记忆）
+├── micro_specs/   # 轻量Spec
+└── archive/       # 知识沉淀
+```
+
+### 测试框架
+
+由于ALTAS强调TDD，确保项目能一键运行测试：`npm test` / `pytest` / `go test`
 
 ---
 
-## 常用命令速查表
+## 2. 一键执行命令
 
-| 你想说 | 使用命令 | 示例 |
-|--------|----------|------|
-| 快速小改动 | `>>` 或 `FAST` | `>> 修复按钮颜色` |
-| 生成代码地图 | `CODE MAP` | `CODE MAP: scope=feature path=src/auth` |
-| 整理需求上下文 | `CONTEXT` | `CONTEXT: dir=requirements/` |
-| 启动标准任务 | `ALTAS standard` | `ALTAS standard: task=登录功能...` |
-| 启动复杂任务 | `ALTAS deep` | `ALTAS deep: task=架构重构...` |
-| 测试开发任务 | `测试` / `test` | `我要设计登录测试方案` |
-| 批准计划执行 | `PLAN APPROVED` | `Plan Approved` |
-| 执行前评审 | `REVIEW SPEC` | `Review Spec` |
-| 执行后评审 | `REVIEW EXECUTE` | `Review Execute` |
-| 归档沉淀 | `ARCHIVE` | `ARCHIVE: targets=...` |
-| 启用测试驱动 | `TDD` | `使用 TDD 实现 XX` |
-| 启动调试流程 | `DEBUG` | `DEBUG: log_path=...` |
-| 验证工作完成 | `VERIFY` | `VERIFY: 运行测试套件` |
-| 多项目模式 | `MULTI` | `MULTI: task=...` |
-| 退出协议 | `EXIT SIGMA` | `EXIT SIGMA` |
+| 意图 | 命令 | 规模 | 流程 |
+|------|------|------|------|
+| **极速修改** | `>> 修复 [文件] 中 [内容]` | XS | 直接执行→验证→summary |
+| **小任务** | `FAST: [任务描述]` | S | micro-spec→批准→执行→回写 |
+| **标准开发** | `sdd_bootstrap: task=[任务], goal=[目标]` | M | Research→Plan→Execute(TDD)→Review |
+| **架构重构** | `DEEP: [架构改造描述]` | L | Research→Innovate→Plan→Subagent→Review→Archive |
+| **项目理解** | `MAP: scope=[范围]` | - | 只读分析，不改代码 |
+| **项目总图** | `PROJECT MAP: scope=[项目]` | - | 项目级架构地图 |
+| **排查Bug** | `DEBUG: [报错/日志路径]` | - | 系统化根因分析 |
+| **多项目** | `MULTI: task=[跨项目任务]` | L | 自动发现+作用域隔离 |
+| **归档沉淀** | `ARCHIVE: targets=[文件列表]` | - | 知识双视角沉淀 |
 
 ---
 
-## Checkpoint 响应指南
+## 3. 典型使用场景
 
-### 收到 Checkpoint 时，你应该:
+### 场景一：日常功能迭代 (Size M)
 
 ```
-[Checkpoint]
-理解: 实现 Email/Password 登录
-核心目标: 登录 API + JWT Token 生成
-下一步:
-  1. 创建 auth/spec.md
-  2. 设计 API 路由
-  3. 实现登录逻辑
-风险: 密码加密方案待确认
-验证: POST /api/auth/login 测试
+你输入: sdd_bootstrap: task=为用户注册接口添加图形验证码防刷功能, goal=安全性提升
+
+AI行为:
+1. 自动评估规模 → Size M (Standard)
+2. Research → 读取现有注册接口，发现没有图形库依赖 → 输出检查点
+3. Plan → 列出Checklist（引入库→改接口→加测试）→ 输出检查点等 [Approved]
+4. Execute → TDD: 先写失败测试→实现逻辑→验证通过
+5. Review → 三轴评审 → 确认通过
 ```
 
-**回复选项**:
-- `Approved` → 继续执行
-- `修改第 X 点` → 提出修改意见
-- `先做 X` → 调整优先级
+### 场景二：紧急修复线上配置 (Size XS)
+
+```
+你输入: >> 将 src/config.ts 中的 MAX_RETRIES 从 3 改为 5
+
+AI行为:
+1. 识别为 Size XS (极速)
+2. 直接修改代码→运行验证→1行summary
+```
+
+### 场景三：架构重构 (Size L)
+
+```
+你输入: DEEP: 重构认证模块拆分为独立微服务
+
+AI行为:
+1. 识别为 Size L (深度)
+2. create_codemap → 生成认证模块代码索引
+3. Research → 梳理现状链路，标识风险
+4. Innovate → 给出3种方案（服务化/模块化/网关层）对比
+5. Plan → 原子Checklist + Subagent分配
+6. Execute → Subagent并行实现 + 两阶段Review
+7. Review → 三轴评审 + Archive沉淀
+```
+
+### 场景四：Bug排查
+
+```
+你输入: DEBUG: log_path=./logs/error.log, issue=审批通过后未获得授权
+
+AI行为:
+1. 进入Debug模式（只读分析）
+2. 读取日志+Spec+CodeMap → 三角定位
+3. 输出: 症状/预期行为/根因候选/建议修复
+4. 如需修复 → 进入RIPER流程或FAST
+```
+
+### 场景五：多项目协作
+
+```
+你输入: MULTI: task=前后端联动发布功能
+
+AI行为:
+1. 自动扫描workdir → 发现web-console + api-service
+2. 输出Project Registry请确认
+3. 生成双项目codemap
+4. Plan按项目分组: api-service(Provider)→web-console(Consumer)
+5. 执行按依赖顺序，记录Contract Interfaces
+```
 
 ---
 
-## 验证通过标志
+## 4. 常见问题 (FAQ)
 
-任务完成前，必须确认:
+**Q: AI一次性输出太多代码，跑完所有步骤怎么办？**
 
-```
-✅ 测试: N/N pass (本轮运行结果)
-✅ Lint: 0 errors
-✅ 构建: success
-✅ 回归: 无新问题
-✅ Bug 修复: 原操作已验证
-```
+A: ALTAS内置检查点机制，AI完成一步后**必须**暂停等确认。如果AI暴走，回复："请停止，严格执行检查点机制，每次只推进一步。"
 
-**禁止使用的词汇**:
-- "应该可以"
-- "看起来没问题"
-- "大概好了"
-- "应该没问题"
+**Q: 为什么AI总是先写测试？太慢了。**
+
+A: 这是Evidence First + TDD铁律。没有失败测试，AI生成的代码可能没被执行过。如果任务极简，用 `>>` 触发XS模式跳过TDD。
+
+**Q: 如何中途干预AI的计划？**
+
+A: 在任意检查点回复 `[修改] 请不要使用Redis，改为内存缓存`，AI会根据反馈调整Plan后重新请求Approve。
+
+**Q: mydocs/下太多md文件，要提交Git吗？**
+
+A: 强烈建议提交。Spec和Archive是项目的唯一真相源，防止上下文腐烂，帮助新人接手。
+
+**Q: 如何选择XS/S/M/L？**
+
+A: ALTAS会自动评估。你也可以强制指定：`>>`=XS, `FAST`=S, 默认=M, `DEEP`=L。执行中可随时 `[升级为M]` 或 `[降级为S]`。
+
+**Q: 参考资料 (references/) 太多，AI每次都要全部读取吗？**
+
+A: 不需要。ALTAS采用渐进式披露，只在命中场景时按需读取对应文件。SKILL.md中的参考索引表明确了每个文件的调用时机。
+
+**Q: 多人团队如何协作？**
+
+A: Spec是团队共享的真相源。每个人创建自己的Spec文件，通过Git协作。核心开发者只需Review Plan，不必Review全部代码。
+
+**Q: 什么模型适合用ALTAS？**
+
+A: 任何模型都能使用标准模式(M/L)。轻量模式(S/XS)特别适合强模型（Claude Opus/GPT-4+）高频多轮场景。新团队建议从标准模式开始。
 
 ---
 
-## 完整内容索引
+## 5. 规模评估速查
 
-| 类别 | 文件位置 |
+| 信号 | 推荐规模 |
 |------|----------|
-| **Spec驱动核心协议** | `references/spec-driven-development/sdd-riper-one-protocol.md` |
-| **6 个原生命令** | `references/spec-driven-development/commands.md` |
-| **Spec 模板 (Standard)** | `references/spec-driven-development/spec-template.md` |
-| **Spec 模板 (Lite)** | `references/checkpoint-driven/spec-lite-template.md` |
-| **多项目协作** | `references/spec-driven-development/multi-project.md` |
-| **归档模板** | `references/spec-driven-development/archive-template.md` |
-| **Checkpoint驱动** | `references/checkpoint-driven/` |
-| **TDD 完整内容** | `references/superpowers/test-driven-development/` |
-| **Debug 四阶段** | `references/superpowers/systematic-debugging/` |
-| **Subagent 派遣** | `references/superpowers/subagent-driven-development/` |
-| **验证铁律** | `references/superpowers/verification-before-completion/` |
-| **测试开发专用** | `references/test-dev-workflow/test-dev-workflow.md` |
+| "改个typo" | XS |
+| "加个配置项" | XS |
+| "改个按钮文案" | XS/S |
+| "这个接口加个参数" | S |
+| "给这个函数加错误处理" | S |
+| "新增一个CRUD接口" | M |
+| "重构这个模块" | M/L |
+| "跨模块改数据模型" | L |
+| "架构级重构" | L |
+| "前后端联动" | L (MULTI) |
 
 ---
 
-## 常见问题
+## 6. 从旧工作流迁移
 
-**Q: 什么时候用 zero vs fast?**
-A: typo/纯配置 → zero; 有简单逻辑 → fast
-
-**Q: 什么时候升级到 deep?**
-A: 跨模块、架构变更、需求模糊、3+ 修复失败
-
-**Q: Subagent 什么时候用?**
-A: 独立任务 + 需要隔离上下文 + 需要两阶段 Review
-
-**Q: TDD 什么时候用?**
-A: 新功能、Bug Fix、Refactoring、行为变更
-
-**Q: 测试开发模式怎么触发?**
-A: 当用户提到"测试"、"test"、"测试开发"、"自动化测试"时，自动加载测试开发专用模式
-
-**Q: archive 什么时候用?**
-A: 任务收尾时推荐执行，产出 Human 汇报 + LLM 后续参考文档
+| 旧工作流 | ALTAS对应 |
+|----------|-----------|
+| SDD-RIPER 标准模式 | Size M/L + `references/spec-driven-development/` |
+| SDD-RIPER-ONE Light | Size S/M + `references/checkpoint-driven/` |
+| Superpowers brainstorming | Size L Innovate阶段 + `references/superpowers/brainstorming/` |
+| Superpowers TDD | Size M/L Execute阶段 + `references/superpowers/test-driven-development/` |
+| Superpowers Debug | DEBUG模式 + `references/superpowers/systematic-debugging/` |
+| Superpowers Subagent | Size L Execute阶段 + `references/superpowers/subagent-driven-development/` |

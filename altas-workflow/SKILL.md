@@ -42,7 +42,7 @@ Spec is Truth + 按需加载 + Evidence First + 智能选型
 sdd_bootstrap: task=实现用户注册功能, goal=支持邮箱+验证码
 
 # 深度启动 - 复杂任务
-sdd_bootstrap: task=微服务拆分, mode=deep, projects=[api,web,admin]
+altas_bootstrap: task=微服务拆分，mode=deep, projects=[api,web,admin]
 
 # 代码理解
 MAP: scope=认证模块, mode=feature
@@ -104,7 +104,7 @@ PROJECT MAP: scope=整个后端
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────┐
-│                        SIGMA WORKFLOW                                       │
+│                        ALTAS WORKFLOW                                       │
 ├────────────────────────────────────────────────────────────────────────────┤
 │                                                                            │
 │   ┌──────────┐     ┌──────────┐     ┌──────────┐     ┌──────────┐         │
@@ -884,7 +884,7 @@ mydocs/
 
 **AI**:
 ```
-🔄 SIGMA WORKFLOW 启动
+🔄 ALTAS WORKFLOW 启动
 📊 模式: Standard（自动评估）
 
 🔒 [LOCKED] 进入 RESEARCH 阶段

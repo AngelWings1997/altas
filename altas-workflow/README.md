@@ -1,4 +1,4 @@
-# Sigma Workflow
+# Altas Workflow
 
 > **融合三方优势 | 智能深度适配 | 渐进式披露 | 每步可反馈**
 

@@ -1,4 +1,4 @@
-# SIGMA Workflow 快速启动指南
+# ALTAS Workflow 快速启动指南
 
 ## 决策树：选择正确的工作流深度
 
@@ -52,7 +52,7 @@
 ### 场景 4: 中等功能: 用户登录
 
 ```text
-请使用 SIGMA standard:
+**用户**: `请使用 ALTAS standard:
 - task: 用户 Email/Password 登录
 - goal: 支持 JWT Token
 - scope: src/auth/*
@@ -68,7 +68,7 @@ sdd_bootstrap → create_codemap → build_context_bundle → Spec → Plan → 
 ### 场景 5: 复杂重构
 
 ```text
-请使用 SIGMA deep:
+请使用**用户**: `请使用 ALTAS deep:
 - task: 重构订单模块
 - goal: 拆分为独立服务
 - scope: src/order/*, src/payment/*
@@ -101,7 +101,7 @@ Phase 4: Fix + Test
 ### 场景 7: 多项目协作
 
 ```text
-请使用 SIGMA 多项目模式：
+请使用**用户**: `请使用 ALTAS 多项目模式：
 - mode=multi_project
 - task=前后端联动发布
 - goal=web-console 和 api-service 联合发布功能
@@ -144,9 +144,9 @@ Phase 4: Fix + Test
 |------|----------|
 | **create_codemap** | 生成代码索引地图，支持 feature/project 模式 |
 | **build_context_bundle** | 整理需求上下文，支持 Lite/Standard 两种粒度 |
-| **sdd_bootstrap** | RIPER 启动命令，进入 Research 第一步 |
+| **altas_bootstrap** | RIPER 启动命令，进入 Research 第一步（原 sdd_bootstrap） |
 | **review_spec** | 执行前规格评审，输出 GO/NO-GO 建议 |
-| **review_execute** | 执行后三轴评审，Spec质量/代码一致性/代码质量 |
+| **review_execute** | 执行后三轴评审，Spec 质量/代码一致性/代码质量 |
 | **archive** | 知识沉淀，输出 Human + LLM 双视角文档 |
 
 ---
@@ -158,8 +158,8 @@ Phase 4: Fix + Test
 | 快速小改动 | `>>` 或 `FAST` | `>> 修复按钮颜色` |
 | 生成代码地图 | `CODE MAP` | `CODE MAP: scope=feature path=src/auth` |
 | 整理需求上下文 | `CONTEXT` | `CONTEXT: dir=requirements/` |
-| 启动标准任务 | `SIGMA standard` | `SIGMA standard: task=登录功能...` |
-| 启动复杂任务 | `SIGMA deep` | `SIGMA deep: task=架构重构...` |
+| 启动标准任务 | `ALTAS standard` | `ALTAS standard: task=登录功能...` |
+| 启动复杂任务 | `ALTAS deep` | `ALTAS deep: task=架构重构...` |
 | 测试开发任务 | `测试` / `test` | `我要设计登录测试方案` |
 | 批准计划执行 | `PLAN APPROVED` | `Plan Approved` |
 | 执行前评审 | `REVIEW SPEC` | `Review Spec` |

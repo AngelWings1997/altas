@@ -192,10 +192,10 @@ MULTI: task=前后端联动发布新功能
 
 ```mermaid
 flowchart LR
-    R[Research<br/>Spec 初稿] --> P[Plan<br/>任务清单]
-    P --> E[Execute(TDD)<br/>失败测试]
-    E --> RV[Review<br/>三轴评审]
-    RV --> V[Verification<br/>验证证据]
+    R["Research<br>Spec 初稿"] --> P["Plan<br>任务清单"]
+    P --> E["Execute TDD<br>失败测试"]
+    E --> RV["Review<br>三轴评审"]
+    RV --> V["Verification<br>验证证据"]
 ```
 
 **流程说明**:
@@ -209,11 +209,11 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    R[Research<br/>Spec 初稿] --> I[Innovate<br/>方案对比]
-    I --> P[Plan<br/>任务清单]
-    P --> E[Execute(TDD+Subagent)<br/>并行实现]
-    E --> RV[Review<br/>三轴评审]
-    RV --> A[Archive<br/>知识沉淀]
+    R["Research<br>Spec 初稿"] --> I["Innovate<br>方案对比"]
+    I --> P["Plan<br>任务清单"]
+    P --> E["Execute TDD+Subagent<br>并行实现"]
+    E --> RV["Review<br>三轴评审"]
+    RV --> A["Archive<br>知识沉淀"]
 ```
 
 **流程说明**:

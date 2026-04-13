@@ -247,7 +247,7 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 
 ## 参考资料索引 (按需加载)
 
-> 完整索引见 [reference-index.md](./reference-index.md) | 流程图见 [workflow-diagrams.md](./workflow-diagrams.md)
+> 完整索引见 [reference-index.md](./reference-index.md)
 
 **核心参考（高频）：**
 
@@ -261,6 +261,7 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 | 写Plan | `references/superpowers/writing-plans/SKILL.md` |
 | Subagent驱动 | `references/superpowers/subagent-driven-development/SKILL.md` |
 | 完成前验证 | `references/superpowers/verification-before-completion/SKILL.md` |
+| 需要流程可视化参考 | `workflow-diagrams.md` |
 
 ---
 

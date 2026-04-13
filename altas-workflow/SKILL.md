@@ -161,6 +161,8 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 
 ## 阶段执行指南
 
+> 本节仅保留入口阶段所需的门禁级摘要。需要模板、完整命令参数或扩展规则时，跳转到文末索引或 `reference-index.md` 按需加载。
+
 **IDE 原生工具调用建议**:
 - **检索优先**: 先用原生 `SearchCodebase`、`Grep`、`Glob` 做全局定位，再决定读哪些文件，避免盲目逐个 `ls` / `cat`。
 - **读取其次**: 确认目标后再用原生读文件工具精读关键文件，不在探索期大面积顺序通读。
@@ -252,6 +254,8 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 
 ## 特殊模式
 
+> 以下仅保留“何时进入 / 首轮做什么 / 何时升级”的入口摘要。模式细节、模板和扩展策略统一从文末索引或 `reference-index.md` 获取。
+
 ### FAST 模式 (极速通道)
 
 - **触发**: `>>` 前缀 / `FAST` / `快速`
@@ -281,7 +285,7 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 ### DOC 模式 (文档专家)
 
 - **触发**: `DOC` / `写文档` / 生成文档类任务
-- **流程**: Absorb(提取上下文)→Outline(大纲)→Author(撰写)→Fact-Check(验证)
+- **首轮动作**: 先提取事实与文档范围，再给大纲，不直接长篇撰写
 - **纪律**: 不猜测实现；每个细节必须对照实际代码验证
 
 > **按需加载**: 进入DOC模式时读取 `protocols/RIPER-DOC.md`
@@ -309,26 +313,21 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 
 ## 参考资料索引 (按需加载)
 
-> 需要但未列出的文件，读取 [reference-index.md](./reference-index.md) 定位。
+> 本节只保留入口级高频导航；完整索引请读取 [reference-index.md](./reference-index.md)。
 > *注意：所有参考路径相对于本规范所在目录或 `altas-workflow/`。如果尝试读取时找不到文件，请使用全局搜索（Glob/Search）定位；若确实缺失，请基于自身常识按标准模式执行，并提醒用户补全依赖。*
 
-**核心参考（高频）：**
+**入口优先级：**
 
 | 触发场景 | 读取文件 |
 |----------|----------|
-| 写Spec (M/L) | `references/spec-driven-development/spec-template.md` |
-| 写Spec (S) | `references/checkpoint-driven/spec-lite-template.md` |
-| 查看命令参数 | `references/spec-driven-development/commands.md` |
-| TDD执行 | `references/superpowers/test-driven-development/SKILL.md` |
-| Debug模式 | `references/superpowers/systematic-debugging/SKILL.md` |
-| 写Plan | `references/superpowers/writing-plans/SKILL.md` |
-| Subagent驱动（环境支持时） | `references/superpowers/subagent-driven-development/SKILL.md` |
-| 完成前验证 | `references/superpowers/verification-before-completion/SKILL.md` |
-| 进入Review | `references/checkpoint-driven/modules.md` |
-| 快速参考/忘记流程 | `references/spec-driven-development/workflow-quickref.md` |
-| 完整协议定义 | `references/spec-driven-development/sdd-riper-one-protocol.md` |
-| 落盘命名约定 | `references/checkpoint-driven/conventions.md` |
-| 流程可视化参考 | `workflow-diagrams.md` |
+| 快速回忆整体流程 | `references/spec-driven-development/workflow-quickref.md` |
+| 查看完整参考目录 | `reference-index.md` |
+| 写Spec / 命名约定 | `references/spec-driven-development/spec-template.md`、`references/checkpoint-driven/spec-lite-template.md`、`references/checkpoint-driven/conventions.md` |
+| 查看动作参数 | `references/spec-driven-development/commands.md` |
+| 写Plan / Execute | `references/superpowers/writing-plans/SKILL.md`、`references/superpowers/test-driven-development/SKILL.md` |
+| Debug / Review | `references/superpowers/systematic-debugging/SKILL.md`、`references/checkpoint-driven/modules.md` |
+| L规模扩展能力 | `references/superpowers/subagent-driven-development/SKILL.md`、`references/superpowers/verification-before-completion/SKILL.md` |
+| 文档 / 归档 / 可视化 | `protocols/RIPER-DOC.md`、`references/spec-driven-development/archive-template.md`、`workflow-diagrams.md` |
 
 ---
 
@@ -368,7 +367,10 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 
 ## 初始化
 
-当用户的 Prompt 包含 trigger_keywords 且当前上下文中没有正在进行的活跃任务时，主动输出以下初始化提示，并暂停等待用户明确任务描述：
+当用户的 Prompt 包含 trigger_keywords 且当前上下文中没有正在进行的活跃任务时：
+
+- **若只有触发词、没有明确任务内容** → 输出以下初始化提示，并暂停等待用户补充任务描述
+- **若已包含明确任务内容** → 不输出寒暄式初始化，直接进入“任务复述 / 模式判断 / 规模评估 / 下一步”首轮响应
 
 > **ALTAS Workflow v4.0 已加载**
 >

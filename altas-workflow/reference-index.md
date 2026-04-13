@@ -162,14 +162,6 @@
 | `references/superpowers/writing-skills/persuasion-principles.md` | Skill说服原则 |
 | `references/superpowers/writing-skills/testing-skills-with-subagents.md` | Skill测试方法 |
 | `references/agents/code-reviewer.md` | 代码审查Agent定义 |
-
-### 测试开发专用
-
-| 文件 | 主题 |
-|------|------|
-| `references/test-dev-workflow/test-dev-workflow.md` | 测试开发完整工作流 |
-| `references/test-dev-workflow/TEST-DEV-WORKFLOW-PROJECT.md` | 测试开发项目规划 |
-
 ---
 
 ## 按规模等级索引
@@ -192,7 +184,7 @@
 
 ### Size L — 完整加载
 
-- 全部 M 规模文件，加上:
+- 全部 M 规模文件（包含TDD），加上:
 - `references/superpowers/brainstorming/SKILL.md`
 - `references/superpowers/subagent-driven-development/SKILL.md`
 - `references/superpowers/dispatching-parallel-agents/SKILL.md`

@@ -17,7 +17,7 @@ ALTAS Workflow 是一套汲取了 SDD-RIPER、SDD-RIPER-Optimized 与 Superpower
 | **XS 极速** | 跳过，事后1行summary | 直接执行→验证→summary |
 | **S 快速** | micro-spec (1-3句) | micro-spec→批准→执行→回写 |
 | **M 标准** | 轻量Spec落盘 | Research→Plan→Execute(TDD)→Review |
-| **L 深度** | 完整Spec+Innovate+Archive | Research→Innovate→Plan→Subagent→Review→Archive |
+| **L 深度** | 完整Spec+Innovate+Archive | Research→Innovate→Plan→Execute(TDD)→Subagent→Review→Archive |
 
 ### 2. 流程进度可视化
 
@@ -64,10 +64,9 @@ ALTAS Workflow 是一套汲取了 SDD-RIPER、SDD-RIPER-Optimized 与 Superpower
 - [SKILL.md](./SKILL.md) - 核心系统提示词（供AI读取）
 - [QUICKSTART.md](./QUICKSTART.md) - 快速启动命令与典型场景
 - [references/](./references/) - 按需加载的参考资料
-  - [spec-driven-development/](./references/spec-driven-development/) - SDD-RIPER完整协议与模板
-  - [checkpoint-driven/](./references/checkpoint-driven/) - Checkpoint轻量模式模块
-  - [superpowers/](./references/superpowers/) - TDD/Debug/Subagent技能
-  - [test-dev-workflow/](./references/test-dev-workflow/) - 测试开发专用工作流
+  - [spec-driven-development/](./references/spec-driven-development/) - SDD-RIPER 完整协议与模板
+  - [checkpoint-driven/](./references/checkpoint-driven/) - Checkpoint 轻量模式模块
+  - [superpowers/](./references/superpowers/) - TDD/Debug/Subagent 技能
 - [protocols/](./protocols/) - 专用协议（严格模式、双模型协作等）
 - [docs/](./docs/) - 方法论文档
 - [skills/](./skills/) - 独立Skill定义
@@ -114,10 +113,8 @@ ALTAS Workflow 是一套汲取了 SDD-RIPER、SDD-RIPER-Optimized 与 Superpower
 | Git Worktree | `references/superpowers/using-git-worktrees/SKILL.md` | 并行开发隔离时 |
 | Superpowers总纲 | `references/superpowers/using-superpowers/SKILL.md` | 检查Skill适用性时 |
 | 编写Skill | `references/superpowers/writing-skills/SKILL.md` | 创建新Skill时 |
-| Skill说服原则 | `references/superpowers/writing-skills/persuasion-principles.md` | 优化Skill效果时 |
-| Skill测试方法 | `references/superpowers/writing-skills/testing-skills-with-subagents.md` | 验证Skill有效性时 |
-| 测试开发 | `references/test-dev-workflow/test-dev-workflow.md` | 测试开发专用任务时 |
-| 测试开发项目 | `references/test-dev-workflow/TEST-DEV-WORKFLOW-PROJECT.md` | 测试项目规划时 |
+| Skill 说服原则 | `references/superpowers/writing-skills/persuasion-principles.md` | 优化 Skill 效果时 |
+| Skill 测试方法 | `references/superpowers/writing-skills/testing-skills-with-subagents.md` | 验证 Skill 有效性时 |
 | 严格模式协议 | `protocols/RIPER-5.md` | 高风险代码修改时 |
 | 双模型协作 | `protocols/SDD-RIPER-DUAL-COOP.md` | 双模型环境时 |
 | 文档专家 | `protocols/RIPER-DOC.md` | DOC模式时 |

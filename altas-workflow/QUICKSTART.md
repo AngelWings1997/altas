@@ -40,7 +40,7 @@ mydocs/
 | **极速修改** | `>> 修复 [文件] 中 [内容]` | XS | 直接执行→验证→summary |
 | **小任务** | `FAST: [任务描述]` | S | micro-spec→批准→执行→回写 |
 | **标准开发** | `sdd_bootstrap: task=[任务], goal=[目标]` | M | Research→Plan→Execute(TDD)→Review |
-| **架构重构** | `DEEP: [架构改造描述]` | L | Research→Innovate→Plan→Subagent→Review→Archive |
+| **架构重构** | `DEEP: [架构改造描述]` | L | Research→Innovate→Plan→Execute(TDD)→Subagent→Review→Archive |
 | **项目理解** | `MAP: scope=[范围]` | - | 只读分析，不改代码 |
 | **项目总图** | `PROJECT MAP: scope=[项目]` | - | 项目级架构地图 |
 | **排查Bug** | `DEBUG: [报错/日志路径]` | - | 系统化根因分析 |
@@ -85,7 +85,7 @@ AI行为:
 3. Research → 梳理现状链路，标识风险
 4. Innovate → 给出3种方案（服务化/模块化/网关层）对比
 5. Plan → 原子Checklist + Subagent分配
-6. Execute → Subagent并行实现 + 两阶段Review
+6. Execute → TDD驱动 + Subagent并行实现 + 两阶段Review
 7. Review → 三轴评审 + Archive沉淀
 ```
 

@@ -31,8 +31,7 @@ altas/
 │   └── references/         # 完整协议内容 (36 个文件)
 │       ├── spec-driven-development/   # Spec 驱动开发
 │       ├── checkpoint-driven/        # Checkpoint 审批
-│       ├── superpowers/              # 超级能力 (TDD/Debug/Subagent)
-│       └── test-dev-workflow/        # 测试开发专用
+│       └── superpowers/              # 超级能力 (TDD/Debug/Subagent)
 ```
 
 ---
@@ -126,7 +125,6 @@ Research ──→ [Innovate] ──→ Plan ──→ Execute ──→ Review 
 
 - [SIGMA Workflow 详细说明](sigma-workflow/README.md)
 - [快速启动指南](sigma-workflow/QUICKSTART.md)
-- [测试开发专用模式](sigma-workflow/references/test-dev-workflow/test-dev-workflow.md)
 
 ---
 

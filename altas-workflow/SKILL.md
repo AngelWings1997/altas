@@ -137,7 +137,13 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 
 ## 阶段执行指南
 
+**IDE 原生工具调用建议**:
+- **探索期 (Research / MAP)**: 优先使用原生 `SearchCodebase`、`Grep`、`Glob` 等全局检索工具进行高效上下文收集，避免盲目使用 `ls` 或 `cat` 逐个找文件。
+- **执行期 (Plan / Execute)**: 优先将原子任务同步至环境原生的 Todo/Task 管理面板（若支持），通过工具跟踪进度。
+
 ### PRE-RESEARCH (输入准备) — 适用 M/L
+
+> *说明：以下命令为 AI 内部逻辑指令，请自行通过原生检索与读写工具完成，不要在终端中执行这些名称的 Shell 脚本。*
 
 | 命令 | 用途 | 产出 |
 |------|------|------|
@@ -183,8 +189,8 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 | **L** | TDD: RED→GREEN→REFACTOR + Subagent驱动 + 两阶段Review |
 
 **M/L 执行纪律**:
-- 默认逐步执行（1个Checklist项→检查点）
-- `全部`/`all`/`execute all` → 批量执行剩余项
+- **红线**: 严格禁止在一个对话轮次中实现多个 Checklist 项。必须严格遵守“实现单项 → 输出检查点请求 Review → 获批后再执行下一项”的单步循环，防止上下文超载。
+- `全部`/`all`/`execute all` → 批量执行剩余项（仅在用户明确授权时可用）
 - 编译错误可自动修；逻辑变更必须回到Plan
 - 偏差暴露→(铁律 #4) 先更新Spec→再修代码→重对齐核心目标
 
@@ -212,7 +218,7 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 - 生成双视角文档：human版（汇报视角）+ llm版（后续开发参考）
 - 每个结论附 `Trace to Sources` 映射
 - 产出: `mydocs/archive/YYYY-MM-DD_hh-mm_<topic>_{human,llm}.md`
-- 自动化脚本: `python3 scripts/archive_builder.py --targets ... --kind mixed --audience both`
+- 自动化: 若本地存在 `scripts/archive_builder.py` 脚本，可调用执行；若不存在，AI 应直接通过读写文件工具自行生成 Markdown 沉淀，切勿盲目执行 Shell 命令。
 
 > **按需加载**: 进入Archive时读取 `references/spec-driven-development/archive-template.md`
 
@@ -267,9 +273,9 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 
 - **触发**: `ARCHIVE` / `归档` / `沉淀`
 - **前提**: 目标 Spec 已完成 Review
-- **动作**: 生成双视角归档（human 汇报视角 + llm 开发参考视角），每个结论附 `Trace to Sources`
-- **产出**: `mydocs/archive/YYYY-MM-DD_hh-mm_<topic>_{human,llm}.md`
-- **自动化**: `python3 scripts/archive_builder.py --targets ... --kind mixed --audience both`
+- 动作: 生成双视角归档（human 汇报视角 + llm 开发参考视角），每个结论附 `Trace to Sources`
+- 产出: `mydocs/archive/YYYY-MM-DD_hh-mm_<topic>_{human,llm}.md`
+- 自动化: 若本地存在 `scripts/archive_builder.py` 脚本，可调用执行；若不存在，AI 应直接通过读写文件工具自行生成 Markdown 沉淀。
 
 > **按需加载**: 进入Archive时读取 `references/spec-driven-development/archive-template.md`
 
@@ -278,6 +284,7 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 ## 参考资料索引 (按需加载)
 
 > 需要但未列出的文件，读取 [reference-index.md](./reference-index.md) 定位。
+> *注意：所有参考路径相对于本规范所在目录或 `altas-workflow/`。如果尝试读取时找不到文件，请使用全局搜索（Glob/Search）定位；若确实缺失，请基于自身常识按标准模式执行，并提醒用户补全依赖。*
 
 **核心参考（高频）：**
 
@@ -335,7 +342,7 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 
 ## 初始化
 
-当本 Skill 被加载或用户首次调用时，输出以下初始化提示：
+当用户的 Prompt 包含 trigger_keywords 且当前上下文中没有正在进行的活跃任务时，主动输出以下初始化提示，并暂停等待用户明确任务描述：
 
 > **ALTAS Workflow v4.0 已加载**
 >
@@ -346,5 +353,5 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 > 请描述你的任务，我将自动评估规模并选择适配工作流。
 
 **行为约束**:
-- 仅在首次加载时输出，后续对话轮次不再重复
+- 仅在命中触发条件时主动输出，后续对话轮次不再重复
 - 接收到任务后立即进行规模评估，进入对应工作流

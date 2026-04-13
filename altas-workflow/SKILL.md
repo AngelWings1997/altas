@@ -1,6 +1,6 @@
 ---
 name: altas-workflow
-description: Master workflow skill that auto-evaluates task size (XS/S/M/L) and selects workflow depth. Integrates Spec-Driven, Checkpoint-Driven, and Superpowers (TDD+Subagent). Use when user starts any coding task and needs structured, adaptive workflow.
+description: Master workflow skill that auto-evaluates task size (XS/S/M/L) and selects workflow depth. Integrates Spec-Driven, Checkpoint-Driven, and Superpowers. Use as the entry skill for engineering tasks such as coding, debugging, documentation, code mapping, and archiving.
 trigger_keywords: ["FAST", "DEEP", "DEBUG", "MULTI", "DOC", "MAP", "ARCHIVE", ">>", "sdd_bootstrap", "快速", "排查", "多项目", "写文档", "链路梳理", "归档", "全部"]
 ---
 
@@ -10,35 +10,43 @@ trigger_keywords: ["FAST", "DEEP", "DEBUG", "MULTI", "DOC", "MAP", "ARCHIVE", ">
 
 ## Overview
 
-ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpowers 的综合性 AI 工作流程规范。
+ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpowers 的综合性 AI 工作流程规范，也是编码、调试、文档、链路梳理、归档等工程任务的统一入口。
 
 接到任务后，**不要立刻编写代码**。你必须：
 
 1. **评估规模** → 自动选择工作流深度
-2. **逐步推进** → 每步完成后输出进度检查点
-3. **按需加载** → 只在命中场景时读取对应参考文档
-4. **铁律约束** → No Spec No Code, No Approval No Execute, Evidence First
+2. **判定模式** → 先决定这是 Coding / Debug / Doc / Map / Archive 中的哪一种入口
+3. **逐步推进** → 每步完成后输出进度检查点
+4. **按需加载** → 只在命中场景时读取对应参考文档
+5. **铁律约束** → No Spec No Code, No Approval No Execute, Evidence First
 
 **核心原则：**
 - **Spec is Truth** — Spec 是唯一真相源，代码是消耗品
-- **No Approval, No Execute** — Plan 阶段人类不点头，绝不写代码
+- **No Approval, No Execute** — 进入高影响执行前必须有明确执行许可
 - **Evidence First** — 完成由验证结果证明，非模型自宣布
+
+**入口约定：**
+- `create_codemap` / `build_context_bundle` / `sdd_bootstrap` / `archive` 等名称是**技能内部动作语法**，不是终端 Shell 命令；应通过原生检索、读写、任务跟踪工具完成。
+- 若任务是只读分析（如 `MAP` / `DEBUG` / 部分 `DOC` / `ARCHIVE`），先走只读模式，不要默认进入代码修改流程。
+- 若环境**不支持** Subagent / 并行 Agent / 专用任务面板，则自动降级为单会话执行 + 原子 Checklist + 常规检查点，不得因工具缺失而阻塞主流程。
 
 ---
 
 ## When to Use
 
-- 开始任何编码任务时
+- 作为工程任务总入口使用：编码、调试、文档、代码链路梳理、归档
 - 实现新功能、修复 Bug、重构代码
+- 需要只读分析仓库、生成 CodeMap、整理知识沉淀
 - 需要结构化开发流程和规范约束
 - 用户请求涉及多文件、跨模块改动
 - 需要生成 Spec、CodeMap、Archive 等产物
-- 用户输入触发词：`FAST`、`DEEP`、`DEBUG`、`MULTI`、`DOC`
+- 用户输入触发词：`FAST`、`DEEP`、`DEBUG`、`MULTI`、`DOC`、`MAP`、`ARCHIVE`、`sdd_bootstrap`
 
 ## When NOT to Use
 
-- 纯粹的信息查询（不需要修改代码）
-- 用户明确要求跳过规范流程（可用 `>>` 触发 FAST 模式）
+- 纯粹的闲聊、概念问答、与当前仓库无关的信息查询
+- 用户只要一个极短答案，且不需要工作流路由、代码上下文或产物落盘
+- 用户明确要求跳过标准流程时，可用 `>>` / `FAST` 进入极速通道，而不是完全退出本入口
 
 ---
 
@@ -51,7 +59,7 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 | **XS** | typo/配置值，<10行 | 跳过，事后1行summary | 直接执行→验证→summary |
 | **S** | 1-2文件，逻辑清晰 | micro-spec (1-3句) | micro-spec→批准→执行→回写 |
 | **M** | 3-10文件，模块内 | 轻量Spec落盘 | Research→Plan→Execute(TDD)→Review |
-| **L** | 跨模块，>500行，架构级 | 完整Spec+Innovate+Archive | Research→Innovate→Plan→Execute(TDD)→Subagent→Review→Archive |
+| **L** | 跨模块，>500行，架构级 | 完整Spec+Innovate+Archive | Research→Innovate→Plan→Execute(TDD)→Subagent(若支持)→Review→Archive |
 
 ### 自动升降级
 
@@ -70,6 +78,22 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 | `MAP` / `链路梳理` | 功能级CodeMap |
 | `ARCHIVE` / `归档` | 知识沉淀 |
 | `全部` / `all` | 批量执行 |
+
+### 入口路由速查
+
+| 用户意图 | 默认路由 | 首轮重点 |
+|----------|----------|----------|
+| 改代码 / 修 Bug / 重构 | XS/S/M/L 标准流 | 规模评估 + Spec/Plan/Execute 门禁 |
+| 排查问题 / 看日志 / 验证行为 | `DEBUG` | 只读定位 + 根因分析，必要时再转编码流 |
+| 写文档 / 汇总说明 | `DOC` | 事实提取 + 大纲 + 对照代码验证 |
+| 只看代码 / 梳理链路 | `MAP` | 只读分析 + CodeMap 产出 |
+| 归档沉淀 / 总结经验 | `ARCHIVE` | 基于已完成 Spec/CodeMap 提炼知识 |
+
+### 能力探测与降级
+
+- 若环境支持 Subagent / 并行 Agent，`L` 规模可启用并行执行与两阶段 Review。
+- 若环境不支持 Subagent / 并行 Agent，则 `L` 规模自动降级为单代理串行执行，不降低 Spec、Review、Evidence 等门禁要求。
+- 若环境支持 Todo/Task 面板，则在 Plan / Execute 期间同步原子 Checklist；否则直接在对话和 Spec 中维护 Checklist 即可。
 
 ---
 
@@ -92,7 +116,7 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 | # | 铁律 | 含义 |
 |---|------|------|
 | 1 | **No Spec, No Code** | 未形成最小Spec前不写代码 (Size XS豁免) |
-| 2 | **No Approval, No Execute** | Plan阶段人类不点头，绝不写代码 |
+| 2 | **No Approval, No Execute** | 进入高影响执行前必须获得明确执行许可；XS/FAST 或用户明确要求直接执行时可视为已授权 |
 | 3 | **Spec is Truth** | Spec与代码冲突时，代码是错的；Bug先修Spec再修代码 |
 | 4 | **Reverse Sync** | 执行中发现偏差→先更新Spec→再修代码 |
 | 5 | **Evidence First** | 完成由验证结果证明，非模型自宣布 |
@@ -127,7 +151,7 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 - 下一步将会产出什么
 
 ### 下一步操作
-- **[继续/Approved]**: 同意，进入下一步
+- **[继续/Approved/直接执行]**: 同意，进入下一步
 - **[修改]** + 意见: 调整当前成果
 - **[升级为X]** / **[降级为X]**: 调整规模
 - **[加载参考: XXX]**: 查看某参考文档的详情
@@ -138,12 +162,14 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 ## 阶段执行指南
 
 **IDE 原生工具调用建议**:
-- **探索期 (Research / MAP)**: 优先使用原生 `SearchCodebase`、`Grep`、`Glob` 等全局检索工具进行高效上下文收集，避免盲目使用 `ls` 或 `cat` 逐个找文件。
-- **执行期 (Plan / Execute)**: 优先将原子任务同步至环境原生的 Todo/Task 管理面板（若支持），通过工具跟踪进度。
+- **检索优先**: 先用原生 `SearchCodebase`、`Grep`、`Glob` 做全局定位，再决定读哪些文件，避免盲目逐个 `ls` / `cat`。
+- **读取其次**: 确认目标后再用原生读文件工具精读关键文件，不在探索期大面积顺序通读。
+- **写入专用**: 产物落盘、Spec 回写、代码修改优先用原生文件工具完成；终端主要用于测试、构建、脚本执行与验证。
+- **任务跟踪**: 若环境支持 Todo/Task 面板，则在 Plan / Execute 期间同步原子任务；若不支持，则在对话检查点与 Spec 中维护 Checklist。
 
 ### PRE-RESEARCH (输入准备) — 适用 M/L
 
-> *说明：以下命令为 AI 内部逻辑指令，请自行通过原生检索与读写工具完成，不要在终端中执行这些名称的 Shell 脚本。*
+> *说明：以下名称是 AI 内部动作语法，请自行通过原生检索、读写、任务跟踪工具完成，不要在终端中执行这些名称的 Shell 脚本。*
 
 | 命令 | 用途 | 产出 |
 |------|------|------|
@@ -174,8 +200,8 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 
 - **动作**: 将任务拆解为原子Checklist，明确File Changes + Signatures + Done Contract
 - **产出**: Spec中更新Plan部分
-- **门禁**: (铁律 #2) 必须获得明确 `[Approved]` 才能进入Execute
-- **完成后**: 输出检查点，含完整Checklist摘要 → 等待 `[Approved]`
+- **门禁**: (铁律 #2) 必须获得明确执行许可才能进入Execute；`[Approved]`、`按此计划继续`、`直接执行` 等同意图均可视为许可
+- **完成后**: 输出检查点，含完整Checklist摘要 → 等待执行许可
 
 > **按需加载**: 写Plan时读取 `references/superpowers/writing-plans/SKILL.md`
 
@@ -186,7 +212,7 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 | **XS** | 直接修改→验证→1行summary |
 | **S** | micro-spec→批准→执行→回写 |
 | **M** | TDD: RED→GREEN→REFACTOR，逐步或批量 |
-| **L** | TDD: RED→GREEN→REFACTOR + Subagent驱动 + 两阶段Review |
+| **L** | TDD: RED→GREEN→REFACTOR + Subagent驱动（若环境支持）+ 两阶段Review |
 
 **M/L 执行纪律**:
 - **红线**: 严格禁止在一个对话轮次中实现多个 Checklist 项。必须严格遵守“实现单项 → 输出检查点请求 Review → 获批后再执行下一项”的单步循环，防止上下文超载。
@@ -296,7 +322,7 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 | TDD执行 | `references/superpowers/test-driven-development/SKILL.md` |
 | Debug模式 | `references/superpowers/systematic-debugging/SKILL.md` |
 | 写Plan | `references/superpowers/writing-plans/SKILL.md` |
-| Subagent驱动 | `references/superpowers/subagent-driven-development/SKILL.md` |
+| Subagent驱动（环境支持时） | `references/superpowers/subagent-driven-development/SKILL.md` |
 | 完成前验证 | `references/superpowers/verification-before-completion/SKILL.md` |
 | 进入Review | `references/checkpoint-driven/modules.md` |
 | 快速参考/忘记流程 | `references/spec-driven-development/workflow-quickref.md` |
@@ -347,11 +373,12 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 > **ALTAS Workflow v4.0 已加载**
 >
 > 当前模式: [IDLE] ▸ 等待任务输入
-> 可用触发: `>>` (极速) | `FAST` (小任务) | 默认 (标准) | `DEEP` (深度) | `DEBUG` (排查) | `MULTI` (多项目) | `DOC` (文档) | `MAP` (链路) | `ARCHIVE` (归档)
+> 可用触发: `>>` (极速) | `FAST` (小任务) | `sdd_bootstrap` (标准入口) | `DEEP` (深度) | `DEBUG` (排查) | `MULTI` (多项目) | `DOC` (文档) | `MAP` (链路) | `ARCHIVE` (归档) | `全部` (批量执行)
 > 退出指令: "EXIT ALTAS"
 >
-> 请描述你的任务，我将自动评估规模并选择适配工作流。
+> 请描述你的任务，我将先给出：任务复述 / 模式判断 / 规模评估 / 是否需要参考文档 / 下一步动作。
 
 **行为约束**:
 - 仅在命中触发条件时主动输出，后续对话轮次不再重复
-- 接收到任务后立即进行规模评估，进入对应工作流
+- 接收到任务后先判定模式（Coding / Debug / Doc / Map / Archive），再进行规模评估并进入对应工作流
+- 首轮回复默认包含：`任务复述`、`模式`、`规模`、`是否只读`、`是否需要用户确认/执行许可`、`下一步`

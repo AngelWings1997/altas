@@ -1,7 +1,7 @@
 ---
 name: altas-workflow
 description: Master workflow skill that auto-evaluates task size (XS/S/M/L) and selects workflow depth. Integrates Spec-Driven, Checkpoint-Driven, and Superpowers (TDD+Subagent). Use when user starts any coding task and needs structured, adaptive workflow.
-trigger_patterns: ["FAST", "DEEP", "DEBUG", "MULTI", "DOC", "MAP", "ARCHIVE", ">>", "sdd_bootstrap"]
+trigger_keywords: ["FAST", "DEEP", "DEBUG", "MULTI", "DOC", "MAP", "ARCHIVE", ">>", "sdd_bootstrap", "快速", "排查", "多项目", "写文档", "链路梳理", "归档", "全部"]
 ---
 
 # ALTAS Workflow
@@ -11,6 +11,13 @@ trigger_patterns: ["FAST", "DEEP", "DEBUG", "MULTI", "DOC", "MAP", "ARCHIVE", ">
 ## Overview
 
 ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpowers 的综合性 AI 工作流程规范。
+
+接到任务后，**不要立刻编写代码**。你必须：
+
+1. **评估规模** → 自动选择工作流深度
+2. **逐步推进** → 每步完成后输出进度检查点
+3. **按需加载** → 只在命中场景时读取对应参考文档
+4. **铁律约束** → No Spec No Code, No Approval No Execute, Evidence First
 
 **核心原则：**
 - **Spec is Truth** — Spec 是唯一真相源，代码是消耗品
@@ -80,17 +87,6 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 
 ---
 
-## 核心使命
-
-接到任务后，**不要立刻编写代码**。你必须：
-
-1. **评估规模** → 自动选择工作流深度
-2. **逐步推进** → 每步完成后输出进度检查点
-3. **按需加载** → 只在命中场景时读取对应参考文档
-4. **铁律约束** → No Spec No Code, No Approval No Execute, Evidence First
-
----
-
 ## 铁律约束
 
 | # | 铁律 | 含义 |
@@ -147,6 +143,7 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 |------|------|------|
 | `create_codemap` | 生成代码索引地图 | `mydocs/codemap/YYYY-MM-DD_hh-mm_<name>.md` |
 | `build_context_bundle` | 整理需求上下文 | `mydocs/context/YYYY-MM-DD_hh-mm_<task>_context_bundle.md` |
+| `sdd_bootstrap` | RIPER 启动，汇总输入产出首版 Spec | `mydocs/specs/YYYY-MM-DD_hh-mm_<TaskName>.md` |
 
 > **按需加载**: 进入此阶段时读取 `references/spec-driven-development/commands.md`
 
@@ -194,9 +191,9 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 > **按需加载**: TDD执行时读取 `references/superpowers/test-driven-development/SKILL.md`
 > **按需加载**: L规模并行执行时读取 `references/superpowers/subagent-driven-development/SKILL.md`
 
-### REVIEW (审查) — 适用 M/L
+### REVIEW (审查) — 适用 M/L；S 规模简单回写验证即可
 
-**三轴评审 (必须全部输出)**:
+**三轴评审 (M/L 必须全部输出)**:
 
 | 轴 | 检查项 | 判定 |
 |----|--------|------|
@@ -210,11 +207,12 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 
 > **按需加载**: 进入Review时读取 `references/checkpoint-driven/modules.md`
 
-### ARCHIVE (知识沉淀) — 推荐用于 L
+### ARCHIVE (知识沉淀) — 推荐用于 L，M 也可按需使用
 
 - 生成双视角文档：human版（汇报视角）+ llm版（后续开发参考）
 - 每个结论附 `Trace to Sources` 映射
 - 产出: `mydocs/archive/YYYY-MM-DD_hh-mm_<topic>_{human,llm}.md`
+- 自动化脚本: `python3 scripts/archive_builder.py --targets ... --kind mixed --audience both`
 
 > **按需加载**: 进入Archive时读取 `references/spec-driven-development/archive-template.md`
 
@@ -238,7 +236,7 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
   - 验证模式(有spec): 日志证据 vs Spec验收标准→PASS/FAIL/INCONCLUSIVE
 - **约束**: 只读分析；代码修改需进入RIPER或FAST
 
-> **按需加载**: 进入Debug时读取 `references/superpowers/systematic-debugging/SKILL.md`
+> **按需加载**: 进入Debug时读取 `references/superpowers/systematic-debugging/SKILL.md`；根因不明时追加 `root-cause-tracing.md`，异步问题时追加 `condition-based-waiting.md`
 
 ### MULTI 模式 (多项目协作)
 
@@ -264,6 +262,16 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 - **升级**: 用户要求基于 CodeMap 修改代码 → 进入 Research→Plan→Execute 标准流程
 
 > **按需加载**: 进入MAP模式时读取 `references/spec-driven-development/commands.md` (create_codemap 参数)
+
+### ARCHIVE 模式 (知识沉淀)
+
+- **触发**: `ARCHIVE` / `归档` / `沉淀`
+- **前提**: 目标 Spec 已完成 Review
+- **动作**: 生成双视角归档（human 汇报视角 + llm 开发参考视角），每个结论附 `Trace to Sources`
+- **产出**: `mydocs/archive/YYYY-MM-DD_hh-mm_<topic>_{human,llm}.md`
+- **自动化**: `python3 scripts/archive_builder.py --targets ... --kind mixed --audience both`
+
+> **按需加载**: 进入Archive时读取 `references/spec-driven-development/archive-template.md`
 
 ---
 
@@ -307,7 +315,13 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 
 ---
 
-## 上下文装配策略 (Size M/L)
+## 上下文装配策略
+
+### Size XS/S
+
+无需显式上下文装配，依赖对话上下文即可。S 规模的 micro-spec 回写时确保 Goal 和验证结果已落盘。
+
+### Size M/L
 
 | 层级 | 加载时机 | 内容 |
 |------|----------|------|
@@ -321,16 +335,16 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 
 ## 初始化
 
-**Upon loading this skill, output the following initialization message exactly once:**
+当本 Skill 被加载或用户首次调用时，输出以下初始化提示：
 
 > **ALTAS Workflow v4.0 已加载**
 >
 > 当前模式: [IDLE] ▸ 等待任务输入
-> 可用触发: `>>` (极速) | `FAST` (小任务) | 默认 (标准) | `DEEP` (深度) | `DEBUG` (排查) | `MULTI` (多项目) | `DOC` (文档) | `MAP` (链路)
+> 可用触发: `>>` (极速) | `FAST` (小任务) | 默认 (标准) | `DEEP` (深度) | `DEBUG` (排查) | `MULTI` (多项目) | `DOC` (文档) | `MAP` (链路) | `ARCHIVE` (归档)
 > 退出指令: "EXIT ALTAS"
 >
 > 请描述你的任务，我将自动评估规模并选择适配工作流。
 
 **行为约束**:
-- 仅在首次加载时输出初始化消息，后续对话轮次不再重复
+- 仅在首次加载时输出，后续对话轮次不再重复
 - 接收到任务后立即进行规模评估，进入对应工作流

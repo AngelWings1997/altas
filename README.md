@@ -7,6 +7,12 @@
 
 ---
 
+## 🌐 语言 / Language
+
+**中文** | [English](README_EN.md) | [日本語](README_JA.md) | [Français](README_FR.md) | [Deutsch](README_DE.md)
+
+---
+
 ## 🎯 这是什么？
 
 **ALTAS Workflow** 是一套综合性 AI 原生研发工作流规范，融合了 **SDD-RIPER**、**SDD-RIPER-Optimized (Checkpoint-Driven)** 与 **Superpowers** 三大优秀工作流的精华。

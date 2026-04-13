@@ -127,8 +127,8 @@
 | `references/checkpoint-driven/spec-lite-template.md` | 最小Spec模板 |
 | `references/checkpoint-driven/modules.md` | 按需模块 (Deep/Debug/Review/Multi) |
 | `references/checkpoint-driven/conventions.md` | 命名与目录约定 |
-| `skills/sdd-riper-one/SKILL.md` | 标准版Skill |
-| `skills/sdd-riper-one-light/SKILL.md` | 轻量版Skill |
+| `altas-workflow/references/agents/sdd-riper-one/SKILL.md` | 标准版 Skill |
+| `altas-workflow/references/agents/sdd-riper-one-light/SKILL.md` | 轻量版 Skill |
 
 ### Superpowers
 

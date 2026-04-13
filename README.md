@@ -202,8 +202,8 @@ Research ──→ Innovate ──→ Plan ──→ Execute(TDD+Subagent) ─�
 - [文档专家协议](altas-workflow/protocols/RIPER-DOC.md)
 
 ### 技能包
-- [SDD-RIPER-ONE 标准版](altas-workflow/skills/sdd-riper-one/SKILL.md)
-- [SDD-RIPER-ONE Light 轻量版](altas-workflow/skills/sdd-riper-one-light/SKILL.md)
+- [SDD-RIPER-ONE 标准版](altas-workflow/references/agents/sdd-riper-one/SKILL.md)
+- [SDD-RIPER-ONE Light 轻量版](altas-workflow/references/agents/sdd-riper-one-light/SKILL.md)
 
 ---
 

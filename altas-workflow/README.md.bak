@@ -120,8 +120,8 @@ ALTAS Workflow 是一套汲取了 SDD-RIPER、SDD-RIPER-Optimized 与 Superpower
 | 文档专家 | `protocols/RIPER-DOC.md` | DOC模式时 |
 | Agent: 代码审查者 | `references/agents/code-reviewer.md` | 派遣审查Agent时 |
 | 脚本: Archive构建器 | `scripts/archive_builder.py` | 自动化归档时 |
-| Skill: 标准版 | `altas-workflow/references/agents/sdd-riper-one/SKILL.md` | 使用完整RIPER协议时 |
-| Skill: 轻量版 | `altas-workflow/references/agents/sdd-riper-one-light/SKILL.md` | 使用Checkpoint模式时 |
+| Skill: 标准版 | `.agents/skills/sdd-riper-one/SKILL.md` | 使用完整RIPER协议时 |
+| Skill: 轻量版 | `.agents/skills/sdd-riper-one-light/SKILL.md` | 使用Checkpoint模式时 |
 | 方法论: 从传统到大模型 | `docs/从传统编程转向大模型编程.md` | 理解范式转换时 |
 | 方法论: 团队落地指南 | `docs/团队落地指南.md` | 团队推广时 |
 | 方法论: 手把手教程 | `docs/如何快速从零开始落地大模型编程 -- 手把手教程.md` | 入门学习时 |

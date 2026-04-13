@@ -494,8 +494,8 @@ mindmap
 | 方法论: AI原生研发范式 | `docs/AI-原生研发范式-从代码中心到文档驱动的演进.md` |
 | Agent: 代码审查者 | `references/agents/code-reviewer.md` |
 | 脚本: Archive构建器 | `scripts/archive_builder.py` |
-| Skill: SDD-RIPER-ONE 标准版 | `skills/sdd-riper-one/SKILL.md` |
-| Skill: SDD-RIPER-ONE Light 轻量版 | `skills/sdd-riper-one-light/SKILL.md` |
+| Skill: SDD-RIPER-ONE 标准版 | `altas-workflow/references/agents/sdd-riper-one/SKILL.md` |
+| Skill: SDD-RIPER-ONE Light 轻量版 | `altas-workflow/references/agents/sdd-riper-one-light/SKILL.md` |
 
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: altas-workflow
-version: "4.1"
+version: "4.2"
 description: Use when handling repository-grounded engineering tasks that need routing across coding, debugging, review, docs, mapping, archiving, refactoring, testing, performance, or migration workflows.
 trigger_keywords: ["FAST", "DEEP", "DEBUG", "MULTI", "DOC", "MAP", "PROJECT MAP", "MAP ALL", "ARCHIVE", "REVIEW", "REVIEW SPEC", "REVIEW EXECUTE", "REFACTOR", "TEST", "PERF", "MIGRATE", "CROSS", ">>", "sdd_bootstrap", "EXIT ALTAS", "快速", "排查", "多项目", "写文档", "链路梳理", "只看代码", "项目总图", "全局地图", "归档", "沉淀", "全部", "代码审查", "审查 PR", "评审规格", "计划评审", "代码评审", "实现复盘", "重构", "写测试", "补测试", "性能优化", "迁移", "版本升级", "跨项目", "验证功能", "退出协议"]
 dependencies:
@@ -14,7 +14,7 @@ min_context_window: 32k
 
 # ALTAS Workflow
 
-**Version:** 4.1 — 入口瘦身版。变更日志参考 [SDD-RIPER-ONE Agent Changelog](./references/agents/sdd-riper-one/CHANGELOG.md)。
+**Version:** 4.2 — 入口瘦身 + 索引统一版。变更日志参考 [SDD-RIPER-ONE Agent Changelog](./references/agents/sdd-riper-one/CHANGELOG.md)。
 
 ## Overview
 
@@ -54,6 +54,7 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 | 6 | **Evidence First** | 完成由测试、日志、构建、运行结果或代码证据证明，不靠自宣布。 |
 | 7 | **No Fixes Without Root Cause** | `DEBUG` 或 Bugfix 任务在根因未清楚前禁止盲改。 |
 | 8 | **Resume Ready** | 长任务、中断或上下文紧张时，必须留下恢复锚点。 |
+| 9 | **Read Concurrent, Write Serial** | 读文件允许并发；写文件必须串行，不得并发写入同一文件。 |
 
 ## Entry Contract
 
@@ -64,7 +65,8 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 
 ### 只读纪律
 
-- `MAP` / `PROJECT MAP` / `DEBUG` / 部分 `DOC` / 部分 `ARCHIVE` 默认是只读路由。
+- `MAP` / `PROJECT MAP` / `REVIEW` 相关 / `REVIEW SPEC` / `REVIEW EXECUTE` 默认是只读路由。
+- `DEBUG` / `DOC` / `ARCHIVE` 分析阶段只读，产出阶段允许写文件。
 - 只读任务完成分析、CodeMap 或报告后暂停，等待用户决定是否进入编码流。
 
 ### 能力降级
@@ -81,26 +83,26 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 
 完整别名字典与 `MULTI` 模式控制词见 `references/entry/aliases.md`。
 
-| 触发/意图 | 默认路由 | 只读 | 首轮重点 | 按需加载 |
-|-----------|----------|------|----------|----------|
-| 改代码 / 修 Bug / 新功能 | 标准 Coding 流 | 否 | 规模评估 + 最小 Spec + 门禁 | `references/spec-driven-development/spec-template.md` / `references/checkpoint-driven/spec-lite-template.md` |
-| `>>` | FAST | 否 | 确认是否为 `XS/S` | `references/spec-driven-development/workflow-quickref.md` |
-| `DEEP` | 深度标准流 | 否 | 默认按 `L` 处理 | `references/superpowers/brainstorming/SKILL.md` |
-| `DEBUG` | DEBUG | 是 | 症状、预期、证据、根因候选 | `references/superpowers/systematic-debugging/SKILL.md` |
-| `DOC` | DOC | 通常是 | 先抽事实与范围，再给大纲 | `protocols/RIPER-DOC.md` |
-| `MAP` | MAP | 是 | 输出功能级 CodeMap | `references/spec-driven-development/commands.md` |
-| `PROJECT MAP` | MAP | 是 | 输出项目级 CodeMap | `references/spec-driven-development/commands.md` |
-| `ARCHIVE` | ARCHIVE | 通常是 | 基于完成产物做知识沉淀 | `references/spec-driven-development/archive-template.md` |
-| `REVIEW` | REVIEW | 是 | 确定范围、目标、深度，再三轴评审 | `references/special-modes/review.md` |
-| `REVIEW SPEC` | REVIEW | 是 | 执行前审查 Spec/Plan | `references/superpowers/requesting-code-review/SKILL.md` |
-| `REVIEW EXECUTE` | REVIEW | 是 | 执行后三轴评审 | `references/checkpoint-driven/modules.md` |
-| `REFACTOR` | REFACTOR | 否 | 先 CodeMap，再计划 | `references/special-modes/refactor.md` |
-| `TEST` | TEST | 否 | 先测试现状与优先级 | `references/special-modes/test.md` |
-| `PERF` | PERF | 否 | 先基线与瓶颈定位 | `references/special-modes/perf.md` |
-| `MIGRATE` | MIGRATE | 否 | 风险、回滚、预演优先 | `references/special-modes/migrate.md` |
-| `MULTI` | MULTI | 视任务而定 | 扫描子项目并确认作用域；进入后可使用 `SWITCH` / `REGISTRY` / `SCOPE LOCAL` | `references/spec-driven-development/multi-project.md` |
-| `CROSS` | MULTI 扩展 | 否 | 允许跨项目改动，必须明示范围；必要时再切回 `SCOPE LOCAL` | `references/spec-driven-development/multi-project.md` |
-| `EXIT ALTAS` | 停止协议 | - | 输出摘要与恢复锚点后退出 | 无 |
+| 触发/意图 | 默认路由 | 只读 | 首轮重点 | 参考 |
+|-----------|----------|------|----------|------|
+| 改代码 / 修 Bug / 新功能 | 标准 Coding 流 | 否 | 规模评估 + 最小 Spec + 门禁 | `reference-index.md` → 按特殊模式 → Coding |
+| `>>` | FAST | 否 | 确认是否为 `XS/S` | `reference-index.md` → 按特殊模式 → Coding |
+| `DEEP` | 深度标准流 | 否 | 默认按 `L` 处理 | `reference-index.md` → 按特殊模式 → Deep |
+| `DEBUG` | DEBUG | 分析只读，产出会写 | 症状、预期、证据、根因候选 | `reference-index.md` → 按特殊模式 → Debug |
+| `DOC` | DOC | 分析只读，产出会写 | 先抽事实与范围，再给大纲 | `reference-index.md` → 按特殊模式 → DOC |
+| `MAP` | MAP | 是 | 输出功能级 CodeMap | `reference-index.md` → 按工作流阶段 → PRE-RESEARCH |
+| `PROJECT MAP` | MAP | 是 | 输出项目级 CodeMap | `reference-index.md` → 按工作流阶段 → PRE-RESEARCH |
+| `ARCHIVE` | ARCHIVE | 分析只读，产出会写 | 基于完成产物做知识沉淀 | `reference-index.md` → 按特殊模式 → Archive |
+| `REVIEW` | REVIEW | 是 | 确定范围、目标、深度，再三轴评审 | `reference-index.md` → 按特殊模式 → Review |
+| `REVIEW SPEC` | REVIEW | 是 | 执行前审查 Spec/Plan | `reference-index.md` → 按特殊模式 → Review |
+| `REVIEW EXECUTE` | REVIEW | 是 | 执行后三轴评审 | `reference-index.md` → 按特殊模式 → Review |
+| `REFACTOR` | REFACTOR | 否 | 先 CodeMap，再计划 | `reference-index.md` → 按特殊模式 → Refactor |
+| `TEST` | TEST | 否 | 先测试现状与优先级 | `reference-index.md` → 按特殊模式 → Test |
+| `PERF` | PERF | 否 | 先基线与瓶颈定位 | `reference-index.md` → 按特殊模式 → Perf |
+| `MIGRATE` | MIGRATE | 否 | 风险、回滚、预演优先 | `reference-index.md` → 按特殊模式 → Migrate |
+| `MULTI` | MULTI | 视任务而定 | 扫描子项目并确认作用域；进入后可使用 `SWITCH` / `REGISTRY` / `SCOPE LOCAL` | `reference-index.md` → 按特殊模式 → Multi |
+| `CROSS` | MULTI 扩展 | 否 | 允许跨项目改动，必须明示范围；必要时再切回 `SCOPE LOCAL` | `reference-index.md` → 按特殊模式 → Multi |
+| `EXIT ALTAS` | 停止协议 | - | 见"EXIT ALTAS 规范"节 | 无 |
 
 ## 规模评估
 
@@ -122,6 +124,16 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 
 - 发现复杂度超出预期时立刻暂停，提议 `[升级为 M]` / `[升级为 L]`
 - 用户可随时指示 `[降级为 S]` / `[降级为 XS]`
+
+### 规模-阶段映射
+
+| 规模 | 阶段路径 |
+|------|----------|
+| **XS** | 跳过所有阶段，直接执行 -> 验证 -> 1行 summary |
+| **S** | micro-spec -> 批准 -> 执行 -> 回写 |
+| **M** | PRE-RESEARCH -> RESEARCH -> PLAN -> EXECUTE -> REVIEW |
+| **L** | PRE-RESEARCH -> RESEARCH -> INNOVATE -> PLAN -> EXECUTE -> REVIEW -> ARCHIVE |
+| **复杂 M** | 与 L 同，但 INNOVATE 可选，视方案复杂度决定是否进入 |
 
 ## 首轮响应契约
 
@@ -195,7 +207,7 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 
 ### INNOVATE
 
-- 仅适用 `L`
+- 适用 `L`，复杂 `M` 也可进入
 - 给出 2-3 个方案并记录取舍
 - 读取 `references/superpowers/brainstorming/SKILL.md`
 
@@ -224,42 +236,39 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 - 优先利用现有 Spec、CodeMap、Review 结论，不重新猜测
 - 读取 `references/spec-driven-development/archive-template.md`
 
-## 高价值参考索引
-
-| 场景 | 读取文件 |
-|------|----------|
-| 查看触发词与模式内控制词 | `references/entry/aliases.md` |
-| 查看来源整合 | `references/entry/sources.md` |
-| 快速回忆整体流程 | `references/spec-driven-development/workflow-quickref.md` |
-| 查看完整索引 | `reference-index.md` |
-| 写 Spec / 命名约定 | `references/spec-driven-development/spec-template.md`、`references/checkpoint-driven/spec-lite-template.md`、`references/checkpoint-driven/conventions.md` |
-| 看动作参数 | `references/spec-driven-development/commands.md` |
-| 写 Plan / Execute | `references/superpowers/writing-plans/SKILL.md`、`references/superpowers/test-driven-development/SKILL.md` |
-| Debug / Root Cause | `references/superpowers/systematic-debugging/SKILL.md`、`references/superpowers/systematic-debugging/root-cause-tracing.md` |
-| Review | `references/special-modes/review.md`、`references/checkpoint-driven/modules.md` |
-| Refactor / Test / Perf / Migrate | `references/special-modes/refactor.md`、`references/special-modes/test.md`、`references/special-modes/perf.md`、`references/special-modes/migrate.md` |
-| 并行 Agent / Worktree / 双模型 | `references/superpowers/dispatching-parallel-agents/SKILL.md`、`references/superpowers/using-git-worktrees/SKILL.md`、`protocols/SDD-RIPER-DUAL-COOP.md` |
-| 高风险严格模式 | `protocols/RIPER-5.md` |
-
-> 若路径读取失败，先使用全局搜索定位；若文件确实缺失，则按标准模式继续，并明确提醒用户依赖不完整。
-
-## 常用产物
-
-统一时间前缀：`YYYY-MM-DD_hh-mm_`
-
-| 产物 | 路径 |
-|------|------|
-| 功能级 CodeMap | `mydocs/codemap/YYYY-MM-DD_hh-mm_<feature>功能.md` |
-| 项目级 CodeMap | `mydocs/codemap/YYYY-MM-DD_hh-mm_<project>项目总图.md` |
-| Context Bundle | `mydocs/context/YYYY-MM-DD_hh-mm_<task>_context_bundle.md` |
-| Spec | `mydocs/specs/YYYY-MM-DD_hh-mm_<TaskName>.md` |
-| Micro-spec | `mydocs/micro_specs/YYYY-MM-DD_hh-mm_<TaskName>.md` |
-| Archive | `mydocs/archive/YYYY-MM-DD_hh-mm_<topic>_{human,llm}.md` |
+> 完整索引与按需加载路径见 `reference-index.md`。
 
 ## 异常与恢复
 
-- `EXIT ALTAS`：输出当前阶段摘要、待办、恢复锚点后退出协议。
-- Spec 丢失或损坏：基于代码现状和对话重建最小 Spec，标记 `[RECOVERED]` 后请求确认。
+### EXIT ALTAS 规范
+
+`EXIT ALTAS` 必须在退出前输出以下字段：
+
+| 字段 | 内容 |
+|------|------|
+| **当前阶段** | PRE-RESEARCH / RESEARCH / INNOVATE / PLAN / EXECUTE / REVIEW / ARCHIVE |
+| **已完成** | 本轮产出的文件、结论、下一步待办 |
+| **待办** | 未完成项及优先级 |
+| **恢复锚点** | 基于 Spec + 代码 + 对话历史的最小重建路径 |
+
+**Spec 损坏时**（丢失或不一致）：基于代码现状和对话历史重建最小 Spec，标记 `[RECOVERED]` 后请求确认。
+
+### 能力降级
+
+| 缺失能力 | 降级方案 |
+|----------|----------|
+| Subagent / 并行 Agent | 单会话 + 原子 Checklist + 常规检查点 |
+| Todo 面板 | 文本化 Checklist + 定期 checkpoint 输出 |
+| `create_codemap` / `build_context_bundle` | 手动读取文件并生成上下文摘要 |
+| `sdd_bootstrap` | 手动执行 Research → 直接写 Spec |
+| 上下文窗口不足 | 立即执行 Resume Ready，状态写回 Spec 后再继续 |
+| Markdown 输出受限 | 降级为纯文本结构化输出 |
+
+- 工具缺失不应阻塞主流程，但必须明确说明降级行为
+- 降级后的替代方案应在本轮 checkpoint 中标注
+
+### 其他异常
+
 - TDD 红灯连续失败：暂停并给出根因候选，不继续盲改。
 - Reverse Sync 频繁出现：提议重做 Plan 或升级规模。
 - 上下文将满：立即执行 Resume Ready，将状态写回 Spec 后再继续。

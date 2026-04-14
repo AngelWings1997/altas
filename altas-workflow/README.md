@@ -65,6 +65,7 @@ ALTAS Workflow 是一套汲取了 SDD-RIPER、SDD-RIPER-Optimized 与 Superpower
 - [QUICKSTART.md](./QUICKSTART.md) - 快速启动命令与典型场景
 - [references/](./references/) - 按需加载的参考资料
   - [entry/aliases.md](./references/entry/aliases.md) - 入口触发词与模式内控制词词典
+  - [entry/sources.md](./references/entry/sources.md) - 入口来源整合说明
   - [spec-driven-development/](./references/spec-driven-development/) - SDD-RIPER 完整协议与模板
   - [checkpoint-driven/](./references/checkpoint-driven/) - Checkpoint 轻量模式模块
   - [superpowers/](./references/superpowers/) - TDD/Debug/Subagent 技能
@@ -82,6 +83,7 @@ ALTAS Workflow 是一套汲取了 SDD-RIPER、SDD-RIPER-Optimized 与 Superpower
 | 场景 | 读取文件 | 调用时机 |
 |------|----------|----------|
 | 查看触发词别名词典 | `references/entry/aliases.md` | 需要确认入口别名或模式内控制词时 |
+| 查看入口来源整合 | `references/entry/sources.md` | 需要解释工作流来源或做方法论介绍时 |
 | 写Spec (M/L) | `references/spec-driven-development/spec-template.md` | 进入Research时 |
 | 写Spec (S) | `references/checkpoint-driven/spec-lite-template.md` | 小任务建立Spec时 |
 | 查看命令详情 | `references/spec-driven-development/commands.md` | 需要命令参数时 |

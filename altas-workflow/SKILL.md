@@ -229,6 +229,7 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 | 场景 | 读取文件 |
 |------|----------|
 | 查看触发词与模式内控制词 | `references/entry/aliases.md` |
+| 查看来源整合 | `references/entry/sources.md` |
 | 快速回忆整体流程 | `references/spec-driven-development/workflow-quickref.md` |
 | 查看完整索引 | `reference-index.md` |
 | 写 Spec / 命名约定 | `references/spec-driven-development/spec-template.md`、`references/checkpoint-driven/spec-lite-template.md`、`references/checkpoint-driven/conventions.md` |
@@ -262,13 +263,5 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 - TDD 红灯连续失败：暂停并给出根因候选，不继续盲改。
 - Reverse Sync 频繁出现：提议重做 Plan 或升级规模。
 - 上下文将满：立即执行 Resume Ready，将状态写回 Spec 后再继续。
-
-## 来源
-
-| 来源 | 采纳能力 |
-|------|----------|
-| **SDD-RIPER** | Spec 中心论、RIPER 状态机、三轴 Review、Multi-Project、Debug/Archive 协议 |
-| **Checkpoint-Driven** | 轻量模式、4 级规模、Done Contract、Resume Ready、Hot/Warm/Cold 上下文策略 |
-| **Superpowers** | TDD 铁律、系统化 Debug、Subagent、并行 Agent、验证优先 |
 
 本文件是入口，不是完整手册。需要细节时，进入 `reference-index.md` 和 `references/` 按需加载。

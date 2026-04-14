@@ -61,7 +61,7 @@ ALTAS Workflow 是一套汲取了 SDD-RIPER、SDD-RIPER-Optimized 与 Superpower
 
 ## 目录导航
 
-- [SKILL.md](./SKILL.md) - 核心系统提示词（供AI读取）
+- [SKILL.md](./SKILL.md) - Bootstrap 入口提示词（供AI读取，负责路由/规模/门禁）
 - [QUICKSTART.md](./QUICKSTART.md) - 快速启动命令与典型场景
 - [references/](./references/) - 按需加载的参考资料
   - [spec-driven-development/](./references/spec-driven-development/) - SDD-RIPER 完整协议与模板

@@ -2,6 +2,8 @@
 
 欢迎使用 **ALTAS Workflow** — 融合 Spec-Driven Development、Checkpoint-Driven 与 Superpowers (TDD+Subagent) 的现代 AI 结对编程规范。
 
+> `SKILL.md` 现在是 Bootstrap 入口，只负责路由、规模评估与门禁；详细规则请按需查看 `reference-index.md` 与 `references/`。
+
 ---
 
 ## 1. 环境配置
@@ -45,7 +47,14 @@ mydocs/
 | **项目总图** | `PROJECT MAP: scope=[项目]` | - | 项目级架构地图 |
 | **排查Bug** | `DEBUG: [报错/日志路径]` | - | 系统化根因分析 |
 | **多项目** | `MULTI: task=[跨项目任务]` | L | 自动发现+作用域隔离 |
+| **允许跨项目** | `CROSS: [任务描述]` | L | 显式允许跨项目改动 |
+| **计划评审** | `REVIEW SPEC: [范围]` | - | 执行前审查 Spec/Plan |
+| **实现复盘** | `REVIEW EXECUTE: [范围]` | - | 执行后三轴评审 |
+| **补测试** | `TEST: [目标]` | M/L | 测试现状分析→补测→验证 |
+| **性能优化** | `PERF: [目标]` | M/L | 基线→定位→优化→验证 |
+| **迁移任务** | `MIGRATE: [任务描述]` | L | 风险→回滚→预演→执行 |
 | **归档沉淀** | `ARCHIVE: targets=[文件列表]` | - | 知识双视角沉淀 |
+| **退出协议** | `EXIT ALTAS` | - | 输出摘要后退出当前协议 |
 
 ---
 

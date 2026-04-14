@@ -17,7 +17,18 @@
 - [subagent-driven-development/SKILL.md](file://altas-workflow/references/superpowers/subagent-driven-development/SKILL.md)
 - [spec-template.md](file://altas-workflow/references/spec-driven-development/spec-template.md)
 - [spec-lite-template.md](file://altas-workflow/references/checkpoint-driven/spec-lite-template.md)
+- [review.md](file://altas-workflow/references/special-modes/review.md)
+- [refactor.md](file://altas-workflow/references/special-modes/refactor.md)
 </cite>
+
+## 更新摘要
+**变更内容**
+- 从综合工作流手册转变为精简引导入口
+- 触发词系统扩展至 20+ 个关键词
+- 路由系统重构，支持 12 种工作流模式
+- 规模评估优化，明确 XS/S/M/L 四级标准
+- 检查点系统简化，统一输出格式
+- 统一引用索引系统，按需加载参考资料
 
 ## 目录
 1. [简介](#简介)
@@ -75,14 +86,15 @@ J --> K[spec-driven-development/]
 J --> L[sdd-riper-one/]
 J --> M[checkpoint-driven/]
 J --> N[superpowers/]
+J --> O[special-modes/]
 end
 subgraph "自动化工具"
-A --> O[scripts/]
-O --> P[archive_builder.py]
+A --> P[scripts/]
+P --> Q[archive_builder.py]
 end
 subgraph "平台支持"
-Q[AGENTS.md] --> R[CLAUDE.md]
-Q --> S[EXAMPLES.md]
+R[AGENTS.md] --> S[CLAUDE.md]
+R --> T[EXAMPLES.md]
 end
 ```
 
@@ -96,8 +108,8 @@ end
 |------|------|------|
 | **核心协议** | 1 个 | SKILL.md (ALTAS Workflow 主协议) |
 | **专用协议** | 3 个 | RIPER-5 / RIPER-DOC / DUAL-COOP |
-| **方法论** | 4 篇 | 从传统到大模型 / AI 原生范式 / 团队落地 / 手把手教程 |
-| **参考资料** | 70 个 | Spec 驱动 (7) / Checkpoint (4) / Superpowers (37) / Agents (22) |
+| **方法论** | 4 篇 | 从传统编程转向大模型编程 / 团队落地指南 / 快速入门教程 / AI 原生研发范式 |
+| **参考资料** | 50+ 个 | Spec 驱动 (14) / Checkpoint (6) / Superpowers (24+) / Special Modes (5) |
 | **独立 Agent** | 2 个 | SDD-RIPER-ONE (标准版/轻量版) |
 | **代码示例** | 1 个 | EXAMPLES.md (四大原则实战示例) |
 | **自动化工具** | 1 个 | archive_builder.py (Archive 构建器) |
@@ -127,7 +139,7 @@ F --> J[Research→Innovate→Plan→Execute→Subagent→Review→Archive]
 
 **图表来源**
 - [README.md:237-245](file://README.md#L237-L245)
-- [SKILL.md:84-92](file://altas-workflow/SKILL.md#L84-L92)
+- [SKILL.md:102-122](file://altas-workflow/SKILL.md#L102-L122)
 
 ### 2. 进度可视化系统
 
@@ -174,10 +186,10 @@ R3 --> |"无高风险"| NEXT
 ```
 
 **图表来源**
-- [SKILL.md:303-310](file://altas-workflow/SKILL.md#L303-L310)
+- [SKILL.md:211-221](file://altas-workflow/SKILL.md#L211-L221)
 
 **章节来源**
-- [SKILL.md:301-316](file://altas-workflow/SKILL.md#L301-L316)
+- [SKILL.md:211-221](file://altas-workflow/SKILL.md#L211-L221)
 
 ## 架构概览
 
@@ -221,6 +233,8 @@ end
 
 ### 触发词与模式映射
 
+**更新** 从 4.0 版本的精简入口转变为 4.1 版本的统一触发词系统
+
 | 触发词 | 模式 | 规模 | 用途 |
 |--------|------|------|------|
 | `FAST`/`快速`/`>>` | 极速通道 | XS/S | 跳过 Research/Plan |
@@ -229,11 +243,20 @@ end
 | `MULTI`/`多项目` | 多项目协作 | L | 跨项目开发 |
 | `DOC`/`写文档` | 文档专家 | - | 文档撰写 |
 | `MAP`/`链路梳理` | 代码映射 | - | 功能级 CodeMap |
+| `PROJECT MAP`/`MAP ALL`/`项目总图` | 项目映射 | - | 项目级 CodeMap |
 | `ARCHIVE`/`归档` | 知识沉淀 | - | 经验总结 |
-| `REVIEW`/`代码审查` | 代码审查 | M/L | 三轴评审 |
+| `REVIEW`/`代码审查` | 代码审查 | - | 三轴评审 |
+| `REVIEW SPEC`/`计划评审` | 规划审查 | - | 执行前审查 |
+| `REVIEW EXECUTE`/`实现复盘` | 执行审查 | - | 执行后评审 |
+| `REFACTOR`/`重构` | 重构模式 | M/L | 代码重构 |
+| `TEST`/`写测试`/`补测试` | 测试模式 | M/L | 测试现状分析 |
+| `PERF`/`性能优化` | 性能模式 | M/L | 性能瓶颈定位 |
+| `MIGRATE`/`迁移` | 迁移模式 | L | 版本升级 |
+| `CROSS`/`跨项目` | 跨项目模式 | L | 显式跨项目改动 |
+| `EXIT ALTAS`/`退出协议` | 停止协议 | - | 协议退出 |
 
 **章节来源**
-- [SKILL.md:112-129](file://altas-workflow/SKILL.md#L112-L129)
+- [SKILL.md:79-100](file://altas-workflow/SKILL.md#L79-L100)
 - [README.md:175-192](file://README.md#L175-L192)
 
 ## 详细组件分析
@@ -331,7 +354,7 @@ K --> L[回写到Spec]
 ```
 
 **图表来源**
-- [SKILL.md:86-92](file://altas-workflow/SKILL.md#L86-L92)
+- [SKILL.md:102-122](file://altas-workflow/SKILL.md#L102-L122)
 - [spec-lite-template.md:5-69](file://altas-workflow/references/checkpoint-driven/spec-lite-template.md#L5-L69)
 
 #### 上下文装配策略
@@ -425,6 +448,41 @@ D -.-> H[代码交叉验证]
 - [RIPER-5.md:15-22](file://altas-workflow/protocols/RIPER-5.md#L15-L22)
 - [RIPER-DOC.md:5-7](file://altas-workflow/protocols/RIPER-DOC.md#L5-L7)
 
+### 组件 E：Special Modes 专项模式
+
+**新增** 4.1 版本引入的专项模式系统
+
+Altas Workflow 现在支持 7 种专项工作模式：
+
+```mermaid
+graph TB
+subgraph "专项模式"
+A[REVIEW 模式] --> A1[代码审查]
+A --> A2[Spec审查]
+A --> A3[执行后评审]
+B[REFACTOR 模式] --> B1[代码重构]
+B --> B2[坏味道识别]
+B --> B3[小步重构]
+C[TEST 模式] --> C1[测试现状分析]
+C --> C2[补测试]
+C --> C3[TDD执行]
+D[PERF 模式] --> D1[性能瓶颈定位]
+D --> D2[优化策略]
+D --> D3[验证策略]
+E[MIGRATE 模式] --> E1[迁移风险评估]
+E --> E2[回滚策略]
+E --> E3[预演验证]
+end
+```
+
+**图表来源**
+- [review.md:1-137](file://altas-workflow/references/special-modes/review.md#L1-L137)
+- [refactor.md:1-181](file://altas-workflow/references/special-modes/refactor.md#L1-L181)
+
+**章节来源**
+- [review.md:1-137](file://altas-workflow/references/special-modes/review.md#L1-L137)
+- [refactor.md:1-181](file://altas-workflow/references/special-modes/refactor.md#L1-L181)
+
 ## 依赖分析
 
 ### 模块耦合关系
@@ -441,16 +499,18 @@ B --> E[spec-lite-template.md]
 B --> F[test-driven-development/SKILL.md]
 B --> G[subagent-driven-development/SKILL.md]
 B --> H[systematic-debugging/SKILL.md]
+B --> I[review.md]
+B --> J[refactor.md]
 end
 subgraph "工具依赖"
-A --> I[archive_builder.py]
-I --> J[Python 3.6+]
-I --> K[标准库]
+A --> K[archive_builder.py]
+K --> L[Python 3.6+]
+K --> M[标准库]
 end
 subgraph "协议依赖"
-A --> L[RIPER-5.md]
-A --> M[RIPER-DOC.md]
-A --> N[SDD-RIPER-DUAL-COOP.md]
+A --> N[RIPER-5.md]
+A --> O[RIPER-DOC.md]
+A --> P[SDD-RIPER-DUAL-COOP.md]
 end
 ```
 
@@ -526,10 +586,10 @@ G --> H
 ```
 
 **图表来源**
-- [SKILL.md:182-197](file://altas-workflow/SKILL.md#L182-L197)
+- [SKILL.md:253-260](file://altas-workflow/SKILL.md#L253-L260)
 
 **章节来源**
-- [SKILL.md:182-197](file://altas-workflow/SKILL.md#L182-L197)
+- [SKILL.md:253-260](file://altas-workflow/SKILL.md#L253-L260)
 
 ## 结论
 
@@ -541,6 +601,8 @@ Altas Workflow 通过整合 SDD-RIPER、Checkpoint-Driven 和 Superpowers 三大
 2. **适应性强**：支持四种不同的任务深度，从小型修改到架构重构
 3. **知识管理完善**：通过 Spec、CodeMap、Archive 等产物实现知识沉淀
 4. **工具链完整**：提供自动化脚本和多种协议支持
+5. **路由智能化**：统一触发词系统，自动识别任务类型和规模
+6. **按需加载**：精简入口，按需加载参考资料，降低资源消耗
 
 ### 应用场景
 
@@ -548,6 +610,7 @@ Altas Workflow 通过整合 SDD-RIPER、Checkpoint-Driven 和 Superpowers 三大
 - **紧急修复**：通过 Size XS 极速通道快速响应
 - **架构重构**：通过 Size L 深度工作流确保系统稳定性
 - **团队协作**：通过统一的协议和工具链提高协作效率
+- **专项任务**：通过 Special Modes 模块化处理特定需求
 
 ### 发展前景
 
@@ -573,12 +636,18 @@ Altas Workflow 代表了 AI 原生研发的发展方向，通过将人工智能�
    - 多项目协作：`MULTI: 跨项目任务`
    - 文档专家：`DOC: 文档任务`
    - 知识沉淀：`ARCHIVE: 目标文件`
+   - 代码审查：`REVIEW: 范围`
+   - 重构模式：`REFACTOR: 目标`
+   - 性能优化：`PERF: 目标`
+   - 迁移任务：`MIGRATE: 任务描述`
 
 **章节来源**
 - [QUICKSTART.md:7-33](file://altas-workflow/QUICKSTART.md#L7-L33)
 - [QUICKSTART.md:36-49](file://altas-workflow/QUICKSTART.md#L36-L49)
 
 ### 参考资料索引
+
+**更新** 4.1 版本引入统一引用索引系统
 
 | 类别 | 文件 | 用途 |
 |------|------|------|
@@ -588,6 +657,11 @@ Altas Workflow 代表了 AI 原生研发的发展方向，通过将人工智能�
 | **执行技能** | `test-driven-development/SKILL.md` | TDD 铁律 |
 | | `systematic-debugging/SKILL.md` | 系统化调试 |
 | | `subagent-driven-development/SKILL.md` | Subagent 驱动 |
+| **专项模式** | `review.md` | 代码审查协议 |
+| | `refactor.md` | 重构专项协议 |
+| | `special-modes/test.md` | 测试模式 |
+| | `special-modes/perf.md` | 性能模式 |
+| | `special-modes/migrate.md` | 迁移模式 |
 | **工具脚本** | `archive_builder.py` | 知识归档 |
 | **专用协议** | `RIPER-5.md` | 严格模式 |
 | | `RIPER-DOC.md` | 文档专家 |
@@ -595,3 +669,32 @@ Altas Workflow 代表了 AI 原生研发的发展方向，通过将人工智能�
 
 **章节来源**
 - [reference-index.md:425-455](file://altas-workflow/reference-index.md#L425-L455)
+
+### 触发词速查表
+
+**新增** 4.1 版本的完整触发词列表
+
+| 分类 | 触发词 | 中文对应 | 用途 |
+|------|--------|----------|------|
+| **基础操作** | `>>` | 快速 | 极速通道 |
+| | `FAST` | 快速 | 小任务 |
+| | `DEEP` | 深度 | 大型任务 |
+| | `EXIT ALTAS` | 退出协议 | 协议退出 |
+| **代码开发** | `sdd_bootstrap` | - | 标准开发 |
+| | `REFACTOR` | 重构 | 代码重构 |
+| | `TEST` | 写测试 | 测试相关 |
+| | `PERF` | 性能优化 | 性能优化 |
+| | `MIGRATE` | 迁移 | 迁移任务 |
+| **分析调试** | `DEBUG` | 排查 | 系统化调试 |
+| | `REVIEW` | 代码审查 | 代码审查 |
+| | `REVIEW SPEC` | 计划评审 | 规划审查 |
+| | `REVIEW EXECUTE` | 实现复盘 | 执行审查 |
+| **文档分析** | `DOC` | 写文档 | 文档专家 |
+| | `MAP` | 链路梳理 | 功能级 CodeMap |
+| | `PROJECT MAP`/`MAP ALL` | 项目总图 | 项目级 CodeMap |
+| **项目协作** | `MULTI` | 多项目 | 多项目协作 |
+| | `CROSS` | 跨项目 | 跨项目改动 |
+| **归档沉淀** | `ARCHIVE` | 归档 | 知识沉淀 |
+
+**章节来源**
+- [SKILL.md:5-36](file://altas-workflow/SKILL.md#L5-L36)

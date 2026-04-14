@@ -2,8 +2,10 @@
 name: altas-workflow
 version: "4.1"
 description: Use when handling repository-grounded engineering tasks that need routing across coding, debugging, review, docs, mapping, archiving, refactoring, testing, performance, or migration workflows.
-trigger_keywords: ["FAST", "DEEP", "DEBUG", "MULTI", "DOC", "MAP", "PROJECT MAP", "MAP ALL", "ARCHIVE", "REVIEW", "REVIEW SPEC", "REVIEW EXECUTE", "REFACTOR", "TEST", "PERF", "MIGRATE", "CROSS", ">>", "sdd_bootstrap", "EXIT ALTAS", "快速", "排查", "多项目", "写文档", "链路梳理", "项目总图", "归档", "全部", "代码审查", "计划评审", "实现复盘", "重构", "写测试", "补测试", "性能优化", "迁移", "跨项目", "退出协议"]
+trigger_keywords: ["FAST", "DEEP", "DEBUG", "MULTI", "DOC", "MAP", "PROJECT MAP", "MAP ALL", "ARCHIVE", "REVIEW", "REVIEW SPEC", "REVIEW EXECUTE", "REFACTOR", "TEST", "PERF", "MIGRATE", "CROSS", ">>", "sdd_bootstrap", "EXIT ALTAS", "快速", "排查", "多项目", "写文档", "链路梳理", "只看代码", "项目总图", "全局地图", "归档", "沉淀", "全部", "代码审查", "审查 PR", "评审规格", "计划评审", "代码评审", "实现复盘", "重构", "写测试", "补测试", "性能优化", "迁移", "版本升级", "跨项目", "验证功能", "退出协议"]
 dependencies:
+  - reference-index.md  # 统一参考索引入口
+  - references/entry/aliases.md  # 入口触发词与模式内控制词词典
   - references/  # 按需加载的参考资料目录
   - protocols/   # 专用协议
 compatible_platforms: [cursor, trae, claude, openai, qoder]
@@ -32,7 +34,7 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 - 用户请求涉及编码、调试、文档、链路梳理、归档、代码审查、重构、补测试、性能优化或迁移。
 - 任务需要结构化推进，而不是一次性自由发挥。
 - 任务可能涉及多文件、跨模块、跨项目、落盘产物或长期知识沉淀。
-- 用户命中触发词：`FAST`、`DEEP`、`DEBUG`、`MULTI`、`DOC`、`MAP`、`PROJECT MAP`、`ARCHIVE`、`REVIEW`、`REVIEW SPEC`、`REVIEW EXECUTE`、`REFACTOR`、`TEST`、`PERF`、`MIGRATE`、`CROSS`、`sdd_bootstrap`。
+- 用户命中入口触发词或别名；完整词典见 `references/entry/aliases.md`。
 
 ## When NOT to Use
 
@@ -77,26 +79,28 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 
 ## 路由速查
 
+完整别名字典与 `MULTI` 模式控制词见 `references/entry/aliases.md`。
+
 | 触发/意图 | 默认路由 | 只读 | 首轮重点 | 按需加载 |
 |-----------|----------|------|----------|----------|
 | 改代码 / 修 Bug / 新功能 | 标准 Coding 流 | 否 | 规模评估 + 最小 Spec + 门禁 | `references/spec-driven-development/spec-template.md` / `references/checkpoint-driven/spec-lite-template.md` |
-| `>>` / `FAST` / `快速` | FAST | 否 | 确认是否为 `XS/S` | `references/spec-driven-development/workflow-quickref.md` |
+| `>>` | FAST | 否 | 确认是否为 `XS/S` | `references/spec-driven-development/workflow-quickref.md` |
 | `DEEP` | 深度标准流 | 否 | 默认按 `L` 处理 | `references/superpowers/brainstorming/SKILL.md` |
-| `DEBUG` / `排查` / `日志分析` | DEBUG | 是 | 症状、预期、证据、根因候选 | `references/superpowers/systematic-debugging/SKILL.md` |
-| `DOC` / `写文档` | DOC | 通常是 | 先抽事实与范围，再给大纲 | `protocols/RIPER-DOC.md` |
-| `MAP` / `链路梳理` / `只看代码` | MAP | 是 | 输出功能级 CodeMap | `references/spec-driven-development/commands.md` |
-| `PROJECT MAP` / `MAP ALL` / `项目总图` | MAP | 是 | 输出项目级 CodeMap | `references/spec-driven-development/commands.md` |
-| `ARCHIVE` / `归档` / `沉淀` | ARCHIVE | 通常是 | 基于完成产物做知识沉淀 | `references/spec-driven-development/archive-template.md` |
-| `REVIEW` / `代码审查` / `审查 PR` | REVIEW | 是 | 确定范围、目标、深度，再三轴评审 | `references/special-modes/review.md` |
-| `REVIEW SPEC` / `计划评审` | REVIEW | 是 | 执行前审查 Spec/Plan | `references/superpowers/requesting-code-review/SKILL.md` |
-| `REVIEW EXECUTE` / `实现复盘` | REVIEW | 是 | 执行后三轴评审 | `references/checkpoint-driven/modules.md` |
-| `REFACTOR` / `重构` | REFACTOR | 否 | 先 CodeMap，再计划 | `references/special-modes/refactor.md` |
-| `TEST` / `写测试` / `补测试` | TEST | 否 | 先测试现状与优先级 | `references/special-modes/test.md` |
-| `PERF` / `性能优化` | PERF | 否 | 先基线与瓶颈定位 | `references/special-modes/perf.md` |
-| `MIGRATE` / `迁移` / `版本升级` | MIGRATE | 否 | 风险、回滚、预演优先 | `references/special-modes/migrate.md` |
-| `MULTI` / `多项目` | MULTI | 视任务而定 | 扫描子项目并确认作用域 | `references/spec-driven-development/multi-project.md` |
-| `CROSS` / `跨项目` | MULTI 扩展 | 否 | 允许跨项目改动，必须明示范围 | `references/spec-driven-development/multi-project.md` |
-| `EXIT ALTAS` / `退出协议` | 停止协议 | - | 输出摘要与恢复锚点后退出 | 无 |
+| `DEBUG` | DEBUG | 是 | 症状、预期、证据、根因候选 | `references/superpowers/systematic-debugging/SKILL.md` |
+| `DOC` | DOC | 通常是 | 先抽事实与范围，再给大纲 | `protocols/RIPER-DOC.md` |
+| `MAP` | MAP | 是 | 输出功能级 CodeMap | `references/spec-driven-development/commands.md` |
+| `PROJECT MAP` | MAP | 是 | 输出项目级 CodeMap | `references/spec-driven-development/commands.md` |
+| `ARCHIVE` | ARCHIVE | 通常是 | 基于完成产物做知识沉淀 | `references/spec-driven-development/archive-template.md` |
+| `REVIEW` | REVIEW | 是 | 确定范围、目标、深度，再三轴评审 | `references/special-modes/review.md` |
+| `REVIEW SPEC` | REVIEW | 是 | 执行前审查 Spec/Plan | `references/superpowers/requesting-code-review/SKILL.md` |
+| `REVIEW EXECUTE` | REVIEW | 是 | 执行后三轴评审 | `references/checkpoint-driven/modules.md` |
+| `REFACTOR` | REFACTOR | 否 | 先 CodeMap，再计划 | `references/special-modes/refactor.md` |
+| `TEST` | TEST | 否 | 先测试现状与优先级 | `references/special-modes/test.md` |
+| `PERF` | PERF | 否 | 先基线与瓶颈定位 | `references/special-modes/perf.md` |
+| `MIGRATE` | MIGRATE | 否 | 风险、回滚、预演优先 | `references/special-modes/migrate.md` |
+| `MULTI` | MULTI | 视任务而定 | 扫描子项目并确认作用域；进入后可使用 `SWITCH` / `REGISTRY` / `SCOPE LOCAL` | `references/spec-driven-development/multi-project.md` |
+| `CROSS` | MULTI 扩展 | 否 | 允许跨项目改动，必须明示范围；必要时再切回 `SCOPE LOCAL` | `references/spec-driven-development/multi-project.md` |
+| `EXIT ALTAS` | 停止协议 | - | 输出摘要与恢复锚点后退出 | 无 |
 
 ## 规模评估
 
@@ -128,10 +132,13 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 > **ALTAS Workflow v4.1 已加载**
 >
 > 当前状态: `[IDLE]`
-> 可用触发: `>>` | `FAST` | `sdd_bootstrap` | `DEEP` | `DEBUG` | `MULTI` | `DOC` | `MAP` | `PROJECT MAP` | `ARCHIVE` | `REVIEW` | `REVIEW SPEC` | `REVIEW EXECUTE` | `REFACTOR` | `TEST` | `PERF` | `MIGRATE`
+> 可用触发（主形式）: `>>` | `sdd_bootstrap` | `DEEP` | `DEBUG` | `MULTI` | `CROSS` | `DOC` | `MAP` | `PROJECT MAP` | `ARCHIVE` | `REVIEW` | `REVIEW SPEC` | `REVIEW EXECUTE` | `REFACTOR` | `TEST` | `PERF` | `MIGRATE`
 > 退出指令: `EXIT ALTAS`
 >
 > 请描述任务，我将先给出：任务复述 / 模式 / 规模 / 是否只读 / 是否需要执行许可 / 下一步。
+>
+> `MULTI` 进入后可继续使用：`SWITCH <project_id>` | `REGISTRY` | `SCOPE LOCAL`
+> 完整别名字典: `references/entry/aliases.md`
 
 ### 已有明确任务
 
@@ -184,7 +191,7 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 
 - 梳理目标、边界、事实、风险、未知项
 - Spec 未落盘前不进入实现
-- 写 Spec 时读取 `spec-template.md` 或 `spec-lite-template.md`
+- 写 Spec 时读取 `references/spec-driven-development/spec-template.md` 或 `references/checkpoint-driven/spec-lite-template.md`
 
 ### INNOVATE
 
@@ -203,7 +210,7 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 - `XS`: 直接执行
 - `S`: micro-spec 后执行
 - `M/L`: TDD，优先单项循环；`全部` / `all` 仅在用户明确授权时使用
-- 读取 `test-driven-development/SKILL.md`；`L` 可追加 `subagent-driven-development/SKILL.md`
+- 读取 `references/superpowers/test-driven-development/SKILL.md`；`L` 可追加 `references/superpowers/subagent-driven-development/SKILL.md`
 
 ### REVIEW
 
@@ -215,12 +222,13 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 
 - 生成 human / llm 双视角沉淀
 - 优先利用现有 Spec、CodeMap、Review 结论，不重新猜测
-- 读取 `archive-template.md`
+- 读取 `references/spec-driven-development/archive-template.md`
 
 ## 高价值参考索引
 
 | 场景 | 读取文件 |
 |------|----------|
+| 查看触发词与模式内控制词 | `references/entry/aliases.md` |
 | 快速回忆整体流程 | `references/spec-driven-development/workflow-quickref.md` |
 | 查看完整索引 | `reference-index.md` |
 | 写 Spec / 命名约定 | `references/spec-driven-development/spec-template.md`、`references/checkpoint-driven/spec-lite-template.md`、`references/checkpoint-driven/conventions.md` |

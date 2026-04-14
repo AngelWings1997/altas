@@ -2,6 +2,8 @@
 
 总纲：`Pre-Research -> RIPER`，全程按 SDD 维护 Spec。
 
+> 入口触发词、别名与 `MULTI` 模式控制词统一维护在 `../entry/aliases.md`。本文件只保留主形式速查。
+
 ## 启动顺序（按复杂度）
 
 1. `Pre-Research Utilities（非 RIPER 阶段）`
@@ -89,30 +91,31 @@
 - `change_scope=cross` 需显式触发，且必须：加载目标项目 codemap → 检查目标 Spec 冲突 → 记录 Contract Interfaces → 记录 Touched Projects
 - 切换项目前必须先加载目标项目 codemap（codemap-first）
 
-### 多项目触发词
+### 多项目控制词（主形式）
 
-- `MULTI / 多项目`：进入多项目模式，运行自动发现
-- `CROSS / 跨项目`：当前轮 `change_scope=cross`
-- `SWITCH <project_id> / 切换 <project_id>`：切换 active_project，自动加载 codemap
-- `REGISTRY / 项目列表`：显示当前 Project Registry
-- `SCOPE LOCAL / 回到本地`：重置为 `change_scope=local`
+- `MULTI`：进入多项目模式，运行自动发现
+- `CROSS`：当前轮 `change_scope=cross`
+- `SWITCH <project_id>`：切换 active_project，自动加载 codemap
+- `REGISTRY`：显示当前 Project Registry
+- `SCOPE LOCAL`：重置为 `change_scope=local`
 
-## 常用触发词（汇总）
+## 常用触发词（主形式）
+
+完整别名见 `../entry/aliases.md`。以下仅列主形式：
 
 - `create_codemap: scope=<范围>`（`mode` 可选，默认 `feature`）
 - `create_codemap: mode=project, scope=<项目>`
 - `build_context_bundle: <目录路径>`
 - `sdd_bootstrap: task=..., goal=..., requirement=...`
-- `MAP / 链路梳理 / 只看代码`：输出功能级 codemap
-- `PROJECT MAP / 全局地图 / 项目总图 / MAP ALL`：输出项目级 codemap
-- `FAST / 快速 / >>`：小改极速通道（事后同步 spec）
-- `REVIEW SPEC / 评审规格 / 计划评审`：执行 `review_spec`（建议性预审）
-- `REVIEW EXECUTE / 代码评审 / 实现复盘`：执行 `review_execute` 三轴审查
-- `ARCHIVE / 归档 / 沉淀`：执行 `archive`（汇报版 + 模型版知识沉淀）
-- `DEBUG / 排查 / 日志分析`：Debug 排查模式（日志 + Spec + 代码三角定位）
-- `验证功能`：Debug 验证模式（全链路日志 vs Spec 逐条比对）
-- `MULTI / 多项目`：多项目模式（自动发现 + 作用域隔离）
-- `CROSS / 跨项目`：允许跨项目改动
-- `SWITCH <id> / 切换 <id>`：切换活跃项目
-- `REGISTRY / 项目列表`：查看项目注册表
-- `SCOPE LOCAL / 回到本地`：回到本地作用域
+- `MAP`：输出功能级 codemap
+- `PROJECT MAP`：输出项目级 codemap
+- `>>`：小改极速通道（事后同步 spec）
+- `REVIEW SPEC`：执行 `review_spec`（建议性预审）
+- `REVIEW EXECUTE`：执行 `review_execute` 三轴审查
+- `ARCHIVE`：执行 `archive`（汇报版 + 模型版知识沉淀）
+- `DEBUG`：Debug / Verification 路由
+- `MULTI`：多项目模式（自动发现 + 作用域隔离）
+- `CROSS`：允许跨项目改动
+- `SWITCH <id>`：切换活跃项目
+- `REGISTRY`：查看项目注册表
+- `SCOPE LOCAL`：回到本地作用域

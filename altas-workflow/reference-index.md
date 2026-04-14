@@ -86,7 +86,7 @@
 
 | 文件 | 来源 | 调用时机 |
 |------|------|----------|
-| `references/superpowers/systematic-debugging/SKILL.md` | Superpowers | 进入Debug模式时 |
+| `references/superpowers/systematic-debugging/SKILL.md` | Superpowers | 进入 Debug 模式时 |
 | `references/superpowers/systematic-debugging/root-cause-tracing.md` | Superpowers | 根因不明需追溯时 |
 | `references/superpowers/systematic-debugging/defense-in-depth.md` | Superpowers | 需要多层防御时 |
 | `references/superpowers/systematic-debugging/condition-based-waiting.md` | Superpowers | 异步/条件等待问题时 |
@@ -96,13 +96,54 @@
 | 文件 | 来源 | 调用时机 |
 |------|------|----------|
 | `references/spec-driven-development/multi-project.md` | SDD-RIPER | 多项目协作时 |
-| `references/checkpoint-driven/modules.md` (Multi-project模块) | SDD-RIPER-Opt | 多项目场景时 |
+| `references/checkpoint-driven/modules.md` (Multi-project 模块) | SDD-RIPER-Opt | 多项目场景时 |
 
 ### DOC 模式
 
 | 文件 | 来源 | 调用时机 |
 |------|------|----------|
 | `protocols/RIPER-DOC.md` | SDD-RIPER | 文档撰写模式时 |
+
+### REVIEW 模式 (新增)
+
+| 文件 | 来源 | 调用时机 |
+|------|------|----------|
+| `references/special-modes/review.md` | Special Modes | 进入 REVIEW 模式时 |
+| `references/checkpoint-driven/modules.md` (Review 模块) | SDD-RIPER-Opt | 三轴评审标准 |
+| `references/superpowers/requesting-code-review/SKILL.md` | Superpowers | 请求代码审查时 |
+| `references/superpowers/receiving-code-review/SKILL.md` | Superpowers | 接收审查反馈时 |
+
+### REFACTOR 模式 (新增)
+
+| 文件 | 来源 | 调用时机 |
+|------|------|----------|
+| `references/special-modes/refactor.md` | Special Modes | 进入 REFACTOR 模式时 |
+| `references/superpowers/test-driven-development/SKILL.md` | Superpowers | TDD 执行验证 |
+| `references/spec-driven-development/commands.md` (create_codemap) | SDD-RIPER | CodeMap 生成 |
+
+### TEST 模式 (新增)
+
+| 文件 | 来源 | 调用时机 |
+|------|------|----------|
+| `references/special-modes/test.md` | Special Modes | 进入 TEST 模式时 |
+| `references/superpowers/test-driven-development/SKILL.md` | Superpowers | TDD 最佳实践 |
+| `references/superpowers/test-driven-development/testing-anti-patterns.md` | Superpowers | 测试反模式 |
+
+### PERF 模式 (新增)
+
+| 文件 | 来源 | 调用时机 |
+|------|------|----------|
+| `references/special-modes/perf.md` | Special Modes | 进入 PERF 模式时 |
+| `references/superpowers/verification-before-completion/SKILL.md` | Superpowers | 验证策略 |
+| `references/superpowers/finishing-a-development-branch/SKILL.md` | Superpowers | 完成分支决策 |
+
+### MIGRATE 模式 (新增)
+
+| 文件 | 来源 | 调用时机 |
+|------|------|----------|
+| `references/special-modes/migrate.md` | Special Modes | 进入 MIGRATE 模式时 |
+| `references/superpowers/brainstorming/SKILL.md` | Superpowers | 风险评估 |
+| `references/superpowers/verification-before-completion/SKILL.md` | Superpowers | 迁移后验证 |
 
 ---
 

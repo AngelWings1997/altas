@@ -1,16 +1,24 @@
 ---
 name: altas-workflow
+version: "4.0"
 description: Auto-evaluates task size (XS/S/M/L) and routes to Spec-Driven, Checkpoint-Driven, or Superpowers workflow. Entry point for coding, debugging, docs, mapping, archiving, review, refactor, test, perf, migrate.
 trigger_keywords: ["FAST", "DEEP", "DEBUG", "MULTI", "DOC", "MAP", "ARCHIVE", "REVIEW", "REFACTOR", "TEST", "PERF", "MIGRATE", ">>", "sdd_bootstrap", "快速", "排查", "多项目", "写文档", "链路梳理", "归档", "全部", "代码审查", "重构", "写测试", "性能优化", "迁移"]
+dependencies:
+  - references/  # 按需加载的参考资料目录
+  - protocols/   # 专用协议
+compatible_platforms: [cursor, trae, claude, openai, qoder]
+min_context_window: 32k
 ---
 
 # ALTAS Workflow
 
-**Version:** 4.0 （[Changelog](./references/agents/sdd-riper-one/CHANGELOG.md)）
+**Version:** 4.0 — 变更日志参考 [SDD-RIPER-ONE Agent Changelog](./references/agents/sdd-riper-one/CHANGELOG.md)（ALTAS Workflow 基于该 Agent 演进）
 
 ## Overview
 
 ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpowers 的综合性 AI 工作流程规范，也是编码、调试、文档、链路梳理、归档等工程任务的统一入口。
+
+**RIPER** = Research → Innovate → Plan → Execute → Review（五阶段门禁状态机）
 
 接到任务后，**不要立刻编写代码**。你必须：
 
@@ -25,10 +33,31 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 - **No Approval, No Execute** — 进入高影响执行前必须有明确执行许可
 - **Evidence First** — 完成由验证结果证明，非模型自宣布
 
-**入口约定：**
-- `create_codemap` / `build_context_bundle` / `sdd_bootstrap` / `archive` 等名称是**技能内部动作语法**，不是终端 Shell 命令；应通过原生检索、读写、任务跟踪工具完成。
-- 若任务是只读分析（如 `MAP` / `DEBUG` / 部分 `DOC` / `ARCHIVE`），先走只读模式，不要默认进入代码修改流程。
-- 若环境**不支持** Subagent / 并行 Agent / 专用任务面板，则自动降级为单会话执行 + 原子 Checklist + 常规检查点，不得因工具缺失而阻塞主流程。
+---
+
+## 入口约定
+
+> 本节定义 AI 读取本 Skill 后的默认行为约束，必须严格遵守。
+
+### 动作语法约定
+
+- `create_codemap` / `build_context_bundle` / `sdd_bootstrap` / `archive` 等名称是**技能内部动作语法**，不是终端 Shell 命令
+- 应通过原生检索、读写、任务跟踪工具完成，不得在终端中执行这些名称的 Shell 脚本
+
+### 只读模式约定
+
+- 若任务是只读分析（如 `MAP` / `DEBUG` / 部分 `DOC` / `ARCHIVE`），先走只读模式，不要默认进入代码修改流程
+- 只读任务产出 CodeMap/分析报告后暂停，等待用户指示是否进入编码流程
+
+### 能力降级约定
+
+- 若环境**不支持** Subagent / 并行 Agent / 专用任务面板，则自动降级为单会话执行 + 原子 Checklist + 常规检查点
+- 不得因工具缺失而阻塞主流程
+
+### 规则优先级约定
+
+- 本 Skill 的铁律约束优先于通用行为准则（如 `AGENTS.md` / `CLAUDE.md`）
+- 两者重叠时以本文件为准
 
 ---
 
@@ -40,7 +69,7 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 - 需要结构化开发流程和规范约束
 - 用户请求涉及多文件、跨模块改动
 - 需要生成 Spec、CodeMap、Archive 等产物
-- 用户输入触发词：`FAST`、`DEEP`、`DEBUG`、`MULTI`、`DOC`、`MAP`、`ARCHIVE`、`sdd_bootstrap`
+- 用户输入触发词：`FAST`、`DEEP`、`DEBUG`、`MULTI`、`DOC`、`MAP`、`ARCHIVE`、`REVIEW`、`REFACTOR`、`TEST`、`PERF`、`MIGRATE`、`sdd_bootstrap`
 
 ## When NOT to Use
 
@@ -64,7 +93,21 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 ### 自动升降级
 
 - 执行中发现复杂度超出预期 → 立即暂停，提议升级
-- 用户随时可用 `[升级为M]` / `[降级为S]` 调整
+- 用户随时可用 `[升级为 M]` / `[降级为 S]` 调整
+
+### 规模评估决策优先级
+
+**当多个条件冲突时，按以下优先级判定**:
+
+1. **影响面 > 文件数 > 代码行数**
+2. **跨模块/架构级影响 → 至少 M**
+3. **核心链路变更 → 至少 M**
+4. **不确定时 → 向上取整**
+
+**示例**:
+- "3 个文件但每个改动很小" → 若跨模块 → M；若模块内 → S
+- "1 个文件但涉及核心架构" → M（向上取整）
+- "跨 2 个模块但只是配置变更" → S（影响面小）
 
 ### 触发词速查
 
@@ -138,6 +181,8 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 
 ## 异常恢复与降级策略
 
+> 本节定义 AI 执行过程中遇到异常情况时的处理策略。
+
 | 场景 | 处理方式 |
 |------|----------|
 | **参考文件读取失败**（路径正确但权限/编码问题） | 降级为基于常识的标准模式执行，输出警告提醒用户补全依赖；不因单个参考文件缺失而阻塞主流程 |
@@ -145,10 +190,16 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 | **用户执行取消 / `EXIT ALTAS`** | 输出当前阶段摘要（已完成项 / 待完成项 / 恢复锚点写入 Spec）；半成品保留在 mydocs/ 不自动删除 |
 | **TDD 红灯连续 3 次无法变绿** | 暂停执行，输出根因分析候选（测试逻辑错 / 接口签名不匹配 / 依赖 mock 缺失），请求用户指示后再继续 |
 | **Plan 执行中频繁偏差（>2 次 Reverse Sync）** | 自动提议 `[升级规模]` 或 `[重新 Plan]`，表明当前 Plan 与实际复杂度不匹配 |
-| **Review 轴1或轴2 FAIL** | 必须回到 Research/Plan 修正，不得自行绕过；输出具体 FAIL 项与修复建议 |
+| **Review 轴 1 或轴 2 FAIL** | 必须回到 Research/Plan 修正，不得自行绕过；输出具体 FAIL 项与修复建议 |
 | **上下文窗口即将耗尽** | 立即执行 Resume Ready：将完整状态写入 Spec 的恢复锚点，输出 `[CONTEXT_FULL]` + 恢复指令 |
 
 > **核心原则**: 任何异常都不应导致静默失败或数据丢失。每一步都必须有可观测的中间状态。
+
+---
+
+## 进度可视化系统
+
+> 本节定义 AI 执行过程中的进度输出规范。
 
 ### 进度输出策略 (按规模差异化)
 
@@ -327,7 +378,47 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 - **前提**: 目标 Spec 已完成 Review
 - **完整流程与产物规范 → 见 [阶段执行指南 ARCHIVE 节](#archive-知识沉淀--推荐用于-lm-也可按需使用)**
 
-> **按需加载**: 进入Archive时读取 `references/spec-driven-development/archive-template.md`
+> **按需加载**: 进入 Archive 时读取 `references/spec-driven-development/archive-template.md`
+
+### REVIEW 模式 (代码审查)
+
+- **触发**: `REVIEW` / `代码审查` / `审查 PR`
+- **流程**: 确认审查范围/目标/深度 → 三轴评审 → 问题分级 → 输出审查报告
+- **门禁**: 轴 1 或轴 2=FAIL → 回到 Research/Plan；轴 3 有 P0 问题 → 必须修复
+
+> **按需加载**: 进入 REVIEW 时读取 `references/special-modes/review.md`；三轴评审标准追加 `references/checkpoint-driven/modules.md`
+
+### REFACTOR 模式 (重构专项)
+
+- **触发**: `REFACTOR` / `重构`
+- **流程**: CodeMap 先行 → 坏味道识别 → 制定重构计划 → 小步执行 (TDD 循环) → 重构后审查
+- **铁律**: 每步重构后必须验证行为不变；不允许重构中混入新功能
+
+> **按需加载**: 进入 REFACTOR 时读取 `references/special-modes/refactor.md`；TDD 执行追加 `references/superpowers/test-driven-development/SKILL.md`
+
+### TEST 模式 (测试专项)
+
+- **触发**: `TEST` / `写测试` / `补测试`
+- **流程**: 测试现状分析 → 优先级排序 → 编写测试 → 覆盖率验证 → 输出测试报告
+- **注意**: 新功能/新 Bug 修复使用标准工作流的 Execute(TDD) 阶段，不需要单独触发 TEST 模式
+
+> **按需加载**: 进入 TEST 时读取 `references/special-modes/test.md`；测试反模式追加 `references/superpowers/test-driven-development/testing-anti-patterns.md`
+
+### PERF 模式 (性能优化)
+
+- **触发**: `PERF` / `性能优化`
+- **流程**: 基准测试 (建立基线) → Profile 定位瓶颈 → 优化方案对比 → 小步执行 (优化→验证循环) → 优化后验证
+- **铁律**: 每次只应用一个优化；每个优化必须有可量化的性能提升；不允许以牺牲正确性为代价换取性能
+
+> **按需加载**: 进入 PERF 时读取 `references/special-modes/perf.md`；验证策略追加 `references/superpowers/verification-before-completion/SKILL.md`
+
+### MIGRATE 模式 (数据/版本迁移)
+
+- **触发**: `MIGRATE` / `迁移` / `数据迁移` / `版本升级`
+- **流程**: 风险评估 → 制定迁移方案 → 制定回滚方案 (必须) → 预演迁移 (强烈推荐) → 执行迁移 → 迁移后验证
+- **铁律**: 未备份禁止执行；未验证回滚禁止执行；达到回滚触发条件必须立即回滚
+
+> **按需加载**: 进入 MIGRATE 时读取 `references/special-modes/migrate.md`；风险评估追加 `references/superpowers/brainstorming/SKILL.md`
 
 ---
 
@@ -342,10 +433,16 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 |----------|----------|
 | 快速回忆整体流程 | `references/spec-driven-development/workflow-quickref.md` |
 | 查看完整参考目录 | `reference-index.md` |
-| 写Spec / 命名约定 | `references/spec-driven-development/spec-template.md`、`references/checkpoint-driven/spec-lite-template.md`、`references/checkpoint-driven/conventions.md` |
+| 写 Spec / 命名约定 | `references/spec-driven-development/spec-template.md`、`references/checkpoint-driven/spec-lite-template.md`、`references/checkpoint-driven/conventions.md` |
 | 查看动作参数 | `references/spec-driven-development/commands.md` |
-| 写Plan / Execute | `references/superpowers/writing-plans/SKILL.md`、`references/superpowers/test-driven-development/SKILL.md` |
+| 写 Plan / Execute | `references/superpowers/writing-plans/SKILL.md`、`references/superpowers/test-driven-development/SKILL.md` |
 | Debug / Review | `references/superpowers/systematic-debugging/SKILL.md`、`references/checkpoint-driven/modules.md` |
+| **特殊模式** | |
+| 代码审查 (REVIEW) | `references/special-modes/review.md` |
+| 重构专项 (REFACTOR) | `references/special-modes/refactor.md` |
+| 测试专项 (TEST) | `references/special-modes/test.md` |
+| 性能优化 (PERF) | `references/special-modes/perf.md` |
+| 数据/版本迁移 (MIGRATE) | `references/special-modes/migrate.md` |
 | **L 规模扩展能力** | |
 | 并行 Agent 派遣 | `references/superpowers/dispatching-parallel-agents/SKILL.md` |
 | 非 Subagent 执行 Plan | `references/superpowers/executing-plans/SKILL.md` |
@@ -402,7 +499,7 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 > **ALTAS Workflow v4.0 已加载**
 >
 > 当前模式: [IDLE] ▸ 等待任务输入
-> 可用触发: `>>` (极速) | `FAST` (小任务) | `sdd_bootstrap` (标准入口) | `DEEP` (深度) | `DEBUG` (排查) | `MULTI` (多项目) | `DOC` (文档) | `MAP` (链路) | `ARCHIVE` (归档) | `全部` (批量执行)
+> 可用触发: `>>` (极速) | `FAST` (小任务) | `sdd_bootstrap` (标准入口) | `DEEP` (深度) | `DEBUG` (排查) | `MULTI` (多项目) | `DOC` (文档) | `MAP` (链路) | `ARCHIVE` (归档) | `REVIEW` (代码审查) | `REFACTOR` (重构) | `TEST` (补测试) | `PERF` (性能优化) | `MIGRATE` (迁移) | `全部` (批量执行)
 > 退出指令: "EXIT ALTAS"
 >
 > 请描述你的任务，我将先给出：任务复述 / 模式判断 / 规模评估 / 是否需要参考文档 / 下一步动作。
@@ -459,6 +556,27 @@ ALTAS Workflow 是融合 Spec-Driven Development、Checkpoint-Driven 与 Superpo
 | **CodeMap** | 长期保留，随代码演进定期更新 | 大重构后建议重新生成而非修改旧版 |
 | **Context Bundle** | 一次性用完即可归档 | 任务完成后移至 `mydocs/_archive/context/` 或直接删除 |
 | **Archive** | 长期保留，团队知识沉淀 | 永不自动清理；按季度整理索引 |
+
+## 产物版本演进策略
+
+**同一功能/模块的产物版本关联规则**:
+
+| 产物 | 版本关联规则 |
+|------|-------------|
+| **Spec** | 新版 Spec 必须在文件头标注 `Supersedes: <旧版路径>`；旧版在 Review 通过后标记 `[SUPERSEDED]` |
+| **CodeMap** | 新版 CodeMap 必须在文件头标注 `Updates: <旧版路径>`；旧版保留作为历史参考 |
+| **Archive** | 不标记 supersede，多个版本并存作为不同时间点的知识快照 |
+
+**版本命名示例**:
+
+```markdown
+# Spec 文件头示例
+
+## 版本信息
+- **当前版本**: 2026-04-14_10-30_UserReg.md
+- **替代版本**: 2026-04-13_15-20_UserReg.md (SUPERSEDED)
+- **变更原因**: 新增邮箱验证码功能
+```
 
 **目录增长控制**:
 - `mydocs/specs/` 和 `mydocs/archive/` 纳入 Git 版本管理，作为项目组织记忆

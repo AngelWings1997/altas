@@ -69,7 +69,7 @@ ALTAS Workflow 是一套汲取了 SDD-RIPER、SDD-RIPER-Optimized 与 Superpower
   - [superpowers/](./references/superpowers/) - TDD/Debug/Subagent 技能
 - [protocols/](./protocols/) - 专用协议（严格模式、双模型协作等）
 - [docs/](./docs/) - 方法论文档
-- [.agents/skills/](../.agents/skills/) - 独立 Skill 定义
+- [references/agents/](./references/agents/) - Agent 定义（SDD-RIPER 标准版/轻量版/代码审查）
 - [scripts/](./scripts/) - 自动化工具
 
 ---

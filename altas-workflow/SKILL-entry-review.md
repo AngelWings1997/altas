@@ -4,7 +4,7 @@
 
 本文件记录对 `SKILL.md` 作为技能入口的持续复核结论。
 
-**本轮复核范围：** v4.1（入口瘦身版）+ 关联参考体系（`reference-index.md`、`references/` 全部文件、`protocols/`）
+**本轮复核范围：** v4.3（trigger_keywords 同步 + EXIT ALTAS 细分版）+ 关联参考体系
 
 ---
 
@@ -30,6 +30,11 @@
 | N | EXIT ALTAS 行为定义不够精确 | 已增加"EXIT ALTAS 规范"节，明确输出字段和 spec 损坏处理 | v4.2 |
 | O | 能力降级覆盖范围有限 | 已扩展为 6 种缺失能力的降级方案 | v4.2 |
 | P | reference-index.md 缺少按需加载使用指南 | 已增加"按需加载指南"节 | v4.2 |
+| Q | SKILL.md 版本号与 CHANGELOG 不同步 | 已更新验证脚本依赖人工纪律，非 SKILL.md 结构问题 | v4.3 |
+| R | trigger_keywords 与 aliases.md 存在不一致 | 已补充 `日志分析` 别名；强化 aliases.md 维护规则；新增 `validate_aliases_sync.py` 验证脚本 | v4.3 |
+| S | SKILL.md 路由表缺少 special-modes 专项协议引用 | 已有 reference-index.md 完整引用，SKILL.md 保持简洁按需加载策略 | v4.3 |
+| T | `min_context_window: 32k` 可能过于保守 | 保留，由宿主平台自行判断 | v4.3 |
+| U | EXIT ALTAS 未区分主动退出与异常中断 | 已分别定义"主动退出"和"强制中断"两套恢复锚点格式 | v4.3 |
 
 ---
 
@@ -45,20 +50,45 @@
 ### 2. 路由表"参考"列统一指向 reference-index.md
 
 **变更前：** 每行直接列出具体参考文件路径（与 reference-index.md 内容重复）
-**变更后：** 统一格式 `reference-index.md → 按特殊模式 → [场景]`，消除两处索引的维护负担
+**变更后：** 统一格式 `reference-index.md → 按特殊模式/按工作流阶段 → [场景]`，消除两处索引的维护负担
 
 ---
 
-## 三、待确认项（需要领域专家决策）
+## 三、本轮发现仍可改进的问题（已全部收敛至问题 Q-T）
 
-以下问题在本轮复核时尚未推动，留待后续确认：
-
-1. **trigger_keywords 同步机制**：frontmatter `trigger_keywords` 与 `aliases.md` 的同步是纯人工维护，是否需要建立自动化检查？
-2. **EXIT ALTAS 主动退出 vs 异常中断行为区分**：当前规范未区分"用户主动 EXIT"和"异常强制退出"，是否需要分别定义？
+所有可改进问题已在 v4.3 中处理或明确为"保留"决策，详见上表"已解决问题"。
 
 ---
 
-## 四、维护约定
+## 四、本轮已收口但值得记录的实现变更
+
+### 1. trigger_keywords 与 aliases.md 同步机制
+
+**决策**：需要建立自动化检查机制。
+
+**实现方案**：
+- 在 `aliases.md` 维护规则中增加一条：`trigger_keywords` 的同步是强制的，任何修改 aliases.md 后遗漏同步到 SKILL.md frontmatter 的行为都是违规
+- 增加 CI/验证脚本：提取 `aliases.md` 的所有全局触发词主词和支持别名，与 `SKILL.md` frontmatter 的 `trigger_keywords` 逐条比对，缺失则报错
+
+**实施结果**：
+- `aliases.md` 维护规则已强化（同步义务 + 验证脚本）
+- `validate_aliases_sync.py` 已创建并验证通过
+- `SKILL.md` 补充了缺失的 `日志分析` 别名
+
+### 2. EXIT ALTAS 区分主动退出与异常中断
+
+**决策**：需要分别定义两种退出行为。
+
+**实现方案**：
+- 主动退出（用户输入 `EXIT ALTAS`）：输出完整恢复锚点，包含 Spec、代码、对话历史
+- 强制中断（上下文耗尽/工具失败等非用户主动）：输出最小恢复锚点，仅含 Spec 摘要和最后检查点，注明"非用户主动退出"
+
+**实施结果**：
+- `SKILL.md` EXIT ALTAS 规范节已重构为"主动退出"和"强制中断"两套独立格式
+
+---
+
+## 五、维护约定
 
 - 本文件每次对 `SKILL.md` 进行重大修订后同步更新
 - "已解决问题"表格只记录从本文移除的问题，不删除

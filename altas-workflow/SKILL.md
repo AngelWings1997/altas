@@ -1,8 +1,8 @@
 ---
 name: altas-workflow
-version: "4.2"
+version: "4.3"
 description: Use when handling repository-grounded engineering tasks that need routing across coding, debugging, review, docs, mapping, archiving, refactoring, testing, performance, or migration workflows.
-trigger_keywords: ["FAST", "DEEP", "DEBUG", "MULTI", "DOC", "MAP", "PROJECT MAP", "MAP ALL", "ARCHIVE", "REVIEW", "REVIEW SPEC", "REVIEW EXECUTE", "REFACTOR", "TEST", "PERF", "MIGRATE", "CROSS", ">>", "sdd_bootstrap", "EXIT ALTAS", "快速", "排查", "多项目", "写文档", "链路梳理", "只看代码", "项目总图", "全局地图", "归档", "沉淀", "全部", "代码审查", "审查 PR", "评审规格", "计划评审", "代码评审", "实现复盘", "重构", "写测试", "补测试", "性能优化", "迁移", "版本升级", "跨项目", "验证功能", "退出协议"]
+trigger_keywords: ["FAST", "DEEP", "DEBUG", "MULTI", "DOC", "MAP", "PROJECT MAP", "MAP ALL", "ARCHIVE", "REVIEW", "REVIEW SPEC", "REVIEW EXECUTE", "REFACTOR", "TEST", "PERF", "MIGRATE", "CROSS", ">>", "sdd_bootstrap", "EXIT ALTAS", "快速", "排查", "日志分析", "多项目", "写文档", "链路梳理", "只看代码", "项目总图", "全局地图", "归档", "沉淀", "代码审查", "审查 PR", "评审规格", "计划评审", "代码评审", "实现复盘", "重构", "写测试", "补测试", "性能优化", "迁移", "版本升级", "跨项目", "验证功能", "退出协议"]
 dependencies:
   - reference-index.md  # 统一参考索引入口
   - references/entry/aliases.md  # 入口触发词与模式内控制词词典
@@ -14,7 +14,7 @@ min_context_window: 32k
 
 # ALTAS Workflow
 
-**Version:** 4.2 — 入口瘦身 + 索引统一版。变更日志参考 [SDD-RIPER-ONE Agent Changelog](./references/agents/sdd-riper-one/CHANGELOG.md)。
+**Version:** 4.3 — trigger_keywords 同步 + EXIT ALTAS 细分版。变更日志参考 [SDD-RIPER-ONE Agent Changelog](./references/agents/sdd-riper-one/CHANGELOG.md)。
 
 ## Overview
 
@@ -242,7 +242,9 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 
 ### EXIT ALTAS 规范
 
-`EXIT ALTAS` 必须在退出前输出以下字段：
+#### 主动退出（用户输入 `EXIT ALTAS`）
+
+退出前必须输出完整恢复锚点：
 
 | 字段 | 内容 |
 |------|------|
@@ -250,6 +252,18 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 | **已完成** | 本轮产出的文件、结论、下一步待办 |
 | **待办** | 未完成项及优先级 |
 | **恢复锚点** | 基于 Spec + 代码 + 对话历史的最小重建路径 |
+
+#### 强制中断（非用户主动：上下文耗尽/工具失败等）
+
+退出前输出最小恢复锚点：
+
+| 字段 | 内容 |
+|------|------|
+| **中断类型** | `[FORCED] 非用户主动退出` |
+| **当前阶段** | 同上 |
+| **最后检查点** | 最近一次 checkpoint 的阶段和产出摘要 |
+| **Spec 状态** | `完整` / `部分` / `[RECOVERED]` 重建 |
+| **最小恢复路径** | 仅含 Spec 路径 + 最后 Checkpoint + 未完成 Checklist 项 |
 
 **Spec 损坏时**（丢失或不一致）：基于代码现状和对话历史重建最小 Spec，标记 `[RECOVERED]` 后请求确认。
 

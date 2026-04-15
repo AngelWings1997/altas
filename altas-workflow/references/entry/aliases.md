@@ -44,6 +44,8 @@
 
 ## 维护规则
 
+- **同步义务**（强制）：`trigger_keywords` 的同步是强制的。修改本文件后**必须**同步更新 `SKILL.md` frontmatter `trigger_keywords`，遗漏视为违规。
 - 新增或删除入口别名时，先更新本文件，再同步 `SKILL.md` frontmatter `trigger_keywords`。
 - 其他入口文档优先引用本文件，不再各自维护完整别名清单。
-- 若某个词只在特定模式内有效，应放在“模式内控制词”，不要直接放入“全局触发词词典”。
+- 若某个词只在特定模式内有效，应放在"模式内控制词"，不要直接放入"全局触发词词典"。
+- 同步验证：运行 `scripts/validate_aliases_sync.py` 确保本文件与 `SKILL.md` frontmatter `trigger_keywords` 完全一致。

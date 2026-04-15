@@ -1,7 +1,7 @@
 ---
 name: altas-workflow
-version: "4.4"
-description: Use when handling repository-grounded engineering tasks that need routing across coding, debugging, review, docs, mapping, archiving, refactoring, testing, performance, or migration workflows.
+version: "4.5"
+description: Use when handling repository-grounded engineering tasks requiring structured progression (coding, debugging, documentation, mapping, review, refactoring, testing, performance optimization, or migration)
 trigger_keywords: ["FAST", "DEEP", "DEBUG", "MULTI", "DOC", "MAP", "PROJECT MAP", "MAP ALL", "ARCHIVE", "REVIEW", "REVIEW SPEC", "REVIEW EXECUTE", "REFACTOR", "TEST", "PERF", "MIGRATE", "CROSS", ">>", "sdd_bootstrap", "EXIT ALTAS", "快速", "排查", "日志分析", "多项目", "写文档", "链路梳理", "只看代码", "项目总图", "全局地图", "归档", "沉淀", "代码审查", "审查 PR", "评审规格", "计划评审", "代码评审", "实现复盘", "重构", "写测试", "补测试", "性能优化", "迁移", "版本升级", "跨项目", "验证功能", "退出协议"]
 dependencies:
   - reference-index.md  # 统一参考索引入口
@@ -55,18 +55,22 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 
 ## Hard Rules
 
+> **AUTHORITY PRINCIPLE:** These rules are non-negotiable. YOU MUST follow them without exception. Violating the letter is violating the spirit.
+
 | # | 铁律 | 含义 |
 |---|------|------|
-| 1 | **Restate & Decompose First** | 先复述任务，并给出从当前到下一阶段的原子化拆解，再进入分析、Spec 或执行。 |
-| 2 | **Route Before Action** | 先判定模式，再决定是否只读、是否改代码。 |
-| 3 | **No Spec, No Code** | 未形成最小 Spec 前不写代码；`XS` 可豁免为事后 summary。 |
-| 4 | **No Approval, No Execute** | 高影响执行前必须有明确许可；`XS`、`FAST` 或用户明确要求直接执行时视为已授权。 |
-| 5 | **Spec is Truth** | 发现目标、计划或行为偏差时，先修 Spec 再修代码。 |
-| 6 | **Evidence First** | 完成由测试、日志、构建、运行结果或代码证据证明，不靠自宣布。 |
-| 7 | **No Fixes Without Root Cause** | `DEBUG` 或 Bugfix 任务在根因未清楚前禁止盲改。 |
-| 8 | **Resume Ready** | 长任务、中断或上下文紧张时，必须留下恢复锚点。 |
-| 9 | **Read Concurrent, Write Serial** | 读文件允许并发；写文件必须串行，不得并发写入同一文件。 |
-| 10 | **No Assumption on Uncertainty** | 不确定时不假设，必须澄清；解决不了的问题必须暂停并找用户确认，禁止跳过。 |
+| 1 | **YOU MUST Restate & Decompose First** | 先复述任务，并给出从当前到下一阶段的原子化拆解，再进入分析、Spec 或执行。 |
+| 2 | **YOU MUST Route Before Action** | 先判定模式，再决定是否只读、是否改代码。 |
+| 3 | **YOU MUST Never Write Code Before Spec** | 未形成最小 Spec 前不写代码；`XS` 可豁免为事后 summary。 |
+| 4 | **YOU MUST Never Execute Without Approval** | 高影响执行前必须有明确许可；`XS`、`FAST` 或用户明确要求直接执行时视为已授权。 |
+| 5 | **YOU MUST Treat Spec as Truth** | 发现目标、计划或行为偏差时，先修 Spec 再修代码。 |
+| 6 | **YOU MUST Prove with Evidence** | 完成由测试、日志、构建、运行结果或代码证据证明，不靠自宣布。 |
+| 7 | **YOU MUST Never Fix Without Root Cause** | `DEBUG` 或 Bugfix 任务在根因未清楚前禁止盲改。 |
+| 8 | **YOU MUST Always Leave Resume Point** | 长任务、中断或上下文紧张时，必须留下恢复锚点。 |
+| 9 | **YOU MUST Read Concurrent, Write Serial** | 读文件允许并发；写文件必须串行，不得并发写入同一文件。 |
+| 10 | **YOU MUST Never Assume on Uncertainty** | 不确定时不假设，必须澄清；解决不了的问题必须暂停并找用户确认，禁止跳过。 |
+
+> **SOCIAL PROOF:** Violating these rules = predictable failure. Every time. No exceptions.
 
 ## Entry Contract
 
@@ -197,9 +201,11 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 
 输出初始化提示并暂停：
 
-> **ALTAS Workflow v4.4 已加载**
+> **ALTAS Workflow v4.5 已加载**
 >
-> 当前状态: `[IDLE]`
+> **COMMITMENT:** I am using ALTAS Workflow v4.5 for this session. I will follow all Iron Rules without exception.
+>
+> 当前状态：`[IDLE]`
 > 可用触发（主形式）: `>>` / `FAST` | `sdd_bootstrap` | `DEEP` | `DEBUG` | `MULTI` | `CROSS` | `DOC` | `MAP` | `PROJECT MAP` | `ARCHIVE` | `REVIEW` | `REVIEW SPEC` | `REVIEW EXECUTE` | `REFACTOR` | `TEST` | `PERF` | `MIGRATE`
 > 常用中文触发词: `快速` | `排查` | `写文档` | `链路梳理` / `只看代码` | `项目总图` / `全局地图` | `代码审查` / `审查 PR` | `重构` | `写测试` / `补测试` | `性能优化` | `迁移` / `版本升级` | `跨项目` | `验证功能`
 > 退出指令: `EXIT ALTAS`
@@ -290,6 +296,8 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 - 若任一步骤存在未知项、依赖缺失、方案分歧或无法验证，必须暂停并找用户确认，禁止带着不确定性继续下钻
 
 ## 检查点契约
+
+> **SOCIAL PROOF:** Checkpoints without TodoWrite tracking = steps get skipped. Every time. Unverified completion = bugs discovered later. Always.
 
 ### 触发时机
 

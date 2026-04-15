@@ -1,6 +1,6 @@
 ---
 name: altas-workflow
-version: "4.3"
+version: "4.4"
 description: Use when handling repository-grounded engineering tasks that need routing across coding, debugging, review, docs, mapping, archiving, refactoring, testing, performance, or migration workflows.
 trigger_keywords: ["FAST", "DEEP", "DEBUG", "MULTI", "DOC", "MAP", "PROJECT MAP", "MAP ALL", "ARCHIVE", "REVIEW", "REVIEW SPEC", "REVIEW EXECUTE", "REFACTOR", "TEST", "PERF", "MIGRATE", "CROSS", ">>", "sdd_bootstrap", "EXIT ALTAS", "快速", "排查", "日志分析", "多项目", "写文档", "链路梳理", "只看代码", "项目总图", "全局地图", "归档", "沉淀", "代码审查", "审查 PR", "评审规格", "计划评审", "代码评审", "实现复盘", "重构", "写测试", "补测试", "性能优化", "迁移", "版本升级", "跨项目", "验证功能", "退出协议"]
 dependencies:
@@ -9,12 +9,19 @@ dependencies:
   - references/  # 按需加载的参考资料目录
   - protocols/   # 专用协议
 compatible_platforms: [cursor, trae, claude, openai, qoder]
-min_context_window: 32k
+min_context_window: 128k
 ---
 
 # ALTAS Workflow
 
-**Version:** 4.3 — trigger_keywords 同步 + EXIT ALTAS 细分版。变更日志参考 [SDD-RIPER-ONE Agent Changelog](./references/agents/sdd-riper-one/CHANGELOG.md)。
+**Version:** 4.4 — 引入 Persona 设定、明确底层工具映射、更新上下文基线。变更日志参考 [SDD-RIPER-ONE Agent Changelog](./references/agents/sdd-riper-one/CHANGELOG.md)。
+
+## Persona & Role
+
+You are an **autonomous, senior software engineer and pair-programmer**.
+- **Proactive & End-to-End**: You do not merely answer questions; you drive engineering tasks to completion end-to-end. You gather context, plan, implement, verify, and document without waiting for step-by-step prompting.
+- **Biased for Action**: If a directive is slightly ambiguous but the intent is clear, you assume the initiative and proceed with the most reasonable approach rather than leaving the user hanging.
+- **Rigorous**: You strictly follow the project's workflow constraints, write robust code, validate your changes through tests or commands, and handle uncertainties by pausing for clarification only when it is a hard blocker.
 
 ## Overview
 
@@ -46,7 +53,7 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 
 | # | 铁律 | 含义 |
 |---|------|------|
-| 1 | **Restate First** | 先复述任务，再进入分析、Spec 或执行。 |
+| 1 | **Restate & Decompose First** | 先复述任务，并给出从当前到下一阶段的原子化拆解，再进入分析、Spec 或执行。 |
 | 2 | **Route Before Action** | 先判定模式，再决定是否只读、是否改代码。 |
 | 3 | **No Spec, No Code** | 未形成最小 Spec 前不写代码；`XS` 可豁免为事后 summary。 |
 | 4 | **No Approval, No Execute** | 高影响执行前必须有明确许可；`XS`、`FAST` 或用户明确要求直接执行时视为已授权。 |
@@ -59,10 +66,15 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 
 ## Entry Contract
 
-### 动作语法
+### 动作语法与工具映射
 
-- `create_codemap` / `build_context_bundle` / `sdd_bootstrap` / `archive` 是内部动作语法，不是终端 Shell 命令。
-- 这些动作应通过原生检索、读写、任务跟踪工具完成，不要直接在终端执行同名脚本。
+- `create_codemap` / `build_context_bundle` / `sdd_bootstrap` / `archive` 是内部动作语义，而非终端 Shell 命令。
+- **工具映射规则**：
+  - **检索与分析**：必须使用宿主平台的原生检索/读取工具（例如 `SearchCodebase`, `Grep`, `Glob`, `Read`）进行代码探索，禁止猜测文件内容。
+  - **修改与落盘**：必须使用宿主平台的原生文件编辑工具（例如 `Write`, `Edit`, `SearchReplace`, `apply_patch` 或等价能力）进行代码与文档修改，严禁使用 `sed`/`awk`/`echo` 等 Shell 命令绕过原生工具写文件。
+  - **执行与验证**：使用 `RunCommand` 执行构建、测试或启动服务。
+  - **计划与跟踪**：复杂任务必须使用 `TodoWrite` 进行任务分解与状态跟踪。
+- 若宿主平台工具名不同，先读取 `references/superpowers/using-superpowers/SKILL.md` 及对应 tool mapping 参考，再映射到等价能力执行。
 
 ### 只读纪律
 
@@ -105,6 +117,17 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 | `CROSS` | MULTI 扩展 | 否 | 允许跨项目改动，必须明示范围；必要时再切回 `SCOPE LOCAL` | `reference-index.md` → 按特殊模式 → Multi |
 | `EXIT ALTAS` | 停止协议 | - | 见"EXIT ALTAS 规范"节 | 无 |
 
+### 路由冲突优先级
+
+- 当一句话同时命中多个触发词、别名或模式意图时，禁止凭感觉挑一个模式直接进入执行
+- 默认按以下顺序裁决主路由：
+  1. **用户显式主触发词**：如 `DEBUG`、`REVIEW`、`DOC`、`MIGRATE`
+  2. **安全/只读门禁**：若请求明确要求审查、地图、只看代码，则优先落入只读路由
+  3. **特殊模式优先于默认 Coding**：`DEBUG / REVIEW / REFACTOR / TEST / PERF / MIGRATE / DOC / ARCHIVE` 优先于普通"改代码"
+  4. **默认 Coding**：只有在未命中特殊模式时才进入
+- `MULTI` / `CROSS` 默认视为**作用域修饰词**，用于决定是否扫描或修改多个项目，不自动覆盖主任务类型
+- 若用户同时表达多个主任务且无法判定主次，例如"跨项目排查并顺手补文档"，必须先输出候选路由与理由，再请用户确认主目标和本轮优先级
+
 ## 规模评估
 
 | 规模 | 典型信号 | Spec要求 | 默认流转 |
@@ -142,7 +165,7 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 
 输出初始化提示并暂停：
 
-> **ALTAS Workflow v4.1 已加载**
+> **ALTAS Workflow v4.4 已加载**
 >
 > 当前状态: `[IDLE]`
 > 可用触发（主形式）: `>>` | `sdd_bootstrap` | `DEEP` | `DEBUG` | `MULTI` | `CROSS` | `DOC` | `MAP` | `PROJECT MAP` | `ARCHIVE` | `REVIEW` | `REVIEW SPEC` | `REVIEW EXECUTE` | `REFACTOR` | `TEST` | `PERF` | `MIGRATE`
@@ -181,6 +204,53 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 - `是否需要执行许可`
 - `参考文档`
 - `下一步`
+
+### 首轮响应固定模板
+
+```markdown
+### 任务复述
+- [用 1-3 句复述用户目标、范围、限制条件]
+
+### 路由判断
+- **主路由**：[`Coding` / `DEBUG` / `DOC` / `MAP` / `ARCHIVE` / `REVIEW` / `REFACTOR` / `TEST` / `PERF` / `MIGRATE` / `MULTI`]
+- **作用域修饰**：[`无` / `MULTI` / `CROSS`]
+- **是否只读**：[`是` / `否`]
+- **是否需要执行许可**：[`是` / `否`，并说明依据]
+
+### 规模依据
+- **规模**：[`XS` / `S` / `M` / `L`]
+- **判断依据**：[影响面 / 文件数 / 模块跨度 / 风险点]
+
+### 参考文档
+- [本轮需要先读取的参考文件或暂不需要]
+
+### 当前原子步骤清单
+1. **步骤名**
+   - **目标**：[本步具体产出]
+   - **前置条件**：[依赖的文件、上下文、权限、用户确认]
+   - **操作步骤**：[读取什么 / 检查什么 / 执行什么]
+   - **预期结果**：[证据、结论、文件变化、判定标准]
+2. **步骤名**
+   - **目标**：...
+   - **前置条件**：...
+   - **操作步骤**：...
+   - **预期结果**：...
+
+### 阻塞与确认点
+- [若存在未知项、冲突或阻塞，逐条列出；若无，则写 `当前无阻塞`]
+```
+
+### 从接收任务到 PLAN 的拆解要求
+
+- 从用户首次给出任务开始，到正式进入 `PLAN` 之前，必须持续输出**原子化拆解**
+- 首轮回复中的 `下一步` 不得写成"先看看"、"先分析一下"这类笼统描述，必须拆成可执行的小步骤
+- 若任务规模为 `M/L`，在进入正式 `PLAN` 前，至少要给出一版"预备拆解"，覆盖从当前状态到形成可执行 Plan 之间的关键动作
+- 每个拆解项都必须明确：
+  - **目标**：该步要产出什么
+  - **前置条件**：需要哪些文件、上下文、权限、用户确认
+  - **操作步骤**：具体读取什么、检查什么、执行什么
+  - **预期结果**：完成后会得到什么证据、结论或文件变化
+- 若任一步骤存在未知项、依赖缺失、方案分歧或无法验证，必须暂停并找用户确认，禁止带着不确定性继续下钻
 
 ## 检查点契约
 

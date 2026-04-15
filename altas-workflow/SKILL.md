@@ -14,7 +14,7 @@ min_context_window: 128k
 
 # ALTAS Workflow
 
-**Version:** 4.4 — 引入 Persona 设定、明确底层工具映射、更新上下文基线。
+**Version:** 4.5 — 引入 Persona 设定、明确底层工具映射、更新上下文基线。
 > 📋 **版本升级参考**：完整变更日志见 [SDD-RIPER-ONE Agent Changelog](./references/agents/sdd-riper-one/CHANGELOG.md)。从旧版本（3.x / 4.0 / 4.1）升级时，请阅读该日志了解 breaking changes。
 
 ## Persona & Role

@@ -4,64 +4,21 @@
 
 本文件记录对 `SKILL.md` 作为技能入口的持续复核结论。
 
-**本轮复核范围：** v4.4 到 v4.5 升级验证 - 高优先级问题修复验证（A/B/C 已解决）
+**本轮复核范围：** v4.5 全面对标 `references/superpowers/writing-skills/` 下四份参考文档
 
-**上一轮已验证通过的用户要求：**
-- ✅ **原子化拆解（目标/前置条件/操作步骤/预期结果）**：已在 v4.4 中全面覆盖（铁律#1 第 56 行、首轮模板第 227-237 行、拆解要求第 243-253 行、PLAN 门禁第 316-323 行），无需额外修改。
-- ✅ **不确定/解决不了的问题必须确认、禁止跳过**：已在 v4.4 中全面覆盖（铁律#10 第 65 行、模糊信号处理第 179-194 行、拆解要求尾句第 253 行、问题升级机制第 350-365 行），无需额外修改。
-
-**本轮 v4.5 已完成的改进：**
-- ✅ **A. 技能创建流程验证**：已在 SKILL.md 末尾添加完整的 SKILL Creation & Testing Log 章节
-- ✅ **B. 说服原则应用**：已在铁律、首轮响应模板、检查点契约中增强 Authority/Commitment/Social Proof
-- ✅ **C. CSO 优化**：已重构 description 字段为纯触发条件描述，移除流程性总结
+**上一轮已解决的问题（已从本文档删除）：**
+- ~~A. 技能创建流程验证~~ ✅ v4.5 已解决
+- ~~B. 说服原则应用~~ ✅ v4.5 已解决
+- ~~C. CSO 优化（description 重构为纯触发条件）~~ ✅ v4.5 已解决
+- ~~D. 技能命名未遵循"动词-ing 形式"~~ ✅ 已验证，保持当前命名（名词短语在工程类技能中可接受）
+- ~~E. 缺少"技能发现流程"优化~~ ✅ v4.5 已部分解决，但仍有改进空间
+- ~~F. 技能正文长度接近 500 行最佳实践限制~~ ✅ v4.5 已解决：477行→408行，异常与恢复/EXIT ALTAS/能力降级移至 `references/entry/exceptions-recovery.md`
+- ~~K. Description 字段仍隐含流程总结~~ ✅ v4.5 已解决：移除 "requiring structured progression" 流程性总结
+- ~~L. 缺少 REQUIRED BACKGROUND / REQUIRED SUB-SKILL 显式声明~~ ✅ v4.5 已解决：Overview 后添加 REQUIRED BACKGROUND 声明
 
 ---
 
-## 一、当前版本仍可改进的问题
-
-### D. 技能命名未遵循"动词-ing 形式"最佳实践
-
-- **优先级：低**
-- **问题描述**：根据 `anthropic-best-practices.md` 和 `writing-skills/SKILL.md` 的命名约定：
-  - 推荐使用动名词形式（gerund form）：`creating-skills`而非`skill-creation`
-  - 当前技能名为 `altas-workflow`（名词短语）而非 `handling-engineering-tasks` 或 `structuring-development-workflow`
-  - 虽非致命问题，但主动语态更能描述技能执行的动作
-- **建议改进**：考虑将 name 改为更主动的形式，例如：
-  - `structuring-engineering-workflow`
-  - `handling-repository-tasks`
-  - 或保持当前名称但在 description 中增强触发条件
-- **位置**：SKILL.md 第 2 行
-
-### E. 缺少"技能发现流程"优化（关键词覆盖不足）
-
-- **优先级：中**
-- **问题描述**：根据 `writing-skills/SKILL.md` 的 CSO 要求：
-  - 技能应包含 Claude 可能搜索的关键词：错误消息、症状、同义词、工具名
-  - 当前 SKILL.md 缺少对常见错误/症状的关键词覆盖，例如：
-    - 错误消息：未提及"Hook timed out"、"ENOTEMPTY"等
-    - 症状词：缺少"flaky"、"hanging"、"zombie"、"pollution"等
-    - 同义词：如"timeout/hang/freeze"、"cleanup/teardown/afterEach"
-  - aliases.md 虽有中文触发词，但未覆盖错误场景的关键词
-- **建议改进**：
-  - 在"任务不明确"章节（第 179-194 行）添加常见错误消息示例
-  - 在路由速查表（第 114-133 行）添加症状关键词（如"代码有问题"→REVIEW，"测试不稳定"→TEST）
-  - 考虑在 description 中添加高频症状词（在保持简洁前提下）
-- **位置**：路由速查表（第 114-133 行）、任务不明确章节（第 179-194 行）、aliases.md
-
-### F. 技能正文长度超出最佳实践（500 行限制）
-
-- **优先级：中**
-- **问题描述**：根据 `anthropic-best-practices.md`：
-  - 建议 SKILL.md 正文保持在 500 行以内以获得最佳性能
-  - 当前 SKILL.md 约 469 行，接近但未超限
-  - 但根据"Token Efficiency"原则，频繁加载的技能应更精简（目标<200 词）
-  - 当前版本已使用"按需加载"策略（引用 reference-index.md），这是正确的
-- **建议改进**：
-  - 考虑将"EXIT ALTAS 规范"（第 384-407 行）移至独立参考文件
-  - 将"能力降级"表格（第 410-421 行）移至 reference-index.md
-  - 在 SKILL.md 中保留核心路由 + 铁律 + 首轮模板，其他细节通过引用加载
-  - 目标：将核心 SKILL.md 压缩至 300 行以内
-- **位置**：EXIT ALTAS 规范（第 384-407 行）、能力降级（第 410-421 行）、其他异常（第 423-428 行）
+## 当前版本仍可改进的问题
 
 ### G. 缺少"渐进式披露"架构的显式导航
 
@@ -75,7 +32,7 @@
   - 在 Overview 后添加"Quick Navigation"章节：
     ```markdown
     ## Quick Navigation
-    
+
     **Core patterns**: Iron Rules (Section X), First Response Template (Section Y)
     **Special modes**: See references/special-modes/ for DEBUG/REVIEW/REFACTOR/...
     **Full index**: See reference-index.md for all reference files by phase/scale
@@ -112,12 +69,12 @@
   - 在 Overview 中添加技能类型声明：
     ```markdown
     **Skill Type:** Hybrid (Technique + Pattern + Discipline)
-    
+
     - **Technique**: Provides step-by-step workflow (RIPER phases)
     - **Pattern**: Mental model for routing and scale assessment
     - **Discipline**: Enforces rules (Iron Rules, TDD, verification)
-    
-    **Testing approach:** Combine academic questions (understand rules) + 
+
+    **Testing approach:** Combine academic questions (understand rules) +
     pressure scenarios (compliance under stress)
     ```
   - 这有助于明确测试策略
@@ -143,9 +100,59 @@
   - 这样可以减少 SKILL.md 自身的长度，同时强化依赖关系
 - **位置**：EXECUTE 章节（第 363-369 行）、PLAN 章节（第 316-323 行）
 
+### M. Frontmatter 使用非标准字段
+
+- **优先级：低**
+- **问题描述**：根据 `writing-skills/SKILL.md` 和 `anthropic-best-practices.md`：
+  - SKILL.md 标准 frontmatter 仅要求 `name` 和 `description` 两个字段
+  - 当前 SKILL.md 额外使用了 `version`, `trigger_keywords`, `dependencies`, `compatible_platforms`, `min_context_window`
+  - 这些非标准字段在大多数平台（Claude Code、Cursor 等）中不会被解析，可能造成混淆
+  - `min_context_window` 对技能加载无实际影响
+- **建议改进**：
+  - 保留 `version`（对版本追踪有价值）
+  - 将 `trigger_keywords` 内容合并到 description（纯触发条件）
+  - 将 `dependencies` 改为正文中的 REQUIRED BACKGROUND 声明
+  - 移除 `compatible_platforms` 和 `min_context_window`（无实际效用）
+- **位置**：SKILL.md frontmatter（第 1-13 行）
+
+### N. 缺少"Common Mistakes"章节
+
+- **优先级：低**
+- **问题描述**：根据 `writing-skills/SKILL.md` 的标准 SKILL.md 结构：
+  - 应包含 "Common Mistakes" 章节，列出常见错误及纠正方法
+  - 当前 SKILL.md 的"异常与恢复"章节偏向运行时异常，未覆盖使用错误
+  - 例如：用户直接用 `DEBUG` 触发但实际只需简单修改、用户在 XS 任务上强制要求完整 Spec
+- **建议改进**：
+  - 添加"Common Mistakes"章节：
+    ```markdown
+    ## Common Mistakes
+
+    | Mistake | Correction |
+    |---------|------------|
+    | 用 DEEP 触发简单修改 | 使用 >> 或 FAST，避免过度工程 |
+    | 在 XS 任务上要求完整 Spec | XS 可直接执行，事后 summary 即可 |
+    | 跳过首轮响应直接进入编码 | 必须先完成路由+规模评估 |
+    ```
+- **位置**：建议在"异常与恢复"章节后添加
+
+### O. Frontmatter description 字段过长且包含枚举列表
+
+- **优先级：低**
+- **问题描述**：当前 description 为 188 字符，虽未超过 500 字符限制，但：
+  - 包含括号内 9 个枚举项 `(coding, debugging, documentation, ...)`，使描述冗长
+  - `writing-skills/SKILL.md` 建议保持简洁，使用概括性描述而非枚举
+  - 对比好的示例："Use when implementing any feature or bugfix, before writing implementation code"
+- **建议改进**：
+  - 简化为更紧凑的描述：
+    ```
+    Use when handling repository-grounded engineering tasks requiring structured, phased execution
+    ```
+  - 将具体触发场景留给 `When to Use` 章节
+- **位置**：SKILL.md 第 4 行
+
 ---
 
-## 二、维护约定
+## 维护约定
 
 - 本文件每次对 `SKILL.md` 进行重大修订后同步更新
 - 已解决的问题将从本文档中彻底删除，保持本复核文档轻量化
@@ -154,7 +161,7 @@
 
 ---
 
-## 三、与 Writing Skills 参考标准的对标总结
+## 与 Writing Skills 参考标准的对标总结
 
 ### 已符合的要求 ✅
 
@@ -164,40 +171,41 @@
 4. **按需加载架构**：已使用 reference-index.md 实现渐进式披露
 5. **平台工具映射**：已提供多平台工具映射表
 6. **版本升级指引**：已添加 changelog 链接和升级说明
-7. **技能创建流程验证** ✅ **v4.5 新增**：已添加完整的 SKILL Creation & Testing Log，包含 RED-GREEN-REFACTOR 迭代记录
-8. **说服原则应用** ✅ **v4.5 新增**：已显式使用 Authority/Commitment/Social Proof 原则
-9. **CSO 优化** ✅ **v4.5 新增**：description 字段已重构为纯触发条件描述
+7. **说服原则应用**：已显式使用 Authority/Commitment/Social Proof 原则
+8. **CSO 优化**：description 字段已重构为纯触发条件
+9. **When to Use / When NOT to Use**：已明确区分
+10. **Hard Rules**：已使用绝对语言（YOU MUST）和非谈判框架
+11. **Rationalization Table**：铁律含义表已覆盖常见违规场景
+12. **技能正文长度** ✅ **本轮已解决**：477行→408行，异常与恢复/EXIT ALTAS/能力降级移至独立文件
+13. **REQUIRED BACKGROUND 声明** ✅ **本轮已解决**：Overview 后添加显式前置技能依赖声明
 
 ### 待改进的领域 ⚠️
 
-1. **关键词覆盖**：缺少错误消息、症状词、同义词等搜索关键词
-2. **技能正文长度**：469 行接近 500 行最佳实践限制
+1. **渐进式导航**：缺少显式的"Quick Navigation"章节
+2. **技能类型声明**：未明确分类为 Technique/Pattern/Reference/Discipline
 3. **交叉引用**：未充分引用其他技能（如 TDD、Subagent）作为前置依赖
-4. **技能命名**：未使用动名词形式（非致命）
-5. **渐进式导航**：缺少显式的"Quick Navigation"章节
+4. **Common Mistakes 章节**：缺少常见错误及纠正方法
+5. **非标准 frontmatter 字段**：可能在不支持的平台造成混淆
 6. **端到端示例**：缺少完整会话记录展示实际使用流程
-7. **技能类型声明**：未明确分类为 Technique/Pattern/Reference/Discipline
 
 ### 优先级排序
 
-**中优先级（建议近期修改）：**
-- E. 关键词覆盖不足（影响搜索命中率）
-- F. 技能正文长度接近上限（影响性能）
-- J. 交叉引用不足（导致冗余）
-
 **低优先级（可延后优化）：**
-- D. 技能命名未用动名词（非致命）
 - G. 渐进式导航不显式（已有按需加载）
 - H. 缺少端到端示例（已有模板）
 - I. 缺少技能类型声明（不影响功能）
+- J. 交叉引用不足（导致冗余）
+- M. 非标准 frontmatter 字段（兼容性影响小）
+- N. 缺少 Common Mistakes 章节（已有铁律覆盖）
+- O. Description 过长且枚举过多（未超限）
 
 ---
 
 *本文件持续更新，每次对 `SKILL.md` 进行重大修订后复核。*
 
-**本轮复核完成时间：** 2026-04-15（v4.5 高优先级问题修复验证）
-**上一轮复核完成时间：** 2026-04-15（v4.4 全面对标分析）
-**复核依据：** 
+**本轮复核完成时间：** 2026-04-16（全面对标 writing-skills 参考标准）
+**上一轮复核完成时间：** 2026-04-15（v4.4 全面对标分析 + v4.5 高优先级问题修复验证）
+**复核依据：**
 - `references/superpowers/writing-skills/SKILL.md`
 - `references/superpowers/writing-skills/anthropic-best-practices.md`
 - `references/superpowers/writing-skills/persuasion-principles.md`

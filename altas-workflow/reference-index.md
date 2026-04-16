@@ -33,6 +33,7 @@
 |------|----------|
 | `references/entry/aliases.md` | 需要确认入口触发词、别名，或查看 `MULTI` 模式控制词时 |
 | `references/entry/sources.md` | 需要了解入口整合来源、方法论来源映射或做工作流介绍时 |
+| `references/entry/exceptions-recovery.md` | 遇到问题升级、不确定、需要退出协议或能力降级时 |
 
 ---
 

@@ -79,6 +79,21 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 
 > **SOCIAL PROOF:** Violating these rules = predictable failure. Every time. No exceptions.
 
+## Red Flags - STOP
+
+> **即时自检清单**（完整防绕过机制含 8 Red Flags + 10 借口反驳 + 10 使用错误，见 `references/entry/discipline-enforcing.md`）
+
+| Red Flag | → **STOP** | 铁律 |
+|----------|------------|------|
+| Spec 未形成就写代码？ | 回到 Research/Plan | #3 |
+| 未获许可就执行？ | 等待确认或确认 XS/FAST | #4 |
+| 根因不明就改代码？ | 继续调试 | #7 |
+| 不确定但假设而非澄清？ | 暂停并问用户 | #10 |
+| "这次情况特殊可例外"？ | 无例外 | #1-#10 |
+| 想跳过流程因为"时间紧"？ | 流程简化 = 后期返工 | #3,#6 |
+
+**No rationalization. No exceptions.**
+
 ## Entry Contract
 
 ### 动作语法与工具映射
@@ -404,5 +419,13 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 
 - 遇到问题升级、不确定、需要退出或能力降级时，加载 `references/entry/exceptions-recovery.md`
 - 核心原则：不确定时暂停并找用户确认（遵守铁律#10），禁止擅自决策或跳过
+
+## Usage Guide
+
+> **使用错误与防绕过**：完整版 Common Mistakes（10 项）+ Rationalization Counter（10 项借口反驳）见 `references/entry/discipline-enforcing.md`
+
+- **常见使用错误**：触发词选择、规模评估、流程跳过、沟通、工具使用
+- **常见借口及反驳**：跳过流程、手动验证、"特殊情况"、时间压力
+- **何时加载**：出现使用错误或开始 rationalize 时按需加载
 
 本文件是入口，不是完整手册。需要细节时，进入 `reference-index.md` 和 `references/` 按需加载。

@@ -61,18 +61,36 @@ ALTAS Workflow 是一套汲取了 SDD-RIPER、SDD-RIPER-Optimized 与 Superpower
 
 ## 目录导航
 
-- [SKILL.md](./SKILL.md) - Bootstrap 入口提示词（供AI读取，负责路由/规模/门禁）
-- [QUICKSTART.md](./QUICKSTART.md) - 快速启动命令与典型场景
-- [references/](./references/) - 按需加载的参考资料
-  - [entry/aliases.md](./references/entry/aliases.md) - 入口触发词与模式内控制词词典
-  - [entry/sources.md](./references/entry/sources.md) - 入口来源整合说明
-  - [spec-driven-development/](./references/spec-driven-development/) - SDD-RIPER 完整协议与模板
-  - [checkpoint-driven/](./references/checkpoint-driven/) - Checkpoint 轻量模式模块
-  - [superpowers/](./references/superpowers/) - TDD/Debug/Subagent 技能
-- [protocols/](./protocols/) - 专用协议（严格模式、双模型协作等）
-- [docs/](./docs/) - 方法论文档
-- [references/agents/](./references/agents/) - Agent 定义（SDD-RIPER 标准版/轻量版/代码审查）
-- [scripts/](./scripts/) - 自动化工具
+### 核心文件
+
+| 文件 | 说明 |
+|------|------|
+| [SKILL.md](./SKILL.md) | Bootstrap 入口提示词（供AI读取，负责路由/规模/门禁） |
+| [QUICKSTART.md](./QUICKSTART.md) | 快速启动命令与典型场景 |
+| [reference-index.md](./reference-index.md) | 参考资料统一索引入口 |
+| [workflow-diagrams.md](./workflow-diagrams.md) | Mermaid 流程图集（可视化参考） |
+| [SKILL-entry-review.md](./SKILL-entry-review.md) | SKILL.md 持续复核文档 |
+
+### 目录结构
+
+```
+altas-workflow/
+├── SKILL.md                    # 主入口 Skill
+├── QUICKSTART.md               # 快速启动指南
+├── reference-index.md          # 参考资料总索引
+├── workflow-diagrams.md        # 流程图集
+├── SKILL-entry-review.md       # Skill 复核文档
+├── references/                 # 按需加载的参考资料
+│   ├── entry/                  # 入口相关
+│   ├── spec-driven-development/# SDD-RIPER 完整协议
+│   ├── checkpoint-driven/      # Checkpoint 轻量模式
+│   ├── superpowers/            # TDD/Debug/Subagent 技能
+│   ├── special-modes/          # 特殊模式协议
+│   └── agents/                 # Agent 定义
+├── protocols/                  # 专用协议
+├── docs/                       # 方法论文档
+└── scripts/                    # 自动化工具
+```
 
 ---
 
@@ -80,58 +98,203 @@ ALTAS Workflow 是一套汲取了 SDD-RIPER、SDD-RIPER-Optimized 与 Superpower
 
 > 入口触发词、别名与 `MULTI` 模式控制词统一维护在 `references/entry/aliases.md`。
 
-| 场景 | 读取文件 | 调用时机 |
-|------|----------|----------|
-| 查看触发词别名词典 | `references/entry/aliases.md` | 需要确认入口别名或模式内控制词时 |
-| 查看入口来源整合 | `references/entry/sources.md` | 需要解释工作流来源或做方法论介绍时 |
-| 写Spec (M/L) | `references/spec-driven-development/spec-template.md` | 进入Research时 |
-| 写Spec (S) | `references/checkpoint-driven/spec-lite-template.md` | 小任务建立Spec时 |
-| 查看命令详情 | `references/spec-driven-development/commands.md` | 需要命令参数时 |
-| 快速参考 | `references/spec-driven-development/workflow-quickref.md` | 忘记流程时 |
-| 使用示例 | `references/spec-driven-development/usage-examples.md` | 不确定如何操作时 |
-| 多项目协作 | `references/spec-driven-development/multi-project.md` | MULTI模式时 |
-| Archive模板 | `references/spec-driven-development/archive-template.md` | 进入Archive时 |
-| 完整协议 | `references/spec-driven-development/sdd-riper-one-protocol.md` | 需要完整流程定义时 |
-| Deep Planning等 | `references/checkpoint-driven/modules.md` | 命中deep/debug/review/multi场景时 |
-| 命名约定 | `references/checkpoint-driven/conventions.md` | 需要落盘Spec时 |
-| 设计头脑风暴 | `references/superpowers/brainstorming/SKILL.md` | Innovate阶段时 |
-| 写Plan | `references/superpowers/writing-plans/SKILL.md` | Plan阶段时 |
-| TDD | `references/superpowers/test-driven-development/SKILL.md` | M/L Execute阶段时 |
-| 测试反模式 | `references/superpowers/test-driven-development/testing-anti-patterns.md` | TDD执行时 |
-| 系统化Debug | `references/superpowers/systematic-debugging/SKILL.md` | DEBUG模式时 |
-| 根因追踪 | `references/superpowers/systematic-debugging/root-cause-tracing.md` | 根因不明时 |
-| 纵深防御 | `references/superpowers/systematic-debugging/defense-in-depth.md` | 需要多层防护时 |
-| 条件等待 | `references/superpowers/systematic-debugging/condition-based-waiting.md` | 异步/等待问题时 |
-| Subagent驱动 | `references/superpowers/subagent-driven-development/SKILL.md` | L规模执行时 |
-| Subagent实现者 | `references/superpowers/subagent-driven-development/implementer-prompt.md` | 派遣实现者时 |
-| Subagent Spec审查 | `references/superpowers/subagent-driven-development/spec-reviewer-prompt.md` | Subagent Spec审查时 |
-| Subagent代码审查 | `references/superpowers/subagent-driven-development/code-quality-reviewer-prompt.md` | Subagent代码审查时 |
-| 并行Agent | `references/superpowers/dispatching-parallel-agents/SKILL.md` | 多独立故障时 |
-| 完成前验证 | `references/superpowers/verification-before-completion/SKILL.md` | 完成前验证时 |
-| 完成分支 | `references/superpowers/finishing-a-development-branch/SKILL.md` | 实现完成后 |
-| Plan文档审查 | `references/superpowers/writing-plans/plan-document-reviewer-prompt.md` | Plan审查时 |
-| 视觉设计辅助 | `references/superpowers/brainstorming/visual-companion.md` | 设计需可视化时 |
-| Spec文档审查 | `references/superpowers/brainstorming/spec-document-reviewer-prompt.md` | 设计Spec审查时 |
-| 执行Plan (非Subagent) | `references/superpowers/executing-plans/SKILL.md` | 无Subagent支持时 |
-| 请求代码审查 | `references/superpowers/requesting-code-review/SKILL.md` | 请求审查时 |
-| 代码审查模板 | `references/superpowers/requesting-code-review/code-reviewer.md` | 派遣审查Agent时 |
-| 接收代码审查 | `references/superpowers/receiving-code-review/SKILL.md` | 收到审查反馈时 |
-| Git Worktree | `references/superpowers/using-git-worktrees/SKILL.md` | 并行开发隔离时 |
-| Superpowers总纲 | `references/superpowers/using-superpowers/SKILL.md` | 检查Skill适用性时 |
-| 编写Skill | `references/superpowers/writing-skills/SKILL.md` | 创建新Skill时 |
-| Skill 说服原则 | `references/superpowers/writing-skills/persuasion-principles.md` | 优化 Skill 效果时 |
-| Skill 测试方法 | `references/superpowers/writing-skills/testing-skills-with-subagents.md` | 验证 Skill 有效性时 |
-| 严格模式协议 | `protocols/RIPER-5.md` | 高风险代码修改时 |
-| 双模型协作 | `protocols/SDD-RIPER-DUAL-COOP.md` | 双模型环境时 |
-| 文档专家 | `protocols/RIPER-DOC.md` | DOC模式时 |
-| Agent: 代码审查者 | `references/agents/code-reviewer.md` | 派遣审查Agent时 |
-| 脚本: Archive构建器 | `scripts/archive_builder.py` | 自动化归档时 |
-| Skill: 标准版 | `altas-workflow/references/agents/sdd-riper-one/SKILL.md` | 使用完整RIPER协议时 |
-| Skill: 轻量版 | `altas-workflow/references/agents/sdd-riper-one-light/SKILL.md` | 使用Checkpoint模式时 |
-| 方法论: 从传统到大模型 | `docs/从传统编程转向大模型编程.md` | 理解范式转换时 |
-| 方法论: 团队落地指南 | `docs/团队落地指南.md` | 团队推广时 |
-| 方法论: 手把手教程 | `docs/如何快速从零开始落地大模型编程 -- 手把手教程.md` | 入门学习时 |
-| 方法论: AI原生研发范式 | `docs/AI-原生研发范式-从代码中心到文档驱动的演进.md` | 深入理解理论时 |
+### 流程可视化参考
+
+| 文件 | 调用时机 |
+|------|----------|
+| [workflow-diagrams.md](./workflow-diagrams.md) | 需要可视化理解工作流、规模评估、铁律门禁、TDD循环、三轴评审等流程时 |
+
+### 入口参考
+
+| 文件 | 调用时机 |
+|------|----------|
+| [references/entry/aliases.md](./references/entry/aliases.md) | 需要确认入口触发词、别名，或查看 `MULTI` 模式控制词时 |
+| [references/entry/sources.md](./references/entry/sources.md) | 需要了解入口整合来源、方法论来源映射或做工作流介绍时 |
+| [references/entry/exceptions-recovery.md](./references/entry/exceptions-recovery.md) | 遇到问题升级、不确定、需要退出协议或能力降级时 |
+| [references/entry/discipline-enforcing.md](./references/entry/discipline-enforcing.md) | Agent 即将违反铁律、使用借口绕过规则、或出现常见使用错误时 |
+
+### 按工作流阶段索引
+
+#### PRE-RESEARCH / 输入准备
+
+| 文件 | 调用时机 |
+|------|----------|
+| [references/spec-driven-development/commands.md](./references/spec-driven-development/commands.md) | 需要create_codemap/build_context_bundle/sdd_bootstrap命令参数时 |
+| [references/spec-driven-development/sdd-riper-one-protocol.md](./references/spec-driven-development/sdd-riper-one-protocol.md) | 需要完整协议定义时 |
+| [references/spec-driven-development/workflow-quickref.md](./references/spec-driven-development/workflow-quickref.md) | 忘记流程快速查阅时 |
+
+#### RESEARCH / 研究对齐
+
+| 文件 | 调用时机 |
+|------|----------|
+| [references/spec-driven-development/spec-template.md](./references/spec-driven-development/spec-template.md) | 写Spec (Size M/L) 时 |
+| [references/checkpoint-driven/spec-lite-template.md](./references/checkpoint-driven/spec-lite-template.md) | 写Spec (Size S) 时 |
+| [references/checkpoint-driven/conventions.md](./references/checkpoint-driven/conventions.md) | 需要落盘命名约定时 |
+
+#### INNOVATE / 方案对比
+
+| 文件 | 调用时机 |
+|------|----------|
+| [references/superpowers/brainstorming/SKILL.md](./references/superpowers/brainstorming/SKILL.md) | Innovate阶段设计流程时 |
+| [references/superpowers/brainstorming/visual-companion.md](./references/superpowers/brainstorming/visual-companion.md) | 设计需可视化展示时 |
+| [references/superpowers/brainstorming/spec-document-reviewer-prompt.md](./references/superpowers/brainstorming/spec-document-reviewer-prompt.md) | 审查设计Spec时 |
+
+#### PLAN / 详细规划
+
+| 文件 | 调用时机 |
+|------|----------|
+| [references/superpowers/writing-plans/SKILL.md](./references/superpowers/writing-plans/SKILL.md) | 写Plan拆解任务时 |
+| [references/superpowers/writing-plans/plan-document-reviewer-prompt.md](./references/superpowers/writing-plans/plan-document-reviewer-prompt.md) | Plan文档审查时 |
+
+#### EXECUTE / 执行实现
+
+| 文件 | 调用时机 |
+|------|----------|
+| [references/superpowers/test-driven-development/SKILL.md](./references/superpowers/test-driven-development/SKILL.md) | M/L规模TDD执行时 |
+| [references/superpowers/test-driven-development/testing-anti-patterns.md](./references/superpowers/test-driven-development/testing-anti-patterns.md) | 避免测试反模式时 |
+| [references/superpowers/subagent-driven-development/SKILL.md](./references/superpowers/subagent-driven-development/SKILL.md) | L规模Subagent驱动时 |
+| [references/superpowers/subagent-driven-development/implementer-prompt.md](./references/superpowers/subagent-driven-development/implementer-prompt.md) | 派遣实现者Subagent时 |
+| [references/superpowers/subagent-driven-development/spec-reviewer-prompt.md](./references/superpowers/subagent-driven-development/spec-reviewer-prompt.md) | Subagent Spec合规审查时 |
+| [references/superpowers/subagent-driven-development/code-quality-reviewer-prompt.md](./references/superpowers/subagent-driven-development/code-quality-reviewer-prompt.md) | Subagent代码质量审查时 |
+| [references/superpowers/dispatching-parallel-agents/SKILL.md](./references/superpowers/dispatching-parallel-agents/SKILL.md) | 多独立故障并行派遣时 |
+| [references/superpowers/executing-plans/SKILL.md](./references/superpowers/executing-plans/SKILL.md) | 无Subagent支持时执行Plan |
+| [references/superpowers/using-git-worktrees/SKILL.md](./references/superpowers/using-git-worktrees/SKILL.md) | 需要隔离工作空间时 |
+
+#### REVIEW / 审查
+
+| 文件 | 调用时机 |
+|------|----------|
+| [references/checkpoint-driven/modules.md](./references/checkpoint-driven/modules.md) | 进入Review时 (含Deep/Debug/Review/Multi模块) |
+| [references/superpowers/verification-before-completion/SKILL.md](./references/superpowers/verification-before-completion/SKILL.md) | 完成前验证时 |
+| [references/superpowers/requesting-code-review/SKILL.md](./references/superpowers/requesting-code-review/SKILL.md) | 请求代码审查时 |
+| [references/superpowers/requesting-code-review/code-reviewer.md](./references/superpowers/requesting-code-review/code-reviewer.md) | 派遣审查Agent模板 |
+| [references/superpowers/receiving-code-review/SKILL.md](./references/superpowers/receiving-code-review/SKILL.md) | 收到审查反馈时 |
+
+#### ARCHIVE / 知识沉淀
+
+| 文件 | 调用时机 |
+|------|----------|
+| [references/spec-driven-development/archive-template.md](./references/spec-driven-development/archive-template.md) | 进入Archive时 |
+| [scripts/archive_builder.py](./scripts/archive_builder.py) | 自动化归档生成时 |
+| [references/superpowers/finishing-a-development-branch/SKILL.md](./references/superpowers/finishing-a-development-branch/SKILL.md) | 完成分支决策时 |
+
+### 按特殊模式索引
+
+#### DEBUG 模式
+
+| 文件 | 调用时机 |
+|------|----------|
+| [references/superpowers/systematic-debugging/SKILL.md](./references/superpowers/systematic-debugging/SKILL.md) | 进入 Debug 模式时 |
+| [references/superpowers/systematic-debugging/root-cause-tracing.md](./references/superpowers/systematic-debugging/root-cause-tracing.md) | 根因不明需追溯时 |
+| [references/superpowers/systematic-debugging/defense-in-depth.md](./references/superpowers/systematic-debugging/defense-in-depth.md) | 需要多层防御时 |
+| [references/superpowers/systematic-debugging/condition-based-waiting.md](./references/superpowers/systematic-debugging/condition-based-waiting.md) | 异步/条件等待问题时 |
+
+#### MULTI 模式
+
+| 文件 | 调用时机 |
+|------|----------|
+| [references/spec-driven-development/multi-project.md](./references/spec-driven-development/multi-project.md) | 多项目协作时 |
+| [references/checkpoint-driven/modules.md](./references/checkpoint-driven/modules.md) (Multi-project 模块) | 多项目场景时 |
+
+#### DOC 模式
+
+| 文件 | 调用时机 |
+|------|----------|
+| [protocols/RIPER-DOC.md](./protocols/RIPER-DOC.md) | 文档撰写模式时 |
+
+#### REVIEW 模式
+
+| 文件 | 调用时机 |
+|------|----------|
+| [references/special-modes/review.md](./references/special-modes/review.md) | 进入 REVIEW 模式时 |
+| [references/checkpoint-driven/modules.md](./references/checkpoint-driven/modules.md) (Review 模块) | 三轴评审标准 |
+| [references/superpowers/requesting-code-review/SKILL.md](./references/superpowers/requesting-code-review/SKILL.md) | 请求代码审查时 |
+| [references/superpowers/receiving-code-review/SKILL.md](./references/superpowers/receiving-code-review/SKILL.md) | 接收审查反馈时 |
+
+#### REFACTOR 模式
+
+| 文件 | 调用时机 |
+|------|----------|
+| [references/special-modes/refactor.md](./references/special-modes/refactor.md) | 进入 REFACTOR 模式时 |
+| [references/superpowers/test-driven-development/SKILL.md](./references/superpowers/test-driven-development/SKILL.md) | TDD 执行验证 |
+| [references/spec-driven-development/commands.md](./references/spec-driven-development/commands.md) (create_codemap) | CodeMap 生成 |
+
+#### TEST 模式
+
+| 文件 | 调用时机 |
+|------|----------|
+| [references/special-modes/test.md](./references/special-modes/test.md) | 进入 TEST 模式时 |
+| [references/superpowers/test-driven-development/SKILL.md](./references/superpowers/test-driven-development/SKILL.md) | TDD 最佳实践 |
+| [references/superpowers/test-driven-development/testing-anti-patterns.md](./references/superpowers/test-driven-development/testing-anti-patterns.md) | 测试反模式 |
+
+#### PERF 模式
+
+| 文件 | 调用时机 |
+|------|----------|
+| [references/special-modes/perf.md](./references/special-modes/perf.md) | 进入 PERF 模式时 |
+| [references/superpowers/verification-before-completion/SKILL.md](./references/superpowers/verification-before-completion/SKILL.md) | 验证策略 |
+| [references/superpowers/finishing-a-development-branch/SKILL.md](./references/superpowers/finishing-a-development-branch/SKILL.md) | 完成分支决策 |
+
+#### MIGRATE 模式
+
+| 文件 | 调用时机 |
+|------|----------|
+| [references/special-modes/migrate.md](./references/special-modes/migrate.md) | 进入 MIGRATE 模式时 |
+| [references/superpowers/brainstorming/SKILL.md](./references/superpowers/brainstorming/SKILL.md) | 风险评估 |
+| [references/superpowers/verification-before-completion/SKILL.md](./references/superpowers/verification-before-completion/SKILL.md) | 迁移后验证 |
+
+### Agent 定义
+
+| 文件 | 调用时机 |
+|------|----------|
+| [references/agents/sdd-riper-one/SKILL.md](./references/agents/sdd-riper-one/SKILL.md) | 使用完整RIPER协议时 |
+| [references/agents/sdd-riper-one-light/SKILL.md](./references/agents/sdd-riper-one-light/SKILL.md) | 使用Checkpoint模式时 |
+| [references/agents/code-reviewer.md](./references/agents/code-reviewer.md) | 派遣审查Agent时 |
+
+### 协议
+
+| 文件 | 调用时机 |
+|------|----------|
+| [protocols/RIPER-5.md](./protocols/RIPER-5.md) | 高风险代码修改时 |
+| [protocols/SDD-RIPER-DUAL-COOP.md](./protocols/SDD-RIPER-DUAL-COOP.md) | 双模型环境时 |
+| [protocols/RIPER-DOC.md](./protocols/RIPER-DOC.md) | DOC模式时 |
+
+### 方法论文档
+
+| 文件 | 调用时机 |
+|------|----------|
+| [docs/从传统编程转向大模型编程.md](./docs/从传统编程转向大模型编程.md) | 理解范式转换时 |
+| [docs/团队落地指南.md](./docs/团队落地指南.md) | 团队推广时 |
+| [docs/如何快速从零开始落地大模型编程 -- 手把手教程.md](./docs/如何快速从零开始落地大模型编程 -- 手把手教程.md) | 入门学习时 |
+| [docs/AI-原生研发范式-从代码中心到文档驱动的演进.md](./docs/AI-原生研发范式-从代码中心到文档驱动的演进.md) | 深入理解理论时 |
+
+### Superpowers 扩展参考
+
+| 文件 | 调用时机 |
+|------|----------|
+| [references/superpowers/using-superpowers/SKILL.md](./references/superpowers/using-superpowers/SKILL.md) | 检查Skill适用性时 |
+| [references/superpowers/using-superpowers/references/codex-tools.md](./references/superpowers/using-superpowers/references/codex-tools.md) | Codex 平台工具映射 |
+| [references/superpowers/using-superpowers/references/copilot-tools.md](./references/superpowers/using-superpowers/references/copilot-tools.md) | Copilot CLI 工具映射 |
+| [references/superpowers/using-superpowers/references/gemini-tools.md](./references/superpowers/using-superpowers/references/gemini-tools.md) | Gemini 平台工具映射 |
+| [references/superpowers/writing-skills/SKILL.md](./references/superpowers/writing-skills/SKILL.md) | 创建新Skill时 |
+| [references/superpowers/writing-skills/persuasion-principles.md](./references/superpowers/writing-skills/persuasion-principles.md) | 优化 Skill 效果时 |
+| [references/superpowers/writing-skills/testing-skills-with-subagents.md](./references/superpowers/writing-skills/testing-skills-with-subagents.md) | 验证 Skill 有效性时 |
+| [references/superpowers/writing-skills/anthropic-best-practices.md](./references/superpowers/writing-skills/anthropic-best-practices.md) | Anthropic 最佳实践参考 |
+
+### 自动化工具
+
+| 文件 | 调用时机 |
+|------|----------|
+| [scripts/archive_builder.py](./scripts/archive_builder.py) | 自动化归档时 |
+| [scripts/validate_aliases_sync.py](./scripts/validate_aliases_sync.py) | 验证 aliases 同步状态时 |
+
+---
+
+## 统计
+
+- **参考文件总数**: 50+
+- **来源分布**: SDD-RIPER (14), SDD-RIPER-Opt (6), Superpowers (24+), 测试开发 (2), 工具脚本 (2)
+- **目录结构**: references/ (6大类), protocols/ (3), docs/ (4), scripts/ (2)
 
 ---
 

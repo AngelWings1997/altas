@@ -2,8 +2,8 @@
 
 > **Fusion de trois avantages | Adaptation intelligente de la profondeur | Divulgation progressive | Retour à chaque étape**
 
-**Version:** 4.0 (2026-04-14)  
-**Taille du dépôt:** 2.2M, 86 fichiers Markdown, 70 documents de référence
+**Version:** 4.0 (2026-04-16)  
+**Taille du dépôt:** 8.3M, 169 fichiers Markdown, 79 documents de référence
 
 ---
 
@@ -47,7 +47,7 @@ Dédié à résoudre quatre principaux points de douleur en ingénierie dans la 
 
 ```
 altas/
-├── altas-workflow/              # Répertoire principal du protocole (2.2M, 86 fichiers)
+├── altas-workflow/              # Répertoire principal du protocole (8.3M, 92 fichiers)
 │   ├── SKILL.md                 # ⭐ Prompt système principal (AI lit)
 │   ├── README.md                # Description détaillée ALTAS
 │   ├── QUICKSTART.md            # Guide rapide basé sur les scénarios
@@ -61,7 +61,7 @@ altas/
 │   │   ├── AI-原生研发范式.md
 │   │   ├── 团队落地指南.md
 │   │   └── 手把手教程.md
-│   ├── references/              # Documents de référence à la demande (70 fichiers)
+│   ├── references/              # Documents de référence à la demande (79 fichiers)
 │   │   ├── spec-driven-development/  # Développement piloté par Spec (7 documents principaux)
 │   │   ├── checkpoint-driven/        # Mode léger Checkpoint (4 documents)
 │   │   ├── superpowers/              # Super-pouvoirs (37 documents)
@@ -71,11 +71,14 @@ altas/
 │   │   │   ├── brainstorming/            # Brainstorming de conception
 │   │   │   ├── writing-plans/            # Meilleures pratiques d'écriture Plan
 │   │   │   └── ... (plus de super-pouvoirs)
-│   │   └── agents/                       # Définitions Agent (22 documents)
-│   │       ├── sdd-riper-one/            # Agent standard
-│   │       └── sdd-riper-one-light/      # Agent léger
+│   │   ├── agents/                       # Définitions Agent (22 documents)
+│   │   │   ├── sdd-riper-one/            # Agent standard
+│   │   │   └── sdd-riper-one-light/      # Agent léger
+│   │   ├── entry/                        # Configuration d'entrée (4 documents)
+│   │   └── special-modes/                # Modes spéciaux (5 documents)
 │   └── scripts/                 # Outils d'automatisation
 │       └── archive_builder.py   # Constructeur d'archive
+├── .qoder/repowiki/             # Documents Wiki (69 documents)
 ├── AGENTS.md                    # Directives comportementales AI générales
 ├── CLAUDE.md                    # Directives comportementales AI générales
 └── EXAMPLES.md                  # Exemples de code des quatre principes
@@ -88,7 +91,7 @@ altas/
 | **Protocole principal** | 1 | SKILL.md (Protocole principal ALTAS Workflow) |
 | **Protocoles spécialisés** | 3 | RIPER-5 / RIPER-DOC / DUAL-COOP |
 | **Méthodologie** | 4 | Traditionnel vers LLM / Paradigme AI-native / Adoption équipe / Tutoriel pas à pas |
-| **Documents de référence** | 70 | Piloté par Spec (7) / Checkpoint (4) / Superpowers (37) / Agents (22) |
+| **Documents de référence** | 79 | Piloté par Spec (7) / Checkpoint (4) / Superpowers (37) / Agents (22) / Entry (4) / Special-Modes (5) |
 | **Agents indépendants** | 2 | SDD-RIPER-ONE (standard/léger) |
 | **Exemples de code** | 1 | EXAMPLES.md (exemples pratiques des quatre principes) |
 | **Outils d'automatisation** | 1 | archive_builder.py (Constructeur d'archive) |
@@ -331,18 +334,21 @@ flowchart LR
 ## 📊 Statistiques du dépôt
 
 ```
-Taille du dépôt: 2.2M
-Fichiers Markdown: 86
-Documents de référence: 70
+Taille du dépôt: 8.3M
+Fichiers Markdown: 169
+Documents de référence: 79
   - Spec-Driven Development: 7
   - Checkpoint-Driven: 4
   - Superpowers: 37
   - Agents: 22
+  - Entry: 4
+  - Special-Modes: 5
 Protocoles principaux: 1 (SKILL.md)
 Protocoles spécialisés: 3 (RIPER-5/RIPER-DOC/DUAL-COOP)
 Méthodologie: 4
 Agents indépendants: 2 (standard/léger)
 Outils d'automatisation: 1 (archive_builder.py)
+Documents Wiki: 69 (.qoder/repowiki/)
 ```
 
 ---
@@ -366,4 +372,4 @@ Outils d'automatisation: 1 (archive_builder.py)
 
 *Propulsé par l'intégration de SDD-RIPER, SDD-RIPER-Optimized (Checkpoint-Driven), et Superpowers.*
 
-**Dernière mise à jour**: 2026-04-14
+**Dernière mise à jour**: 2026-04-16

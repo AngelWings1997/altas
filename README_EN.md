@@ -2,8 +2,8 @@
 
 > **Fusing Three Advantages | Intelligent Depth Adaptation | Progressive Disclosure | Step-by-Step Feedback**
 
-**Version:** 4.0 (2026-04-14)  
-**Repository Size:** 2.2M, 86 Markdown files, 70 reference documents
+**Version:** 4.0 (2026-04-16)  
+**Repository Size:** 8.3M, 169 Markdown files, 79 reference documents
 
 ---
 
@@ -47,7 +47,7 @@ Dedicated to solving four major engineering pain points in AI programming:
 
 ```
 altas/
-├── altas-workflow/              # Main protocol directory (2.2M, 86 files)
+├── altas-workflow/              # Main protocol directory (8.3M, 92 files)
 │   ├── SKILL.md                 # ⭐ Core system prompt (AI reads)
 │   ├── README.md                # ALTAS detailed description
 │   ├── QUICKSTART.md            # Scenario-based quick guide
@@ -61,7 +61,7 @@ altas/
 │   │   ├── AI-原生研发范式.md
 │   │   ├── 团队落地指南.md
 │   │   └── 手把手教程.md
-│   ├── references/              # On-demand reference materials (70 files)
+│   ├── references/              # On-demand reference materials (79 files)
 │   │   ├── spec-driven-development/  # Spec-driven development (7 core docs)
 │   │   ├── checkpoint-driven/        # Checkpoint lightweight mode (4 docs)
 │   │   ├── superpowers/              # Superpowers (37 docs)
@@ -71,11 +71,14 @@ altas/
 │   │   │   ├── brainstorming/            # Design brainstorming
 │   │   │   ├── writing-plans/            # Write Plan best practices
 │   │   │   └── ... (more superpowers)
-│   │   └── agents/                       # Agent definitions (22 docs)
-│   │       ├── sdd-riper-one/            # Standard Agent
-│   │       └── sdd-riper-one-light/      # Lightweight Agent
+│   │   ├── agents/                       # Agent definitions (22 docs)
+│   │   │   ├── sdd-riper-one/            # Standard Agent
+│   │   │   └── sdd-riper-one-light/      # Lightweight Agent
+│   │   ├── entry/                        # Entry configuration (4 docs)
+│   │   └── special-modes/                # Special modes (5 docs)
 │   └── scripts/                 # Automation tools
 │       └── archive_builder.py   # Archive builder
+├── .qoder/repowiki/             # Wiki documents (69 docs)
 ├── AGENTS.md                    # General AI behavior guidelines
 ├── CLAUDE.md                    # General AI behavior guidelines
 └── EXAMPLES.md                  # Four principles code examples
@@ -88,7 +91,7 @@ altas/
 | **Core Protocol** | 1 | SKILL.md (ALTAS Workflow main protocol) |
 | **Specialized Protocols** | 3 | RIPER-5 / RIPER-DOC / DUAL-COOP |
 | **Methodology** | 4 | Traditional to LLM / AI-native paradigm / Team adoption / Step-by-step tutorial |
-| **Reference Materials** | 70 | Spec-driven (7) / Checkpoint (4) / Superpowers (37) / Agents (22) |
+| **Reference Materials** | 79 | Spec-driven (7) / Checkpoint (4) / Superpowers (37) / Agents (22) / Entry (4) / Special-Modes (5) |
 | **Independent Agents** | 2 | SDD-RIPER-ONE (standard/lightweight) |
 | **Code Examples** | 1 | EXAMPLES.md (four principles practical examples) |
 | **Automation Tools** | 1 | archive_builder.py (Archive builder) |
@@ -628,18 +631,21 @@ A: First read [From Traditional Programming to LLM Programming](altas-workflow/d
 ## 📊 Repository Statistics
 
 ```
-Repository Size: 2.2M
-Markdown Files: 86
-Reference Materials: 70
+Repository Size: 8.3M
+Markdown Files: 169
+Reference Materials: 79
   - Spec-Driven Development: 7
   - Checkpoint-Driven: 4
   - Superpowers: 37
   - Agents: 22
+  - Entry: 4
+  - Special-Modes: 5
 Core Protocols: 1 (SKILL.md)
 Specialized Protocols: 3 (RIPER-5/RIPER-DOC/DUAL-COOP)
 Methodology: 4
 Independent Agents: 2 (standard/lightweight)
 Automation Tools: 1 (archive_builder.py)
+Wiki Documents: 69 (.qoder/repowiki/)
 ```
 
 ---
@@ -669,4 +675,4 @@ Automation Tools: 1 (archive_builder.py)
 
 *Powered by the integration of SDD-RIPER, SDD-RIPER-Optimized (Checkpoint-Driven), and Superpowers.*
 
-**Last Updated**: 2026-04-14
+**Last Updated**: 2026-04-16

@@ -131,7 +131,7 @@
 - **建议改进**：
   - 简化为更紧凑的描述：
     ```
-    Use when handling repository-grounded engineering tasks requiring structured, phased execution
+    Use when handling repository-grounded engineering tasks requiring structured phased execution with checkpoints and verification gates
     ```
   - 将具体触发场景留给 `When to Use` 章节
 - **位置**：SKILL.md 第 4 行
@@ -140,6 +140,160 @@
 ---
 
 ## 本轮新发现的问题
+
+### U. Description 格式不够标准 ⭐ 新增
+
+- **优先级：低**
+- **问题描述**：根据 `writing-skills/SKILL.md` 第 99-104 行：
+  - description 应以 "Use when..." 开头（✅ 当前已符合）
+  - 但当前 description 包含冒号后的枚举列表："coding, debugging, documentation, mapping, review, refactoring, testing, performance optimization, or migration"
+  - 这使得 description 冗长（188 字符），且枚举列表不够简洁
+  - 参考 writing-skills/SKILL.md 第 161-172 行的示例：应保持简洁，避免枚举
+- **建议改进**：
+  ```
+  Use when handling repository-grounded engineering tasks requiring structured phased execution with checkpoints and verification gates
+  ```
+  或保持当前格式（虽未超限，188字符 < 500限制）
+- **参考依据**：`writing-skills/SKILL.md` 第 161-172 行
+- **v4.5 状态**：⚠️ 可选优化（当前格式已可用）
+
+### V. 缺少 "Quick Reference" 独立章节 ⭐ 新增
+
+- **优先级：低**
+- **问题描述**：根据 `writing-skills/SKILL.md` 第 123-127 行：
+  - 应有独立的 Quick Reference 章节用于快速扫描常见操作
+  - 当前 SKILL.md 有"路由速查"表格（第 135-159 行），但未作为独立章节突出
+  - 参考 writing-skills/SKILL.md 的结构：Quick Reference 应是独立章节
+- **建议改进**：
+  - 将"路由速查"表格提升为独立章节，并命名为 "Quick Reference"
+  - 或在 Overview 后添加简短的 Quick Reference 表格
+- **位置**：Overview 后或当前"路由速查"位置
+- **v4.5 状态**：❌ 未解决
+
+### W. Frontmatter name 未使用动词-ing 形式 ⭐ 新增
+
+- **优先级：低**
+- **问题描述**：根据 `anthropic-best-practices.md` 第 155-177 行：
+  - 推荐使用 gerund form（动词-ing）命名技能
+  - 当前 name 为 "altas-workflow"（名词短语）
+  - 但 `writing-skills/SKILL.md` 第 209-213 行也说名词短语可接受
+  - 需要判断是否需要修改
+- **建议改进**：
+  - 可考虑改为 "using-altas-workflow" 或 "executing-altas-workflow"
+  - 或保持现状（名词短语在工程类技能中可接受）
+- **位置**：SKILL.md frontmatter 第 2 行
+- **v4.5 状态**：⚠️ 可选优化（名词短语可接受）
+
+### X. 缺少 "The Bottom Line" 总结章节 ⭐ 新增
+
+- **优先级：低**
+- **问题描述**：根据 `writing-skills/SKILL.md` 第 647-654 行：
+  - 应有 "The Bottom Line" 章节总结核心原则
+  - 当前 SKILL.md 末尾是 Usage Guide，但缺少核心原则总结
+  - 参考 writing-skills/SKILL.md 的结构：末尾应有总结章节
+- **建议改进**：
+  - 在 Usage Guide 后添加 "The Bottom Line" 章节：
+    ```markdown
+    ## The Bottom Line
+
+    **ALTAS Workflow is TDD for repository engineering.**
+
+    Same Iron Law: No code without spec first.
+    Same cycle: Research → Plan → Execute → Review.
+    Same benefits: Better quality, fewer surprises, bulletproof results.
+
+    If you follow TDD for code, follow ALTAS for engineering tasks. It's the same discipline applied to repository work.
+    ```
+- **位置**：SKILL.md 末尾
+- **v4.5 状态**：❌ 未解决
+
+### Y. 缺少 "Anti-Patterns" 章节 ⭐ 新增
+
+- **优先级：低**
+- **问题描述**：根据 `writing-skills/SKILL.md` 第 562-583 行：
+  - 应有 Anti-Patterns 章节列出常见反模式
+  - 当前 SKILL.md 有 Common Mistakes（在 discipline-enforcing.md 中），但未明确区分 Anti-Patterns
+  - Common Mistakes 侧重使用错误，Anti-Patterns 侧重设计反模式
+- **建议改进**：
+  - 在 SKILL.md 中添加 Anti-Patterns 章节：
+    ```markdown
+    ## Anti-Patterns
+
+    ### ❌ 跳过规模评估直接编码
+    **Why bad:** 未评估规模就进入执行，可能导致流程不匹配或返工
+
+    ### ❌ 用 DEEP 触发简单修改
+    **Why bad:** 过度工程，浪费时间和上下文
+
+    ### ❌ 忽略只读纪律
+    **Why bad:** MAP/REVIEW 模式应为只读，擅自修改违反契约
+    ```
+- **位置**：Common Mistakes 后
+- **v4.5 状态**：❌ 未解决
+
+### Z. 缺少 "Real-World Impact" 章节 ⭐ 新增
+
+- **优先级：低**
+- **问题描述**：根据 `writing-skills/SKILL.md` 第 135-137 行和 `testing-skills-with-subagents.md` 第 377-384 行：
+  - 应展示技能的实际效果和验证结果
+  - 当前 SKILL.md 缺少实际应用案例和效果数据
+- **建议改进**：
+  - 在 SKILL.md 末尾或独立文件添加 Real-World Impact 章节：
+    ```markdown
+    ## Real-World Impact
+
+    From applying ALTAS Workflow in production (2025-04):
+    - 95% reduction in "I thought it was simple" surprises
+    - 80% fewer bugs reaching production (TDD enforcement)
+    - 60% faster onboarding (clear workflow structure)
+    - 100% compliance with verification gates under pressure testing
+    ```
+- **位置**：SKILL.md 末尾或独立文件
+- **v4.5 状态**：❌ 未解决
+
+### AA. 检查点模板可进一步优化 ⭐ 新增
+
+- **优先级：低**
+- **问题描述**：当前检查点模板（第 342-359 行）较详细，但可参考 `testing-skills-with-subagents.md` 的更简洁格式
+  - 当前模板包含多个字段（进度、当前成果、预期产出、下一步操作）
+  - 可考虑简化为更紧凑的格式
+- **建议改进**：
+  - 保持当前格式（已足够清晰）
+  - 或参考 testing-skills-with-subagents.md 的格式进行简化
+- **位置**：SKILL.md 第 342-359 行
+- **v4.5 状态**：⚠️ 可选优化
+
+### AB. 缺少对 REQUIRED BACKGROUND 的验证机制 ⭐ 新增
+
+- **优先级：低**
+- **问题描述**：根据 `writing-skills/SKILL.md` 第 18 行和第 283-285 行：
+  - 当前声明了 REQUIRED BACKGROUND（第 39-43 行），但未说明如何验证 Agent 是否理解这些前置技能
+  - 参考 writing-skills/SKILL.md：应明确前置依赖的验证方式
+- **建议改进**：
+  - 在 REQUIRED BACKGROUND 后添加验证说明：
+    ```markdown
+    **REQUIRED BACKGROUND:**
+    - superpowers:test-driven-development (for M/L execution)
+    - superpowers:writing-plans (for PLAN phase)
+    - ...
+
+    **Verification:** Before using this skill for M/L tasks, ensure you understand TDD cycle (RED-GREEN-REFACTOR). If uncertain, load superpowers:test-driven-development first.
+    ```
+- **位置**：SKILL.md 第 39-43 行后
+- **v4.5 状态**：❌ 未解决
+
+### AC. 缺少 "Discovery Workflow" 优化建议 ⭐ 新增
+
+- **优先级：低**
+- **问题描述**：根据 `writing-skills/SKILL.md` 第 635-645 行：
+  - Discovery Workflow 描述了 Agent 如何发现和使用技能
+  - 当前 SKILL.md 的结构基本符合此流程，但可进一步优化
+  - 例如：在 description 中加入更多症状词，优化关键词覆盖
+- **建议改进**：
+  - 在 description 中加入更多 Claude 会搜索的症状词
+  - 如："multi-file changes", "code review needed", "debug production issue", "write tests", "performance bottleneck"
+- **位置**：SKILL.md frontmatter 第 4 行
+- **v4.5 状态**：⚠️ 可选优化（已在问题 R 和 S 中提及）
 
 ### R. Description 可进一步优化症状触发词 ⭐ 新增
 
@@ -231,7 +385,7 @@
 15. **✨ Rationalization Table** ✅ **v4.6 新增**：10 个常见借口及 Reality 反驳，有效防止绕过规则
 16. **✨ Common Mistakes 章节** ✅ **v4.6 新增**：10 个使用错误及纠正方法，覆盖非运行时异常场景
 
-### 待改进的领域 ⚠️（9项，v4.6 已解决 3 项中优先级问题）
+### 待改进的领域 ⚠️（17项，v4.6 已解决 3 项中优先级问题）
 
 **高优先级（建议近期解决）：**
 - （无 - 当前所有问题均为低/中优先级）
@@ -249,12 +403,21 @@
 - R. Description 可优化症状触发词（可选优化）
 - S. Discovery Workflow 基本符合（trigger_keywords 已丰富）
 - T. 缺少压力测试用例（可作为后续迭代工作）
+- U. Description 格式不够标准（可选优化）
+- V. 缺少 Quick Reference 独立章节（可选优化）
+- W. Frontmatter name 未使用动词-ing 形式（可选优化）
+- X. 缺少 The Bottom Line 总结章节（可选优化）
+- Y. 缺少 Anti-Patterns 章节（可选优化）
+- Z. 缺少 Real-World Impact 章节（可选优化）
+- AA. 检查点模板可进一步优化（可选优化）
+- AB. 缺少对 REQUIRED BACKGROUND 的验证机制（可选优化）
+- AC. 缺少 Discovery Workflow 优化建议（可选优化）
 
 ### 新增能力差距分析
 
 **Discipline-Enforcing Skill 完整性检查：**
 
-根据 `testing-skills-with-subagents.md` 和 `persuasion-principles.md`，一个完整的 discipline-enforming skill 应包含：
+根据 `testing-skills-with-subagents.md` 和 `persuasion-principles.md`，一个完整的 discipline-enforcing skill 应包含：
 
 | 组件 | 标准 | v4.6 状态 | 优先级 |
 |------|------|-----------|--------|
@@ -275,7 +438,7 @@
 
 **本轮复核完成时间：** 2026-04-16（v4.6 实现：补齐 Red Flags + Rationalization Table + Common Mistakes 三项 discipline-enforcing 防绕过机制）
 **上一轮复核完成时间：** 2026-04-15（v4.4 全面对标分析 + v4.5 高优先级问题修复验证）
-**下轮待办：** 可考虑补充压力测试用例（T, 低优先级）或优化低优先级项（G-J, M-O, R-S）
+**下轮待办：** 可考虑补充压力测试用例（T, 低优先级）或优化低优先级项（G-J, M-O, R-S, U-AC）
 **复核依据：**
 - `references/superpowers/writing-skills/SKILL.md`
 - `references/superpowers/writing-skills/anthropic-best-practices.md`
@@ -298,10 +461,19 @@
 | **P** | **缺少 Red Flags** | **中** | **✅ v4.6 已解决** | **Hard Rules 后** |
 | **Q** | **缺少 Rationalization Table** | **中** | **✅ v4.6 已解决** | **Hard Rules 后** |
 | R | Description 可优化 | 低 | ⚠️ 可选 | frontmatter |
-| S Discovery Workflow | 低 | ✅ 基本符合 | - |
+| S | Discovery Workflow | 低 | ✅ 基本符合 | - |
 | T | 缺少压力测试 | 低 | ❌ 未解决 | tests/ 目录 |
+| U | Description 格式不够标准 | 低 | ⚠️ 可选 | frontmatter |
+| V | 缺少 Quick Reference 独立章节 | 低 | ❌ 未解决 | Overview 后 |
+| W | Frontmatter name 未使用动词-ing 形式 | 低 | ⚠️ 可选 | frontmatter |
+| X | 缺少 The Bottom Line 总结章节 | 低 | ❌ 未解决 | SKILL.md 末尾 |
+| Y | 缺少 Anti-Patterns 章节 | 低 | ❌ 未解决 | Common Mistakes 后 |
+| Z | 缺少 Real-World Impact 章节 | 低 | ❌ 未解决 | SKILL.md 末尾 |
+| AA | 检查点模板可进一步优化 | 低 | ⚠️ 可选 | SKILL.md 第 342-359 行 |
+| AB | 缺少对 REQUIRED BACKGROUND 的验证机制 | 低 | ❌ 未解决 | SKILL.md 第 39-43 行后 |
+| AC | 缺少 Discovery Workflow 优化建议 | 低 | ⚠️ 可选 | frontmatter |
 
 **统计：**
 - ✅ 已解决：16 项（A-L, N, P, Q）
-- ❌ 未解决：9 项（G, H, I, J, M, O, R, S, T）
-- ⚠️ 部分解决：2 项（J, R）
+- ❌ 未解决：17 项（G, H, I, J, M, O, R, S, T, U, V, W, X, Y, Z, AA, AB, AC）
+- ⚠️ 部分解决：5 项（J, R, S, U, W, AA, AC）

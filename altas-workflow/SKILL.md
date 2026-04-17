@@ -469,8 +469,14 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 - `S`: micro-spec 后执行
 - `M/L`: TDD 执行（见下方 TDD 适配规则）
 - 读取 `references/superpowers/test-driven-development/SKILL.md`；`L` 可追加 `references/superpowers/subagent-driven-development/SKILL.md`
-- Python 项目编写测试时加载 `references/testing/pytest-patterns.md`
-- Python API 项目编写测试时额外加载 `references/testing/api-testing.md`
+- **Python 项目编写测试时**加载 `references/testing/pytest-patterns.md`
+- **Python API 项目编写测试时**额外加载 `references/testing/api-testing.md`
+- **复杂测试数据场景**（批量数据、关联对象、并发）加载 `references/testing/test-data-management.md`
+- **CI/CD 集成需求**或**性能敏感功能**加载 `references/testing/ci-cd-integration.md`
+- **质量门禁/度量报告需求**加载 `references/testing/test-quality-metrics.md`
+- **GraphQL API 项目**参考 `references/testing/api-testing.md` 第 8 节
+- **gRPC 服务项目**参考 `references/testing/api-testing.md` 第 9 节
+- **WebSocket 实时通信项目**参考 `references/testing/api-testing.md` 第 10 节
 
 #### TDD 适配规则（M/L Execute）
 

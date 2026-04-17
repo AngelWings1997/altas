@@ -555,8 +555,186 @@ pip install pytest-cov pytest-xdist pytest-asyncio pytest-mock pytest-timeout py
 | `pytest-html` | HTML 报告 |
 | `pytest-benchmark` | 性能基准 |
 | `hypothesis` | 基于属性的测试 |
+| `factory-boy` | 测试数据工厂 |
+| `faker` | 生成真实感测试数据 |
 
 ---
 
-**版本**: 1.0.0
+## Factory Boy 快速参考
+
+> **详细指南**: `references/testing/test-data-management.md`
+
+### 基本用法
+
+```python
+import factory
+from myapp.models import User, Order
+
+class UserFactory(factory.Factory):
+    class Meta:
+        model = User
+    
+    id = factory.Sequence(lambda n: n + 1)
+    username = factory.Faker('user_name')
+    email = factory.Faker('email')
+    is_active = True
+
+# 创建对象（不保存到数据库）
+user = UserFactory.build()
+
+# 批量创建
+users = UserFactory.build_batch(size=10)
+
+# 覆盖默认字段
+admin = UserFactory.build(username="admin", is_active=True)
+```
+
+### 关联对象
+
+```python
+class OrderFactory(factory.Factory):
+    class Meta:
+        model = Order
+    
+    user = factory.SubFactory(UserFactory)
+    status = "pending"
+
+# 自动创建关联的 User
+order = OrderFactory.build()
+
+# 覆盖关联对象的字段
+order = OrderFactory.build(user__username="buyer123")
+```
+
+### 常用模式
+
+| 模式 | 用法 | 说明 |
+|------|------|------|
+| `Sequence` | `id = factory.Sequence(lambda n: n)` | 自增序列 |
+| `Faker` | `name = factory.Faker('name')` | 使用 Faker 库 |
+| `SubFactory` | `user = factory.SubFactory(UserFactory)` | 关联对象 |
+| `LazyAttribute` | `full_name = factory.LazyAttribute(lambda o: f"{o.first} {o.last}")` | 惰性计算 |
+| `Iterator` | `status = factory.Iterator(['pending', 'done'])` | 循环取值 |
+| `post_generation` | 装饰器方法 | 创建后执行 |
+
+---
+
+## Faker 快速参考
+
+> **完整 Provider 列表**: https://faker.readthedocs.io/
+
+### 安装与初始化
+
+```bash
+pip install faker
+```
+
+```python
+from faker import Faker
+fake = Faker()  # 默认英文
+fake_zh = Faker('zh_CN')  # 中文
+```
+
+### 常用数据生成
+
+```python
+# 个人身份
+fake.name()              # 'Dr. Lisa Thompson'
+fake.email()             # 'shawn@example.com'
+fake.phone_number()      # '+1-(847)795-5875'
+
+# 地址
+fake.address()           # 完整地址字符串
+fake.city()              # 'Port Jessicabury'
+fake.zipcode()           # '22839-3874'
+
+# 互联网
+fake.url()               # 'https://www.miller.com/'
+fake.domain_name()       # 'olson.net'
+fake.ipv4_private()      # '192.168.143.194'
+fake.uuid4()             # UUID 字符串
+
+# 文本
+fake.sentence()          # 单句话
+fake.paragraph()         # 段落
+fake.text(max_nb_chars=200)  # 指定长度文本
+
+# 商业
+fake.company()           # 'Brown LLC'
+fake.job()               # 'Product engineer'
+
+# 时间日期
+fake.date_time_this_decade()
+fake.date_between(start_date='-30d', end_date='today')
+
+# 编程相关
+fake.pyint(min_value=0, max_value=100)
+fake.pyfloat(left_digits=2, right_digits=2, positive=True)
+fake.pystr(min_chars=10, max_chars=20)
+```
+
+### 在 pytest 中使用
+
+```python
+@pytest.fixture
+def fake_data():
+    """提供 Faker 实例"""
+    return Faker()
+
+def test_user_creation(fake_data):
+    name = fake_data.name()
+    email = fake_data.email()
+    
+    user = create_user(name=name, email=email)
+    
+    assert user.name == name
+    assert user.email == email
+    assert "@" in user.email
+```
+
+---
+
+## Hypothesis 属性测试快速参考
+
+> **用于自动生成边界条件测试用例**
+
+```bash
+pip install hypothesis
+```
+
+```python
+from hypothesis import given, strategies as st
+
+@given(st.text(), st.text())
+def test_string_concatenation(s1, s2):
+    """Hypothesis 自动生成数百个测试用例"""
+    result = s1 + s2
+    assert len(result) == len(s1) + len(s2)
+    assert result.startswith(s1) if s1 else True
+    assert result.endswith(s2) if s2 else True
+
+@given(st.integers(min_value=-1000, max_value=1000))
+def test_absolute_value_is_non_negative(n):
+    assert abs(n) >= 0
+
+@given(st.lists(st.integers(), min_size=0, max_size=100))
+def test_sort_idempotent(lst):
+    assert sorted(sorted(lst)) == sorted(lst)
+
+# 复合策略
+UserStrategy = st.builds(
+    User,
+    username=st.text(min_size=3, max_size=20).map(str.strip),
+    email=st.emails(),
+    age=st.integers(min_value=18, max_value=120),
+)
+
+@given(UserStrategy())
+def test_user_validation(user):
+    assert len(user.username) >= 3
+    assert "@" in user.email
+    assert user.age >= 18
+```
+
+**版本**: 1.1.0
 **兼容**: pytest 7.0+, Python 3.8+

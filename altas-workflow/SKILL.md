@@ -2,7 +2,7 @@
 name: altas-workflow
 version: "4.6"
 description: Use when handling repository-grounded engineering tasks requiring structured phased execution with checkpoints and verification gates
-trigger_keywords: ["FAST", "DEEP", "DEBUG", "MULTI", "DOC", "MAP", "PROJECT MAP", "MAP ALL", "ARCHIVE", "REVIEW", "REVIEW SPEC", "REVIEW EXECUTE", "REFACTOR", "TEST", "PERF", "MIGRATE", "CROSS", ">>", "sdd_bootstrap", "EXIT ALTAS", "快速", "排查", "日志分析", "多项目", "写文档", "链路梳理", "只看代码", "项目总图", "全局地图", "归档", "沉淀", "代码审查", "审查 PR", "评审规格", "计划评审", "代码评审", "实现复盘", "重构", "写测试", "补测试", "性能优化", "迁移", "版本升级", "跨项目", "验证功能", "退出协议"]
+trigger_keywords: ["FAST", "DEEP", "DEBUG", "MULTI", "DOC", "MAP", "PROJECT MAP", "MAP ALL", "ARCHIVE", "REVIEW", "REVIEW SPEC", "REVIEW EXECUTE", "REFACTOR", "TEST", "PERF", "MIGRATE", "CROSS", "PRD", "PRD ANALYSIS", ">>", "sdd_bootstrap", "EXIT ALTAS", "快速", "排查", "日志分析", "多项目", "写文档", "链路梳理", "只看代码", "项目总图", "全局地图", "归档", "沉淀", "代码审查", "审查 PR", "评审规格", "计划评审", "代码评审", "实现复盘", "重构", "写测试", "补测试", "性能优化", "迁移", "版本升级", "跨项目", "验证功能", "需求分析", "评审 PRD", "PRD 质量", "退出协议"]
 dependencies:
   - reference-index.md  # 统一参考索引入口
   - references/entry/aliases.md  # 入口触发词与模式内控制词词典
@@ -24,6 +24,7 @@ min_context_window: 128k
 | 触发词/别名 | `references/entry/aliases.md` |
 | 完整参考索引 | `reference-index.md` |
 | 特殊模式协议 | `references/special-modes/` (DEBUG/REVIEW/REFACTOR/TEST/PERF/MIGRATE) |
+| PRD 分析 | `references/prd-analysis/` (SKILL.md/template.md/validation.md) |
 | 平台工具映射 | `references/superpowers/using-superpowers/SKILL.md` |
 | 异常与恢复 | `references/entry/exceptions-recovery.md` |
 | 防绕过机制 | `references/entry/discipline-enforcing.md` |
@@ -53,6 +54,7 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 - superpowers:systematic-debugging (for DEBUG mode)
 - superpowers:brainstorming (for L/complex M INNOVATE phase)
 - superpowers:subagent-driven-development (for L scale with subagent support)
+- prd-analysis:specify-requirements (for PRD analysis and validation)
 
 **RIPER** = Research -> Innovate -> Plan -> Execute -> Review
 
@@ -166,6 +168,7 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 | `TEST` | TEST | 否 | 先测试现状与优先级 | `reference-index.md` → 按特殊模式 → Test |
 | `PERF` | PERF | 否 | 先基线与瓶颈定位 | `reference-index.md` → 按特殊模式 → Perf |
 | `MIGRATE` | MIGRATE | 否 | 风险、回滚、预演优先 | `reference-index.md` → 按特殊模式 → Migrate |
+| `PRD` / `PRD ANALYSIS` | PRD 分析 | 分析只读，产出会写 | Brainstorm → Discover → Document → Review → Validate | `references/prd-analysis/SKILL.md` |
 | `MULTI` | MULTI | 视任务而定 | 扫描子项目并确认作用域；进入后可使用 `SWITCH` / `REGISTRY` / `SCOPE LOCAL` | `reference-index.md` → 按特殊模式 → Multi |
 | `CROSS` | MULTI 扩展 | 否 | 允许跨项目改动，必须明示范围；必要时再切回 `SCOPE LOCAL` | `reference-index.md` → 按特殊模式 → Multi |
 | `EXIT ALTAS` | 停止协议 | - | 见"EXIT ALTAS 规范"节 | 无 |
@@ -491,6 +494,21 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 - 生成 human / llm 双视角沉淀
 - 优先利用现有 Spec、CodeMap、Review 结论，不重新猜测
 - 读取 `references/spec-driven-development/archive-template.md`
+
+### PRD 分析
+
+- 适用所有需要 PRD 文档分析、验证、提升质量的场景
+- **阶段 0: Brainstorm** — 探询用户想法，明确问题、用户、约束、成功标准、范围边界
+- **阶段 1: Discover** — 识别已知与模板需求差距，并行启动市场分析、用户调研、需求澄清
+- **阶段 2: Document** — 更新 PRD 对应章节，替换 `[NEEDS CLARIFICATION]` 标记
+- **阶段 3: Review** — 呈现所有发现（含冲突信息），用户选择：批准/澄清/重新发现
+- **阶段 4: Validate** — 运行验证清单，多角度最终验证
+- **核心原则**：
+  - 只关注 WHAT（构建什么）和 WHY（为什么重要），不涉及 HOW（技术实现）
+  - 严格执行 MECE 原则（互斥且穷尽）验证用户画像、旅程、功能、验收标准
+  - 每个章节完成后需用户确认才能继续
+  - 输出位置：`.start/specs/[NNN]-[name]/requirements.md`
+- **必读**：`references/prd-analysis/SKILL.md`（完整工作流）、`template.md`（模板结构）、`validation.md`（验证清单）
 
 > 完整索引与按需加载路径见 `reference-index.md`。
 >

@@ -113,6 +113,17 @@ altas-workflow/
 | [references/entry/exceptions-recovery.md](./references/entry/exceptions-recovery.md) | 遇到问题升级、不确定、需要退出协议或能力降级时 |
 | [references/entry/discipline-enforcing.md](./references/entry/discipline-enforcing.md) | Agent 即将违反铁律、使用借口绕过规则、或出现常见使用错误时 |
 
+### PRD 分析 / 需求文档
+
+| 文件 | 调用时机 |
+|------|----------|
+| [references/prd-analysis/SKILL.md](./references/prd-analysis/SKILL.md) | PRD 分析完整工作流（Brainstorm → Discover → Document → Review → Validate） |
+| [references/prd-analysis/template.md](./references/prd-analysis/template.md) | PRD 模板结构（产品概述/用户画像/旅程/功能需求/成功指标） |
+| [references/prd-analysis/validation.md](./references/prd-analysis/validation.md) | PRD 验证清单（结构验证/内容质量/边界验证/跨节一致性） |
+| [references/prd-analysis/reference/output-format.md](./references/prd-analysis/reference/output-format.md) | PRD 状态报告和多角度最终验证指南 |
+| [references/prd-analysis/examples/good-prd.md](./references/prd-analysis/examples/good-prd.md) | 优质 PRD 示例参考 |
+| [references/prd-analysis/examples/output-example.md](./references/prd-analysis/examples/output-example.md) | 预期输出格式具体示例 |
+
 ### 按工作流阶段索引
 
 #### PRE-RESEARCH / 输入准备
@@ -292,9 +303,9 @@ altas-workflow/
 
 ## 统计
 
-- **参考文件总数**: 50+
-- **来源分布**: SDD-RIPER (14), SDD-RIPER-Opt (6), Superpowers (24+), 测试开发 (2), 工具脚本 (2)
-- **目录结构**: references/ (6大类), protocols/ (3), docs/ (4), scripts/ (2)
+- **参考文件总数**: 56+
+- **来源分布**: SDD-RIPER (14), SDD-RIPER-Opt (6), Superpowers (24+), PRD Analysis (6), 测试开发 (2), 工具脚本 (2)
+- **目录结构**: references/ (5大类), protocols/ (3), docs/ (4), scripts/ (3)
 
 ---
 

@@ -99,6 +99,17 @@
 | `scripts/archive_builder.py` | SDD-RIPER-Opt | 自动化归档生成时 |
 | `references/superpowers/finishing-a-development-branch/SKILL.md` | Superpowers | 完成分支决策时 |
 
+### PRD 分析 / 需求文档
+
+| 文件 | 来源 | 调用时机 |
+|------|------|----------|
+| `references/prd-analysis/SKILL.md` | specify-requirements | PRD分析完整工作流（Brainstorm → Discover → Document → Review → Validate） |
+| `references/prd-analysis/template.md` | specify-requirements | PRD模板结构（产品概述/用户画像/旅程/功能需求/成功指标） |
+| `references/prd-analysis/validation.md` | specify-requirements | PRD验证清单（结构验证/内容质量/边界验证/跨节一致性） |
+| `references/prd-analysis/reference/output-format.md` | specify-requirements | PRD状态报告格式和多角度最终验证指南 |
+| `references/prd-analysis/examples/good-prd.md` | specify-requirements | 优质PRD参考示例 |
+| `references/prd-analysis/examples/output-example.md` | specify-requirements | 预期输出格式具体示例 |
+
 ---
 
 ## 按特殊模式索引
@@ -166,6 +177,16 @@
 | `references/superpowers/brainstorming/SKILL.md` | Superpowers | 风险评估 |
 | `references/superpowers/verification-before-completion/SKILL.md` | Superpowers | 迁移后验证 |
 
+### PRD 分析模式 (新增)
+
+| 文件 | 来源 | 调用时机 |
+|------|------|----------|
+| `references/prd-analysis/SKILL.md` | specify-requirements | 进入 PRD 分析模式时 |
+| `references/prd-analysis/template.md` | specify-requirements | 使用 PRD 模板结构时 |
+| `references/prd-analysis/validation.md` | specify-requirements | 运行 PRD 验证清单时 |
+| `references/prd-analysis/reference/output-format.md` | specify-requirements | 生成 PRD 状态报告时 |
+| `references/prd-analysis/examples/good-prd.md` | specify-requirements | 参考优质 PRD 示例时 |
+
 ---
 
 ## 按来源分类索引
@@ -232,6 +253,17 @@
 | `references/superpowers/writing-skills/persuasion-principles.md` | Skill说服原则 |
 | `references/superpowers/writing-skills/testing-skills-with-subagents.md` | Skill测试方法 |
 | `references/agents/code-reviewer.md` | 代码审查Agent定义 |
+
+### PRD Analysis (specify-requirements)
+
+| 文件 | 主题 |
+|------|------|
+| `references/prd-analysis/SKILL.md` | PRD分析完整工作流定义 |
+| `references/prd-analysis/template.md` | PRD模板结构（10大章节） |
+| `references/prd-analysis/validation.md` | PRD验证清单（结构/质量/边界/一致性） |
+| `references/prd-analysis/reference/output-format.md` | 状态报告和多角度验证指南 |
+| `references/prd-analysis/examples/good-prd.md` | 优质PRD示例参考 |
+| `references/prd-analysis/examples/output-example.md` | 预期输出格式示例 |
 ---
 
 ## 按规模等级索引
@@ -266,6 +298,6 @@
 
 ## 统计
 
-- **参考文件总数**: 50+
-- **来源分布**: SDD-RIPER (14), SDD-RIPER-Opt (6), Superpowers (24+), 测试开发 (2), 工具脚本 (1+)
-- **目录结构**: references/ (3大类), protocols/ (3), docs/ (4), skills/ (2), scripts/ (1)
+- **参考文件总数**: 56+
+- **来源分布**: SDD-RIPER (14), SDD-RIPER-Opt (6), Superpowers (24+), PRD Analysis (6), 测试开发 (2), 工具脚本 (1+)
+- **目录结构**: references/ (4大类: entry/spec-driven-development/checkpoint-driven/superpowers/prd-analysis), protocols/ (3), docs/ (4), skills/ (2), scripts/ (1)

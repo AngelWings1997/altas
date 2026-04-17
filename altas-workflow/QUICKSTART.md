@@ -87,6 +87,45 @@ MAP: scope=src/modules/order
 | `DEBUG:` | - | 线上报错、日志分析、性能异常 | 排查线上问题 |
 | `MULTI:` / `CROSS:` | L | 前后端联动、跨仓库接口联调 | 多项目协作 |
 
+### 2.2.1 测试工程师专用入口
+
+如果你的主目标是**补现有系统测试、生成测试计划/报告、搭测试基座、做质量治理**，优先用 `TEST:`，不要硬翻译成 `FAST:` 或 `sdd_bootstrap:`。
+
+**推荐直接这样发：**
+
+```text
+TEST: 基于 openapi.yaml 生成 pytest API 测试计划
+参考资料:
+- docs/openapi.yaml
+```
+
+```text
+TEST: 补齐登录接口的鉴权 / 幂等 / 限流测试矩阵
+参考资料:
+- docs/auth-openapi.yaml
+- mydocs/specs/login-security.md
+```
+
+```text
+TEST: 为现有服务建立 fixture / factory 与 rollback 测试基座
+范围: tests/
+限制: 沿用 pytest；不要改生产代码
+```
+
+```text
+TEST: 输出接口测试报告与质量门禁建议
+目标: 给出 coverage、pass rate、flaky risk、slow tests、mock ratio、remaining gaps
+参考资料:
+- mydocs/test-plans/login-api-matrix.md
+```
+
+**什么时候用 `TEST`，什么时候走标准开发流程的 `Execute(TDD)`：**
+
+- 用 `TEST:`：已有实现代码，当前目标是补测试、修测试、出测试报告、补测试骨架、做质量治理
+- 走 `Execute(TDD)`：你正在开发新功能或修复产品 Bug，测试应服务于实现推进，而不是独立成为本轮主任务
+- 如果任务同时包含“实现功能 + 补测试”，默认走 `sdd_bootstrap:` 或 `FAST:`，在执行阶段按 TDD 落地
+- 如果任务核心是“先从契约/现状出发评估测试缺口”，默认走 `TEST:`
+
 ### 2.3 各触发词的详细使用指南
 
 #### `>>`：极小改动，直接做
@@ -445,7 +484,7 @@ DEEP: 重构商品搜索链路
 | **允许跨项目** | `CROSS: [任务描述]` | L | 显式允许跨项目改动 | 跨仓库修改 |
 | **计划评审** | `REVIEW SPEC: [范围]` | - | 执行前审查 Spec/Plan | 计划审查 |
 | **实现复盘** | `REVIEW EXECUTE: [范围]` | - | 执行后三轴评审 | 代码复盘 |
-| **补测试** | `TEST: [目标]` | M/L | 测试现状分析→补测→验证 | 测试覆盖 |
+| **补测试** | `TEST: [目标]` | M/L | 测试现状分析→策略→补测→验证→报告 | 测试覆盖、测试报告、质量治理 |
 | **性能优化** | `PERF: [目标]` | M/L | 基线→定位→优化→验证 | 性能调优 |
 | **迁移任务** | `MIGRATE: [任务描述]` | L | 风险→回滚→预演→执行 | 技术迁移 |
 | **归档沉淀** | `ARCHIVE: targets=[文件列表]` | - | 知识双视角沉淀 | 知识管理 |
@@ -663,9 +702,11 @@ TEST: 为 src/utils/validator.ts 补充单元测试，覆盖率目标80%
 
 AI行为:
 1. 分析现有测试覆盖情况
-2. 识别未覆盖的边界情况
-3. 编写测试用例
-4. 验证覆盖率达到目标
+2. 先输出结构化 Test Strategy（含 P0/P1/P2、测试数据与质量门禁）
+3. 识别未覆盖的边界情况和关键路径
+4. 编写测试用例
+5. 输出 coverage、pass rate、remaining gaps 等质量度量
+6. 验证覆盖率达到目标或明确剩余缺口
 ```
 
 ---

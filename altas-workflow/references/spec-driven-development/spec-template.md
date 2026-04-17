@@ -79,18 +79,36 @@
 
 ### 4.4 Test Strategy (M/L required, S optional)
 
+> 按固定字段顺序填写；不适用项显式写 `N/A`，不要省略整个小节。
+
 - **Test Framework**: `<Jest / Pytest / Go test / ...>`
 - **Run Command**: `<npm test / pytest / go test / ...>`
-- **Test Scope**:
-  - [ ] Unit tests: `<覆盖范围，如"所有新增函数/方法">`
-  - [ ] Integration tests: `<覆盖范围，如"接口联调路径">`
-  - [ ] E2E tests: `<如适用>`
-- **Test Priority**:
-  - P0 (must): `<核心逻辑，如"注册流程、鉴权校验">`
-  - P1 (should): `<边界条件，如"空输入、超长字符串">`
-  - P2 (could): `<异常路径，如"网络超时、数据库连接失败">`
-- **Mock Strategy**: `<优先用真实依赖 / 必须 Mock 的场景 / 已有 Test Helper>`
+- **Test Levels**:
+  - Unit: `<覆盖范围；如不适用写 N/A>`
+  - Component: `<覆盖范围；如不适用写 N/A>`
+  - Integration: `<覆盖范围；如不适用写 N/A>`
+  - E2E: `<覆盖范围；如不适用写 N/A>`
+- **Risk & Priority Matrix**:
+  - P0 (must): `<核心逻辑 / 主流程 / 契约主路径>`
+  - P1 (should): `<边界条件 / 状态切换 / 权限差异>`
+  - P2 (could): `<异常路径 / 降级 / 超时 / 重试>`
+- **Requirement / Contract Traceability**:
+  - Source Requirements / Contracts: `<需求条目 / 接口文档 / Spec 行为来源>`
+  - Planned Cases:
+    - `<REQ/API-1>` -> `<对应测试类型与用例>`
+    - `<REQ/API-2>` -> `<对应测试类型与用例>`
+- **Mock / Stub / Fake Strategy**: `<优先用真实依赖 / 必须隔离的依赖 / 使用何种替身>`
+- **Test Data Strategy**:
+  - Data Source: `<factory / fixture / seed / 手写样例>`
+  - Isolation: `<transaction rollback / tmp dir / dedicated db / fake service>`
+  - Cleanup: `<自动清理方式>`
 - **Existing Test Impact**: `<是否会破坏已有测试，如有，列出受影响的测试文件>`
+- **Quality Gates**:
+  - Pass Rate: `<如 100%>`
+  - Coverage Target: `<如 line >= 80%, critical paths >= 95%>`
+  - Flaky Tolerance: `<如 0 known flaky in changed scope>`
+  - Time Budget: `<如 unit < 2 min / full suite < 10 min>`
+- **Deferred / Out of Scope Tests**: `<本轮明确不做但需记录的测试项；无则写 None>`
 
 ### 4.6 Spec Review Notes (Optional Advisory, Pre-Execute)
 - Spec Review Matrix:
@@ -254,15 +272,63 @@
 
 ### 4.4 Test Strategy (M/L required, grouped by project)
 
+> 每个项目都按同一字段顺序填写；不适用项显式写 `N/A`，不要省略整个小节。
+
 #### [api-service]
 - **Test Framework**: `<...>`
 - **Run Command**: `<...>`
-- **Test Scope & Priority**: `<...>`
+- **Test Levels**:
+  - Unit: `<... / N/A>`
+  - Component: `<... / N/A>`
+  - Integration: `<... / N/A>`
+  - E2E: `<... / N/A>`
+- **Risk & Priority Matrix**:
+  - P0: `<...>`
+  - P1: `<...>`
+  - P2: `<...>`
+- **Requirement / Contract Traceability**:
+  - `<REQ/API-1>` -> `<对应测试类型与用例>`
+  - `<REQ/API-2>` -> `<对应测试类型与用例>`
+- **Mock / Stub / Fake Strategy**: `<...>`
+- **Test Data Strategy**:
+  - Data Source: `<...>`
+  - Isolation: `<...>`
+  - Cleanup: `<...>`
+- **Existing Test Impact**: `<是否会破坏已有测试，如有，列出受影响的测试文件>`
+- **Quality Gates**:
+  - Pass Rate: `<...>`
+  - Coverage Target: `<...>`
+  - Flaky Tolerance: `<...>`
+  - Time Budget: `<...>`
+- **Deferred / Out of Scope Tests**: `<...>`
 
 #### [web-console]
 - **Test Framework**: `<...>`
 - **Run Command**: `<...>`
-- **Test Scope & Priority**: `<...>`
+- **Test Levels**:
+  - Unit: `<... / N/A>`
+  - Component: `<... / N/A>`
+  - Integration: `<... / N/A>`
+  - E2E: `<... / N/A>`
+- **Risk & Priority Matrix**:
+  - P0: `<...>`
+  - P1: `<...>`
+  - P2: `<...>`
+- **Requirement / Contract Traceability**:
+  - `<REQ/UI-1>` -> `<对应测试类型与用例>`
+  - `<REQ/UI-2>` -> `<对应测试类型与用例>`
+- **Mock / Stub / Fake Strategy**: `<...>`
+- **Test Data Strategy**:
+  - Data Source: `<...>`
+  - Isolation: `<...>`
+  - Cleanup: `<...>`
+- **Existing Test Impact**: `<是否会破坏已有测试，如有，列出受影响的测试文件>`
+- **Quality Gates**:
+  - Pass Rate: `<...>`
+  - Coverage Target: `<...>`
+  - Flaky Tolerance: `<...>`
+  - Time Budget: `<...>`
+- **Deferred / Out of Scope Tests**: `<...>`
 
 ### 4.5 Contract Interfaces (cross-project only)
 | Provider | Interface / API | Consumer(s) | Breaking Change? | Migration Plan |

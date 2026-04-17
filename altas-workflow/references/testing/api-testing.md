@@ -32,6 +32,49 @@
 
 ---
 
+## 默认输入源：先找契约文件
+
+### 契约来源优先级
+
+1. `OpenAPI / Swagger`：如 `openapi.yaml`、`swagger.yaml`、`*.openapi.json`
+2. `GraphQL Schema`：如 `schema.graphql`、`schema.graphqls`、introspection 结果
+3. `Proto`：如 `*.proto`
+4. 已落盘接口 Spec / requirements / 对外 API 文档
+
+### 默认动作
+
+进行 API 测试设计时，先执行以下动作，再写测试代码：
+
+1. **识别契约来源文件**
+   - 记录文件路径、协议类型（REST / GraphQL / gRPC）和契约版本
+2. **基于契约生成接口测试矩阵**
+   - 提取 endpoint / query / mutation / rpc、请求字段、响应结构、鉴权要求、错误码
+3. **按契约展开核心场景**
+   - `happy path`
+   - `validation`
+   - `auth`
+   - `idempotency`
+   - `error path`
+   - `schema case`
+
+### 缺少契约时
+
+- 若接口行为无法从现有 Spec 或正式接口文档明确得出，**必须暂停并提示用户补充契约**
+- 禁止从 controller / handler / serializer 等实现细节直接“猜”接口契约
+- 若用户明确要求基于现有实现先补测试，必须在测试策略中标注：`Contract Source: Missing / inferred from implementation (higher risk)`
+
+### 契约驱动接口测试矩阵模板
+
+```markdown
+| Contract Item | Source | Happy Path | Validation | Auth | Idempotency | Error Path | Schema |
+|---------------|--------|------------|------------|------|-------------|------------|--------|
+| `POST /orders` | `openapi.yaml#/paths/~1orders/post` | `201 create order` | `422 missing field` | `401/403` | `same Idempotency-Key` | `409/500` | `response schema matches` |
+| `mutation createUser` | `schema.graphql#Mutation.createUser` | `returns created user` | `invalid email rejected` | `role required` | `N/A` | `domain error surfaced` | `selection set matches schema` |
+| `GetUser` | `user.proto#rpc GetUser` | `OK returns user` | `INVALID_ARGUMENT` | `UNAUTHENTICATED` | `N/A` | `NOT_FOUND` | `protobuf fields match` |
+```
+
+---
+
 ## Test Client 设置
 
 ```python
@@ -442,6 +485,7 @@ tests/
 
 编写 API 测试时，逐项检查：
 
+- [ ] **契约来源已确认**: OpenAPI / GraphQL Schema / Proto / 已落盘接口文档
 - [ ] **Happy Path**: 有效请求成功返回 200/201
 - [ ] **必填字段**: 缺失字段返回 422
 - [ ] **类型验证**: 错误类型返回 422

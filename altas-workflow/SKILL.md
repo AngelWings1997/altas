@@ -459,7 +459,18 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
   - **操作步骤**：具体怎么做（命令、代码、工具调用）
   - **预期结果**：如何验证完成（输出、返回值、文件变化）
 - 禁止出现"TBD"、"TODO"、"后续补充"、"类似 Task X"等模糊描述
-- 必须包含 `§4.4 Test Strategy`：声明测试框架、运行命令、覆盖范围、优先级和 Mock 策略
+- 必须包含 `§4.4 Test Strategy`，且**不得**只写成一句泛化描述（如"补充必要测试"）
+- `§4.4 Test Strategy` 必须按固定字段顺序输出；不适用项显式写 `N/A`，不得省略整个小节
+- `§4.4 Test Strategy` 的**固定最小结构**：
+  - **Test Framework**：使用什么测试框架
+  - **Run Command**：本地/CI 如何执行
+  - **Test Levels**：`unit / component / integration / e2e` 各自覆盖范围；不适用项也要显式写 `N/A`
+  - **Risk & Priority Matrix**：至少列出 `P0 / P1 / P2` 场景
+  - **Requirement / Contract Traceability**：需求、接口契约或 Spec 行为如何映射到测试
+  - **Mock / Stub / Fake Strategy**：哪些依赖用真实实现，哪些必须隔离
+  - **Test Data Strategy**：数据来源、隔离方式、清理方式
+  - **Quality Gates**：覆盖率、通过率、flaky 容忍度、时间预算等门禁
+- `TEST` 模式与 `M/L` 的 `PLAN` 阶段应使用**同一套字段名与顺序**的 `Test Strategy` 结构，避免“补测试”和“做功能”两套标准
 - 未获批不进入 Execute（遵守铁律#4）
 - **必读**：进入 PLAN 前读取 `references/superpowers/writing-plans/SKILL.md`（含计划质量标准与原子任务结构要求）
 
@@ -471,9 +482,16 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 - 读取 `references/superpowers/test-driven-development/SKILL.md`；`L` 可追加 `references/superpowers/subagent-driven-development/SKILL.md`
 - **Python 项目编写测试时**加载 `references/testing/pytest-patterns.md`
 - **Python API 项目编写测试时**额外加载 `references/testing/api-testing.md`
+- **API 测试默认采用契约优先**：先识别 `OpenAPI / Swagger / GraphQL Schema / Proto` 等契约文件，再展开测试设计，禁止先从实现细节反推接口行为
+- **API 契约识别后的默认动作**：
+  - 识别契约来源文件与协议类型（REST / GraphQL / gRPC）
+  - 基于契约生成接口测试矩阵
+  - 按契约覆盖 `happy path / validation / auth / idempotency / error path / schema` 等核心场景
+- **缺少契约时**：若接口行为无法从现有 Spec/文档明确得出，必须暂停并提示用户补充契约文件或确认接口文档，禁止直接猜测 API 行为
 - **复杂测试数据场景**（批量数据、关联对象、并发）加载 `references/testing/test-data-management.md`
 - **CI/CD 集成需求**或**性能敏感功能**加载 `references/testing/ci-cd-integration.md`
 - **质量门禁/度量报告需求**加载 `references/testing/test-quality-metrics.md`
+- **`TEST` 模式出现失败时**：先做失败归因（`产品缺陷 / 测试缺陷 / 环境缺陷`）；若归因不明，建议切换到 `DEBUG`
 - **GraphQL API 项目**参考 `references/testing/api-testing.md` 第 8 节
 - **gRPC 服务项目**参考 `references/testing/api-testing.md` 第 9 节
 - **WebSocket 实时通信项目**参考 `references/testing/api-testing.md` 第 10 节

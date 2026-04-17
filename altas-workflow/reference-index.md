@@ -162,6 +162,9 @@
 | `references/special-modes/test.md` | Special Modes | 进入 TEST 模式时 |
 | `references/testing/pytest-patterns.md` | Advanced Testing Skills | Python 项目编写测试时 |
 | `references/testing/api-testing.md` | Advanced Testing Skills | Python API 项目编写测试时 |
+| `references/testing/test-scaffold-templates.md` | Advanced Testing Skills | 需要快速生成 pytest/API 测试骨架时 |
+| `references/testing/test-quality-metrics.md` | Advanced Testing Skills | 需要输出 coverage/pass rate/flaky risk/slow tests/mock ratio 等质量度量时 |
+| `references/testing/test-task-pressure-scenarios.md` | Advanced Testing Skills | 需要验证 TEST 模式纪律执行力或做压力回归时 |
 | `references/superpowers/test-driven-development/SKILL.md` | Superpowers | TDD 最佳实践 |
 | `references/superpowers/test-driven-development/testing-anti-patterns.md` | Superpowers | 测试反模式 |
 

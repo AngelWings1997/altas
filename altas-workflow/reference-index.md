@@ -78,6 +78,8 @@
 | `references/superpowers/test-driven-development/testing-anti-patterns.md` | Superpowers | TDD 遇到阻力时 |
 | `references/superpowers/subagent-driven-development/SKILL.md` | Superpowers | L 规模使用子agent时 |
 | `references/superpowers/dispatching-parallel-agents/SKILL.md` | Superpowers | 并行执行多个检查点项时 |
+| `references/testing/pytest-patterns.md` | Advanced Testing Skills | Python 项目编写测试时 |
+| `references/testing/api-testing.md` | Advanced Testing Skills | Python API 项目编写测试时 |
 | `protocols/PROTOCOL-SELECTION.md` | ALTAS | 需要切换协议时 |
 | `references/superpowers/requesting-code-review/spec-quality-metrics.md` | ALTAS | REVIEW SPEC 阶段质量评估时 |
 
@@ -158,6 +160,8 @@
 | 文件 | 来源 | 调用时机 |
 |------|------|----------|
 | `references/special-modes/test.md` | Special Modes | 进入 TEST 模式时 |
+| `references/testing/pytest-patterns.md` | Advanced Testing Skills | Python 项目编写测试时 |
+| `references/testing/api-testing.md` | Advanced Testing Skills | Python API 项目编写测试时 |
 | `references/superpowers/test-driven-development/SKILL.md` | Superpowers | TDD 最佳实践 |
 | `references/superpowers/test-driven-development/testing-anti-patterns.md` | Superpowers | 测试反模式 |
 

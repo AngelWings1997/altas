@@ -42,7 +42,13 @@
   - 未覆盖的边界条件
   - 未覆盖的异常路径
 
-### 2) 测试优先级排序
+### 2) 确认测试框架
+
+- **Python/pytest 项目**: 加载 `references/testing/pytest-patterns.md`
+- **Python API 项目**: 额外加载 `references/testing/api-testing.md`
+- **其他语言**: 按项目实际框架编写
+
+### 3) 测试优先级排序
 
 | 优先级 | 测试类型 | 说明 |
 |--------|----------|------|
@@ -52,7 +58,7 @@
 | **P3** | 集成测试 | 跨模块/跨系统交互 |
 | **P4** | 性能测试 | 响应时间/吞吐量/资源消耗 |
 
-### 3) 编写测试（按优先级）
+### 4) 编写测试（按优先级）
 
 对每个优先级：
 
@@ -61,9 +67,9 @@
 3. 运行测试，确认通过
 4. 输出检查点，请求进入下一组测试
 
-**测试用例模板**:
+**测试用例模板（通用）**:
 
-```javascript/typescript
+```
 // 正常场景
 describe('<函数名>', () => {
   it('应该 <预期行为> 当 <输入条件>', () => {
@@ -78,25 +84,19 @@ describe('<函数名>', () => {
     expect(result).toEqual(expected);
   });
 });
-
-// 边界场景
-it('应该 <预期行为> 当 <边界条件>', () => {
-  // ...
-});
-
-// 异常场景
-it('应该抛出 <异常类型> 当 <非法输入>', () => {
-  expect(() => targetFunction(invalidInput)).toThrow(ExpectedError);
-});
 ```
 
-### 4) 测试覆盖率验证
+**Python/pytest 项目**: 使用 `references/testing/pytest-patterns.md` 中的 AAA 模式和 fixture 模板
+
+**Python API 项目**: 额外使用 `references/testing/api-testing.md` 中的 API 测试模式
+
+### 5) 测试覆盖率验证
 
 - 运行覆盖率报告
 - 对比测试前后的覆盖率变化
-- 识别仍未覆盖的区域（若用户要求继续，则回到步骤 3）
+- 识别仍未覆盖的区域（若用户要求继续，则回到步骤 4）
 
-### 5) 输出测试报告
+### 6) 输出测试报告
 
 **标准格式**:
 
@@ -204,6 +204,8 @@ expect(result).toEqual(expected);
 
 ## 参考文档
 
+- pytest 核心模式：`references/testing/pytest-patterns.md`
+- API 测试模式：`references/testing/api-testing.md`
 - TDD 执行协议：`references/superpowers/test-driven-development/SKILL.md`
 - 测试反模式：`references/superpowers/test-driven-development/testing-anti-patterns.md`
 - 系统化 Debug：`references/superpowers/systematic-debugging/SKILL.md`

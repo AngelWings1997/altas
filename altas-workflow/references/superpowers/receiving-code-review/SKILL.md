@@ -133,6 +133,48 @@ Covers:
 
 Anti-pattern detection: Explicit "Valid Patterns" list prevents false positives
 
+## Implementation Verification (PRD Coverage Check)
+
+**After** code review feedback is implemented and language-specific experts approve:
+
+```
+WHEN all code review fixes are complete:
+
+1. Run implementation-verify to check PRD/spec coverage
+2. Review Fulfillment Report:
+   - 100% coverage → Ready for merge
+   - >80% coverage → Note gaps, user decides
+   - <80% coverage → Block, return to Execute phase
+3. Address any unimplemented requirements before proceeding
+```
+
+Location: `implementation-verify/SKILL.md`
+
+Script: `implementation-verify/scripts/verify.sh`
+
+Covers:
+- FR requirement fulfillment (FR-XXX from spec matched to completed tasks)
+- Task completion rate (checklist progress in tasks.md)
+- Contract implementation (API endpoints vs actual code)
+- Test coverage alignment (specified tests vs actual tests)
+
+Exit Codes:
+- `0`: 100% fulfillment - proceed
+- `1`: >80% fulfillment - user decides
+- `2`: <80% fulfillment - block
+- `3`: Error - missing required files
+
+## Complete Review Pipeline
+
+```
+receiving-code-review → implement fixes → go-code-review/python-code-review → implementation-verify → merge
+```
+
+Each stage validates a different aspect:
+1. **receiving-code-review**: Verify review feedback is technically sound
+2. **language experts**: Check language-specific best practices
+3. **implementation-verify**: Confirm all PRD requirements are implemented
+
 ## YAGNI Check for "Professional" Features
 
 ```

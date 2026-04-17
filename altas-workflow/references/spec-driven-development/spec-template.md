@@ -41,6 +41,12 @@
 - 事实与约束: ...
 - 风险与不确定项: ...
 
+## 2.2 Scale Re-assessment (if changed from initial assessment)
+- Initial Assessment: `<XS/S/M/L>`
+- Re-assessed: `<XS/S/M/L>`
+- Reason: `<为什么调整>`
+- Impact: `<阶段路径变化，如"跳过 INNOVATE" 或 "新增 Subagent">`
+
 ## 2.1 Next Actions
 - 下一步动作 1 ...
 - 下一步动作 2 ...
@@ -71,7 +77,22 @@
 - [ ] 2. ...
 - [ ] 3. ...
 
-### 4.4 Spec Review Notes (Optional Advisory, Pre-Execute)
+### 4.4 Test Strategy (M/L required, S optional)
+
+- **Test Framework**: `<Jest / Pytest / Go test / ...>`
+- **Run Command**: `<npm test / pytest / go test / ...>`
+- **Test Scope**:
+  - [ ] Unit tests: `<覆盖范围，如"所有新增函数/方法">`
+  - [ ] Integration tests: `<覆盖范围，如"接口联调路径">`
+  - [ ] E2E tests: `<如适用>`
+- **Test Priority**:
+  - P0 (must): `<核心逻辑，如"注册流程、鉴权校验">`
+  - P1 (should): `<边界条件，如"空输入、超长字符串">`
+  - P2 (could): `<异常路径，如"网络超时、数据库连接失败">`
+- **Mock Strategy**: `<优先用真实依赖 / 必须 Mock 的场景 / 已有 Test Helper>`
+- **Existing Test Impact**: `<是否会破坏已有测试，如有，列出受影响的测试文件>`
+
+### 4.6 Spec Review Notes (Optional Advisory, Pre-Execute)
 - Spec Review Matrix:
 | Check | Verdict | Evidence |
 |---|---|---|
@@ -210,12 +231,24 @@
 - [ ] 3. ...
 - [ ] 4. ...
 
-### 4.4 Contract Interfaces (cross-project only)
+### 4.4 Test Strategy (M/L required, grouped by project)
+
+#### [api-service]
+- **Test Framework**: `<...>`
+- **Run Command**: `<...>`
+- **Test Scope & Priority**: `<...>`
+
+#### [web-console]
+- **Test Framework**: `<...>`
+- **Run Command**: `<...>`
+- **Test Scope & Priority**: `<...>`
+
+### 4.5 Contract Interfaces (cross-project only)
 | Provider | Interface / API | Consumer(s) | Breaking Change? | Migration Plan |
 |---|---|---|---|---|
 | api-service | `POST /api/release` | web-console | No | N/A |
 
-### 4.5 Spec Review Notes (Optional Advisory, Pre-Execute)
+### 4.6 Spec Review Notes (Optional Advisory, Pre-Execute)
 - Spec Review Matrix:
 | Check | Verdict | Evidence |
 |---|---|---|

@@ -206,6 +206,13 @@ Guideline:
 
     * **Emergency Stop**: You MUST halt immediately if you encounter a logic conflict or missing spec detail.
 
+    * **Failure Stop**: In batch mode, if ANY test fails, you MUST halt at the current checklist item. Do NOT proceed to subsequent items until the failure is resolved or the user provides direction. Record the failure point in the Execute Log.
+
+    * **Rollback Point**: Before entering batch mode, record the current checklist item index as `batch_start=<N>`. If failure occurs at item `<M>`, all items from `<N>` to `<M>` must be reviewed. Items before `<N>` are considered committed. The user decides whether to:
+      - (a) Fix the failure at `<M>` and resume batch from `<M+1>`
+      - (b) Rollback items `<N>` through `<M>` and re-plan
+      - (c) Abort batch entirely and return to PLAN
+
 * **Action**:
 
     1. Read `The Spec File` Checklist.
@@ -525,6 +532,21 @@ Multi-project mode is compatible with Fast Flow (`sdd_bootstrap` first):
 **Guarantee**:
 
 * This protocol adds boundary controls only; it does **not** replace or bypass RIPER gates.
+
+### 8. Spec Conflict Resolution (Cross-Project)
+
+When multiple projects have active Specs that conflict:
+
+1. **Detection**: Before modifying any file in a project that has its own active Spec, read that Spec's latest version.
+2. **Conflict Classification**:
+   * **Interface Conflict**: Provider's API contract ≠ Consumer's expected contract → STOP, alert user
+   * **Behavior Conflict**: One Spec requires behavior X, another Spec requires behavior Y → STOP, alert user
+   * **Version Conflict**: One Spec depends on lib v1.x, another requires lib v2.x → STOP, alert user
+3. **Arbitration Rule**:
+   * If one project is the **Provider** (API/schema owner) and the other is the **Consumer**, Provider's contract takes precedence for interface definitions
+   * If both projects are peers (neither provides to the other), user decides
+   * Never silently override another project's active Spec
+4. **Spec Sync**: When a cross-project change affects multiple Specs, update ALL affected Specs before proceeding. Record sync in each Spec's `Change Log`.
 
 ---
 

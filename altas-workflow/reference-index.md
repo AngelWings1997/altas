@@ -70,19 +70,16 @@
 | `references/superpowers/writing-plans/SKILL.md` | Superpowers | 写Plan拆解任务时 |
 | `references/superpowers/writing-plans/plan-document-reviewer-prompt.md` | Superpowers | Plan文档审查时 |
 
-### EXECUTE / 执行实现
+### EXECUTE / 代码实现
 
 | 文件 | 来源 | 调用时机 |
 |------|------|----------|
-| `references/superpowers/test-driven-development/SKILL.md` | Superpowers | M/L规模TDD执行时 |
-| `references/superpowers/test-driven-development/testing-anti-patterns.md` | Superpowers | 避免测试反模式时 |
-| `references/superpowers/subagent-driven-development/SKILL.md` | Superpowers | L规模Subagent驱动时 |
-| `references/superpowers/subagent-driven-development/implementer-prompt.md` | Superpowers | 派遣实现者Subagent时 |
-| `references/superpowers/subagent-driven-development/spec-reviewer-prompt.md` | Superpowers | Subagent Spec合规审查时 |
-| `references/superpowers/subagent-driven-development/code-quality-reviewer-prompt.md` | Superpowers | Subagent代码质量审查时 |
-| `references/superpowers/dispatching-parallel-agents/SKILL.md` | Superpowers | 多独立故障并行派遣时 |
-| `references/superpowers/executing-plans/SKILL.md` | Superpowers | 无Subagent支持时执行Plan |
-| `references/superpowers/using-git-worktrees/SKILL.md` | Superpowers | 需要隔离工作空间时 |
+| `references/superpowers/test-driven-development/SKILL.md` | Superpowers | M/L 规模进入 Execute 时 |
+| `references/superpowers/test-driven-development/testing-anti-patterns.md` | Superpowers | TDD 遇到阻力时 |
+| `references/superpowers/subagent-driven-development/SKILL.md` | Superpowers | L 规模使用子agent时 |
+| `references/superpowers/dispatching-parallel-agents/SKILL.md` | Superpowers | 并行执行多个检查点项时 |
+| `protocols/PROTOCOL-SELECTION.md` | ALTAS | 需要切换协议时 |
+| `references/superpowers/requesting-code-review/spec-quality-metrics.md` | ALTAS | REVIEW SPEC 阶段质量评估时 |
 
 ### REVIEW / 审查
 

@@ -348,6 +348,16 @@ Can't check all boxes? You skipped TDD. Start over.
 | Must mock everything | Code too coupled. Use dependency injection. |
 | Test setup huge | Extract helpers. Still complex? Simplify design. |
 
+## Spec-Aware TDD
+
+When working under a Spec-Driven Development workflow (e.g., ALTAS Workflow):
+
+- **The Spec's Plan section defines WHAT, TDD defines HOW to verify it.**
+- If the Plan already specifies exact signatures and contracts, your RED test should verify that those contracts are currently unfulfilled — not guess at implementation.
+- If the Plan only describes behavior at a high level, follow the standard TDD cycle to design and verify the interface.
+- If your test reveals that the Plan's design is flawed, STOP and update the Spec first (Reverse Sync rule).
+- The "delete existing code" rule applies when you wrote implementation code BEFORE any test. If the Plan told you what to build and you wrote it before testing, you still must delete and rebuild from tests.
+
 ## Debugging Integration
 
 Bug found? Write failing test reproducing it. Follow TDD cycle. Test proves fix and prevents regression.

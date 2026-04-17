@@ -394,7 +394,7 @@
 - （无 - 原 P/Q/N 已在 v4.6 解决）
 
 **低优先级（可延后优化）：**
-- G. 渐进式导航不显式（已有按需加载，第 397-401 行有简短提及）
+- G. 渐进式导航不显式 → ✅ **已解决**（v4.6 新增 Quick Navigation 表格）
 - H. 缺少端到端示例（已有模板，可补充完整会话）
 - I. 缺少技能类型声明（不影响功能，但有助测试策略）
 - J. 交叉引用不足（全局声明已有，章节内引用待加强）
@@ -406,7 +406,7 @@
 - U. Description 格式不够标准（可选优化）
 - V. 缺少 Quick Reference 独立章节（可选优化）
 - W. Frontmatter name 未使用动词-ing 形式（可选优化）
-- X. 缺少 The Bottom Line 总结章节（可选优化）
+- X. 缺少 The Bottom Line 总结章节 → ✅ **已解决**（v4.6 新增 The Bottom Line 章节）
 - Y. 缺少 Anti-Patterns 章节（可选优化）
 - Z. 缺少 Real-World Impact 章节（可选优化）
 - AA. 检查点模板可进一步优化（可选优化）
@@ -466,14 +466,25 @@
 | U | Description 格式不够标准 | 低 | ⚠️ 可选 | frontmatter |
 | V | 缺少 Quick Reference 独立章节 | 低 | ❌ 未解决 | Overview 后 |
 | W | Frontmatter name 未使用动词-ing 形式 | 低 | ⚠️ 可选 | frontmatter |
-| X | 缺少 The Bottom Line 总结章节 | 低 | ❌ 未解决 | SKILL.md 末尾 |
+| X | 缺少 The Bottom Line 总结章节 | 低 | ✅ 已解决 | SKILL.md 末尾 |
 | Y | 缺少 Anti-Patterns 章节 | 低 | ❌ 未解决 | Common Mistakes 后 |
 | Z | 缺少 Real-World Impact 章节 | 低 | ❌ 未解决 | SKILL.md 末尾 |
 | AA | 检查点模板可进一步优化 | 低 | ⚠️ 可选 | SKILL.md 第 342-359 行 |
 | AB | 缺少对 REQUIRED BACKGROUND 的验证机制 | 低 | ❌ 未解决 | SKILL.md 第 39-43 行后 |
 | AC | 缺少 Discovery Workflow 优化建议 | 低 | ⚠️ 可选 | frontmatter |
 
+**新增（v4.6 审查发现）：**
+| AD | TDD 与 Spec-First 执行冲突 | 高 | ✅ 已解决 | SKILL.md EXECUTE + TDD SKILL.md |
+| AE | Spec 模板缺少 Test Strategy | 高 | ✅ 已解决 | spec-template.md §4.4 |
+| AF | 检查点缺少强制暂停约束 | 高 | ✅ 已解决 | SKILL.md + sdd-riper-one-protocol.md |
+| AG | 缺少规模再评估机制 | 中 | ✅ 已解决 | SKILL.md + spec-template.md §2.2 |
+| AH | 缺少多项目冲突解决协议 | 中 | ✅ 已解决 | sdd-riper-one-protocol.md §8 |
+| AI | 缺少协议选择指引 | 低 | ✅ 已解决 | protocols/PROTOCOL-SELECTION.md |
+| AJ | 缺少 Spec 质量度量标准 | 低 | ✅ 已解决 | spec-quality-metrics.md |
+| AK | Batch Override 缺少回滚点定义 | 低 | ✅ 已解决 | sdd-riper-one-protocol.md |
+| AL | 缺少 scaffold.py 脚手架脚本 | 低 | ✅ 已解决 | scripts/scaffold.py |
+
 **统计：**
-- ✅ 已解决：16 项（A-L, N, P, Q）
-- ❌ 未解决：17 项（G, H, I, J, M, O, R, S, T, U, V, W, X, Y, Z, AA, AB, AC）
-- ⚠️ 部分解决：5 项（J, R, S, U, W, AA, AC）
+- ✅ 已解决：25 项（A-L, N, P, Q, G, X, AD-AL）
+- ❌ 未解决：9 项（H, I, J, O, R, T, U, V, Y, Z, AB）
+- ⚠️ 部分解决：7 项（M, S, W, AA, AC）

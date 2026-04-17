@@ -1,7 +1,7 @@
 ---
 name: altas-workflow
-version: "4.5"
-description: Use when handling repository-grounded engineering tasks: coding, debugging, documentation, mapping, review, refactoring, testing, performance optimization, or migration
+version: "4.6"
+description: Use when handling repository-grounded engineering tasks requiring structured phased execution with checkpoints and verification gates
 trigger_keywords: ["FAST", "DEEP", "DEBUG", "MULTI", "DOC", "MAP", "PROJECT MAP", "MAP ALL", "ARCHIVE", "REVIEW", "REVIEW SPEC", "REVIEW EXECUTE", "REFACTOR", "TEST", "PERF", "MIGRATE", "CROSS", ">>", "sdd_bootstrap", "EXIT ALTAS", "快速", "排查", "日志分析", "多项目", "写文档", "链路梳理", "只看代码", "项目总图", "全局地图", "归档", "沉淀", "代码审查", "审查 PR", "评审规格", "计划评审", "代码评审", "实现复盘", "重构", "写测试", "补测试", "性能优化", "迁移", "版本升级", "跨项目", "验证功能", "退出协议"]
 dependencies:
   - reference-index.md  # 统一参考索引入口
@@ -14,8 +14,20 @@ min_context_window: 128k
 
 # ALTAS Workflow
 
-**Version:** 4.5 — 引入 Persona 设定、明确底层工具映射、更新上下文基线。
+**Version:** 4.6 — TDD 与 Spec-First 融合对齐、增加测试策略、强制检查点约束、规模再评估。
 > 📋 **版本升级参考**：完整变更日志见 [SDD-RIPER-ONE Agent Changelog](./references/agents/sdd-riper-one/CHANGELOG.md)。从旧版本（3.x / 4.0 / 4.1）升级时，请阅读该日志了解 breaking changes。
+
+## Quick Navigation
+
+| 我要找 | 去这里 |
+|--------|--------|
+| 触发词/别名 | `references/entry/aliases.md` |
+| 完整参考索引 | `reference-index.md` |
+| 特殊模式协议 | `references/special-modes/` (DEBUG/REVIEW/REFACTOR/TEST/PERF/MIGRATE) |
+| 平台工具映射 | `references/superpowers/using-superpowers/SKILL.md` |
+| 异常与恢复 | `references/entry/exceptions-recovery.md` |
+| 防绕过机制 | `references/entry/discipline-enforcing.md` |
+| 流程可视化 | `workflow-diagrams.md` |
 
 ## Persona & Role
 
@@ -207,6 +219,14 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 - 发现复杂度超出预期时立刻暂停，提议 `[升级为 M]` / `[升级为 L]`
 - 用户可随时指示 `[降级为 S]` / `[降级为 XS]`
 
+### Research 后规模重估
+
+- Research 阶段获得完整上下文后，**必须**重新评估规模
+- 若重估结果与初始评估不同：
+  - 升级（如 S→M / M→L）：在 Spec 中记录 `## 2.2 Scale Re-assessment`，说明升级原因和影响
+  - 降级（如 L→M / M→S）：同样记录原因，并精简后续阶段（如 L 降级为 M 则跳过 INNOVATE）
+- 用户可随时指示强制升降级，无需等待 Research 完成
+
 ### 规模-阶段映射
 
 | 规模 | 阶段路径 |
@@ -223,9 +243,9 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 
 输出初始化提示并暂停：
 
-> **ALTAS Workflow v4.5 已加载**
+> **ALTAS Workflow v4.6 已加载**
 >
-> **COMMITMENT:** I am using ALTAS Workflow v4.5 for this session. I will follow all Iron Rules without exception.
+> **COMMITMENT:** I am using ALTAS Workflow v4.6 for this session. I will follow all Iron Rules without exception.
 >
 > 当前状态：`[IDLE]`
 > 可用触发（主形式）: `>>` / `FAST` | `sdd_bootstrap` | `DEEP` | `DEBUG` | `MULTI` | `CROSS` | `DOC` | `MAP` | `PROJECT MAP` | `ARCHIVE` | `REVIEW` | `REVIEW SPEC` | `REVIEW EXECUTE` | `REFACTOR` | `TEST` | `PERF` | `MIGRATE`
@@ -358,6 +378,16 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 - **[加载参考: XXX]**: 查看某参考文档
 ```
 
+### 检查点强制暂停规则
+
+- **M/L 规模执行中**：每个 Checklist 项完成后 **必须** 输出检查点 + `[WAITING FOR COMMAND]`，除非用户已触发 Batch Override（`全部` / `all` / `execute all` / `继续完成所有` / `一次性完成`）
+- **Batch Override 中的暂停**：即使处于批量执行模式，遇到以下情况也必须立即暂停：
+  - 测试失败且原因不明
+  - 发现 Spec 中未覆盖的场景
+  - 文件冲突或编辑失败
+  - 不确定下一步的正确实现方式
+- **违反此规则视为违反铁律#4（无批准不执行）和铁律#6（证据驱动）**
+
 ## 阶段门禁摘要
 
 ### PRE-RESEARCH
@@ -387,6 +417,7 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
   - **操作步骤**：具体怎么做（命令、代码、工具调用）
   - **预期结果**：如何验证完成（输出、返回值、文件变化）
 - 禁止出现"TBD"、"TODO"、"后续补充"、"类似 Task X"等模糊描述
+- 必须包含 `§4.4 Test Strategy`：声明测试框架、运行命令、覆盖范围、优先级和 Mock 策略
 - 未获批不进入 Execute（遵守铁律#4）
 - **必读**：进入 PLAN 前读取 `references/superpowers/writing-plans/SKILL.md`（含计划质量标准与原子任务结构要求）
 
@@ -394,8 +425,21 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 
 - `XS`: 直接执行
 - `S`: micro-spec 后执行
-- `M/L`: TDD，优先单项循环；`全部` / `all` 仅在用户明确授权时使用
+- `M/L`: TDD 执行（见下方 TDD 适配规则）
 - 读取 `references/superpowers/test-driven-development/SKILL.md`；`L` 可追加 `references/superpowers/subagent-driven-development/SKILL.md`
+
+#### TDD 适配规则（M/L Execute）
+
+| Plan 精度 | TDD RED 策略 | 说明 |
+|-----------|-------------|------|
+| **签名级**（Plan 已定义精确签名、参数、返回类型） | 写测试验证 Plan 定义的行为会失败 | 不"猜"实现，用测试确认 Plan 中声明的接口当前不存在或行为不符 |
+| **行为级**（Plan 描述了预期行为但未精确定义签名） | 完整 RED-GREEN-REFACTOR | 先写测试定义行为，再实现，符合标准 TDD |
+| **探索级**（Plan 仅标注方向，细节待确定） | 完整 TDD + 设计探索 | 测试驱动接口设计，允许迭代签名 |
+
+**核心原则**:
+- Plan 已精确到签名级时，RED 阶段的目标是"验证 Plan 定义的行为当前未被满足"，而非从零猜测实现
+- 仍然禁止先写实现代码再补测试——即使 Plan 已定义签名，也必须先让测试失败
+- 如果 Plan 中的签名在实际测试中被证明不合理，必须先更新 Spec 再调整实现（铁律#5）
 
 ### REVIEW
 
@@ -429,3 +473,13 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 - **何时加载**：出现使用错误或开始 rationalize 时按需加载
 
 本文件是入口，不是完整手册。需要细节时，进入 `reference-index.md` 和 `references/` 按需加载。
+
+## The Bottom Line
+
+ALTAS Workflow is TDD applied to the full engineering lifecycle — not just code.
+
+- **No Spec, No Code**: The same discipline as "no production code without a failing test."
+- **No Approval, No Execute**: The same checkpoint as "watch it fail before you make it pass."
+- **Evidence First**: The same proof as "all tests green."
+
+If you follow TDD for code quality, follow ALTAS for engineering quality. Same rigor, broader scope.

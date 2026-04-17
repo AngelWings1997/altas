@@ -388,6 +388,45 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
   - 不确定下一步的正确实现方式
 - **违反此规则视为违反铁律#4（无批准不执行）和铁律#6（证据驱动）**
 
+### Batch Override Git 回滚强制约束
+
+> **CORE PRINCIPLE**: Batch Override without Git checkpoint = flying without a parachute. Never.
+
+**进入 Batch Override 前，必须完成以下 Git 检查点创建（按顺序执行，不可跳过）：**
+
+| 步骤 | 操作 | 验证标准 |
+|------|------|----------|
+| **1. Git 状态检查** | `git status` 确认工作区干净或已有改动已提交 | 工作区 clean 或用户确认保留未提交改动 |
+| **2. 创建检查点分支** | `git checkout -b checkpoint/batch-YYYYMMDD-HHmmss` | 分支创建成功，当前 HEAD 指向新分支 |
+| **3. 记录回滚元数据** | 在 Spec §5 Execute Log 写入 `Batch Execution Record` | 包含 checkpoint branch 名、回滚命令、batch_start_item |
+| **4. 运行基线测试** | 执行 Spec §4.4 定义的测试命令，确认基线通过 | 所有测试 PASS，或用户确认已知失败后可继续 |
+
+**缺少任一步骤 = 禁止进入 Batch Override。** 如果项目不是 Git 仓库，必须明确告知用户自动回滚不可用，并获得显式确认后才可继续。
+
+**Batch Override 失败时的回滚选项（必须提供给用户）：**
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  ⚠️  Batch Override 失败 (Item M)                                 │
+│                                                                  │
+│  检查点分支: checkpoint/batch-YYYYMMDD-HHmmss                    │
+│  已完成项: N → M-1                                               │
+│                                                                  │
+│  请选择回滚策略：                                                 │
+│  (a) 修复当前失败，从 M+1 继续                                    │
+│  (b) 回滚到检查点: git reset --hard <checkpoint_branch>          │
+│  (c) 部分回滚到 Item K: 回滚后重新执行 N+1 → K                    │
+│  (d) 完全放弃，回到 PLAN 重新规划                                  │
+│                                                                  │
+│  等待用户指令...                                                  │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+**回滚命令执行后必须：**
+1. 删除检查点分支（`git branch -D <checkpoint_branch>`）
+2. 切回原始分支（如适用）
+3. 更新 Spec §5 Execute Log 中的 `batch_status` 为 `rolled_back` 或 `completed`
+
 ## 阶段门禁摘要
 
 ### PRE-RESEARCH

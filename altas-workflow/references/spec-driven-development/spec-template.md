@@ -108,6 +108,27 @@
 - [ ] Step 1: ...
 - [ ] Step 2: ...
 
+### 5.1 Batch Execution Record (only when Batch Override is triggered)
+> 仅在用户触发批量执行（`全部`/`all`/`execute all` 等）时填写。每次 Batch Override 创建一个独立记录块。
+
+```
+### Batch Execution #1
+- batch_id: 1
+- batch_start_item: <N> (Checklist 起始项索引)
+- batch_trigger_command: "<用户原始指令>"
+- batch_checkpoint_branch: checkpoint/batch-YYYYMMDD-HHmmss
+- batch_rollback_command: git reset --hard <checkpoint_branch>
+- batch_baseline_test_result: PASS/FAIL (进入批量执行前的测试基线)
+- batch_status: in_progress / completed / failed / rolled_back
+- batch_completed_items: [<N>, <N+1>, ...] (已成功执行的 Checklist 项)
+- batch_failure_point: null / <M> (失败项索引，null 表示无失败)
+- batch_failure_reason: "<具体错误信息，如有>"
+- batch_failed_test: "<测试文件名>: <测试用例名，如有>"
+- batch_rollback_option: null / a(Fix & Resume) / b(Rollback to Checkpoint) / c(Partial Rollback) / d(Abort & Re-plan)
+- batch_rollback_confirmed_at: <timestamp，如有>
+- batch_rollback_confirmed_by: <user/agent，如有>
+```
+
 ## 6. Review Verdict
 - Review Matrix (Mandatory):
 | Axis | Key Checks | Verdict | Evidence |
@@ -267,6 +288,27 @@
 
 #### [web-console]
 - [ ] Step 2: ...
+
+### 5.1 Batch Execution Record (only when Batch Override is triggered)
+> 仅在用户触发批量执行（`全部`/`all`/`execute all` 等）时填写。每次 Batch Override 创建一个独立记录块。
+
+```
+### Batch Execution #1
+- batch_id: 1
+- batch_start_item: <N> (Checklist 起始项索引)
+- batch_trigger_command: "<用户原始指令>"
+- batch_checkpoint_branch: checkpoint/batch-YYYYMMDD-HHmmss
+- batch_rollback_command: git reset --hard <checkpoint_branch>
+- batch_baseline_test_result: PASS/FAIL (进入批量执行前的测试基线)
+- batch_status: in_progress / completed / failed / rolled_back
+- batch_completed_items: [<N>, <N+1>, ...] (已成功执行的 Checklist 项)
+- batch_failure_point: null / <M> (失败项索引，null 表示无失败)
+- batch_failure_reason: "<具体错误信息，如有>"
+- batch_failed_test: "<测试文件名>: <测试用例名，如有>"
+- batch_rollback_option: null / a(Fix & Resume) / b(Rollback to Checkpoint) / c(Partial Rollback) / d(Abort & Re-plan)
+- batch_rollback_confirmed_at: <timestamp，如有>
+- batch_rollback_confirmed_by: <user/agent，如有>
+```
 
 ## 6. Review Verdict
 - Review Matrix (Mandatory):

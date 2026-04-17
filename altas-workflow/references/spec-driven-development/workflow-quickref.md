@@ -42,7 +42,7 @@
 - **RESEARCH DoD**：明确需求边界、现状链路、已知风险，并写入 spec。
 - **INNOVATE（可选）DoD**：若执行则完成方案对比与取舍；若跳过需写明跳过原因。
 - **PLAN DoD**：产出文件改动清单、签名变化、原子 checklist。
-- **EXECUTE DoD**：代码改动与 plan 对齐，执行日志回写 spec。
+- **EXECUTE DoD**：代码改动与 plan 对齐，执行日志回写 spec；Batch Override 需创建 Git 检查点分支 + 记录回滚元数据 + 运行基线测试。
 - **REVIEW DoD**：三轴评审完整（Spec质量与达成 / Spec-代码一致性 / 代码自身质量），并给出 `Overall Verdict` 与偏差清单。
 
 ## Spec 产物策略
@@ -67,6 +67,7 @@
 - Spec is Truth
 - Reverse Sync
 - Review FAIL -> 回到 Research/Plan
+- **Batch Override 无 Git 检查点 = 禁止进入**
 
 ## 多项目协作（自动发现 + 作用域隔离）
 

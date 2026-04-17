@@ -200,18 +200,90 @@ Guideline:
     * **Trigger Words**: `"全部"`, `"all"`, `"execute all"`, `"继续完成所有"`, `"一次性完成"`
     * **Priority Rule**: Batch Override **has higher priority** than `STOP-AND-WAIT` (i.e., do not pause after each step when batch mode is triggered).
 
+    * **Batch Override Pre-conditions (MANDATORY)**:
+      Before entering batch mode, you MUST complete ALL of the following steps IN ORDER:
+
+      1. **Check Git Status**: Run `git status` to verify working tree is clean or all existing changes are committed.
+         - If uncommitted changes exist: MUST commit or stash them first. If user refuses, WARN about potential data loss and require explicit confirmation before proceeding.
+         - If working tree is NOT a Git repository: WARN that automatic rollback is unavailable, and require explicit confirmation to proceed without it.
+
+      2. **Create Checkpoint Branch**:
+         ```bash
+         git checkout -b checkpoint/batch-<YYYYMMDD-HHmmss>
+         ```
+         - Branch name format: `checkpoint/batch-YYYYMMDD-HHmmss` (e.g., `checkpoint/batch-20260417-143022`)
+         - Record the branch name in Spec §5 Execute Log as `batch_checkpoint_branch`.
+
+      3. **Record Rollback Metadata** in Spec §5 Execute Log:
+         ```markdown
+         ### Batch Execution Record
+         - batch_start_item: <N> (checklist item index)
+         - batch_trigger_command: "<用户原始指令>"
+         - batch_checkpoint_branch: checkpoint/batch-YYYYMMDD-HHmmss
+         - batch_rollback_command: git reset --hard checkpoint/batch-YYYYMMDD-HHmmss
+         - batch_rollback_alternative: git checkout -B main && git branch -D checkpoint/batch-YYYYMMDD-HHmmss
+         - batch_status: in_progress
+         - batch_completed_items: []
+         - batch_failure_point: null
+         ```
+
+      4. **Run Baseline Tests**: Execute the test suite defined in Spec §4.4 to confirm the current baseline (all tests must pass before batch starts). Record baseline result.
+         - If baseline tests FAIL: STOP, report failures, and DO NOT enter batch mode until baseline is fixed or user explicitly confirms to proceed with known failures.
+
     * **Action**: Implement **ALL** remaining checklist items in sequence.
 
     * **Persistence**: You must still **SAVE** files after _each_ logical file is completed, even in batch mode.
+
+    * **Per-Item Tracking**: After each checklist item is completed, append it to `batch_completed_items` in the Spec §5 Execute Log.
 
     * **Emergency Stop**: You MUST halt immediately if you encounter a logic conflict or missing spec detail.
 
     * **Failure Stop**: In batch mode, if ANY test fails, you MUST halt at the current checklist item. Do NOT proceed to subsequent items until the failure is resolved or the user provides direction. Record the failure point in the Execute Log.
 
-    * **Rollback Point**: Before entering batch mode, record the current checklist item index as `batch_start=<N>`. If failure occurs at item `<M>`, all items from `<N>` to `<M>` must be reviewed. Items before `<N>` are considered committed. The user decides whether to:
-      - (a) Fix the failure at `<M>` and resume batch from `<M+1>`
-      - (b) Rollback items `<N>` through `<M>` and re-plan
-      - (c) Abort batch entirely and return to PLAN
+    * **Batch Failure Rollback Protocol** (MANDATORY when test fails or user requests rollback):
+
+      When a failure occurs at item `<M>`, you MUST:
+
+      1. **Update Spec §5 Execute Log** immediately:
+         ```markdown
+         - batch_status: failed
+         - batch_failure_point: <M>
+         - batch_failure_reason: "<具体错误信息>"
+         - batch_failed_test: "<测试文件名>: <测试用例名>"
+         ```
+
+      2. **Present Rollback Options** to the user with EXACT commands:
+
+         | Option | Action | Command |
+         |---|---|---|
+         | **(a) Fix & Resume** | 修复当前失败项，从 `<M+1>` 继续批量执行 | 用户提供修复指令后继续 |
+         | **(b) Rollback to Checkpoint** | 撤销本次批量执行的所有改动（项 `<N>` 到 `<M>`） | `git reset --hard <checkpoint_branch>` |
+         | **(c) Partial Rollback** | 回滚到某个特定项 `<K>`（`N ≤ K < M`） | `git reset --hard <checkpoint_branch>` → 重新执行项 `<N+1>` 到 `<K>` |
+         | **(d) Abort & Re-plan** | 完全放弃批量执行，回到 PLAN 阶段重新规划 | `git reset --hard <checkpoint_branch>` → 进入 PLAN |
+
+      3. **Wait for User Decision**: DO NOT execute any rollback command without explicit user confirmation.
+
+      4. **Execute Rollback** (after user confirms option b/c/d):
+         ```bash
+         # Step 1: Reset to checkpoint branch
+         git reset --hard <checkpoint_branch>
+
+         # Step 2: Switch back to original branch (if applicable)
+         git checkout <original_branch>
+
+         # Step 3: Delete checkpoint branch (cleanup)
+         git branch -D <checkpoint_branch>
+         ```
+
+      5. **Update Spec §5 Execute Log** after rollback:
+         ```markdown
+         - batch_status: rolled_back
+         - batch_rollback_option: <a/b/c/d>
+         - batch_rollback_confirmed_at: <timestamp>
+         - batch_rollback_confirmed_by: <user/agent>
+         ```
+
+    * **Rollback Point (Legacy)**: The legacy `batch_start=<N>` tracking is still maintained for backward compatibility, but the Git checkpoint branch is the PRIMARY rollback mechanism. Items before `<N>` are considered committed.
 
 * **Action**:
 

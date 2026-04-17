@@ -91,6 +91,16 @@ git diff {BASE_SHA}..{HEAD_SHA}
 
 **Reasoning:** [Technical assessment in 1-2 sentences]
 
+## Language-Specific Deep Review
+
+After the general review, dispatch to language-specific experts for deeper checks:
+
+**Go code (.go files):**
+→ Load `../go-code-review/SKILL.md` and apply the full Go checklist (formatting, error handling, concurrency, naming, interfaces, etc.)
+
+**Python code (.py files):**
+→ Load `../python-code-review/SKILL.md` and apply the full Python checklist (PEP8, type safety, async patterns, error handling, common mistakes)
+
 ## Critical Rules
 
 **DO:**

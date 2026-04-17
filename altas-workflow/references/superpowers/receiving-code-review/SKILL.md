@@ -85,6 +85,54 @@ IF conflicts with your human partner's prior decisions:
 
 **your human partner's rule:** "External feedback - be skeptical, but check carefully"
 
+## Language-Specific Code Review Experts
+
+After verifying and understanding review feedback, dispatch to language-specific experts for deep technical review:
+
+```
+WHEN implementing review feedback for code changes:
+  IF code is Go (.go files):
+    → Dispatch to go-code-review expert
+  IF code is Python (.py files):
+    → Dispatch to python-code-review expert
+```
+
+### When to Dispatch
+
+- After each implementation batch (fix a set of review items)
+- Before marking review feedback as resolved
+- When uncertain whether a fix introduces language-specific issues
+
+### Go Code Review Expert
+
+Location: `go-code-review/SKILL.md`
+
+Covers:
+- Formatting (gofmt/goimports)
+- Documentation (doc comments, package comments)
+- Error handling (no discarded errors, error strings, early returns)
+- Naming (MixedCaps, receiver names, package names)
+- Concurrency (goroutine lifetimes, context usage)
+- Interfaces (consumer-side definition, no premature interfaces)
+- Data structures (nil slices, struct copying)
+- Security (crypto/rand, no panic)
+- Imports, generics, testing patterns
+
+Pre-review automation: Run `gofmt -l <path> && go vet ./...`
+
+### Python Code Review Expert
+
+Location: `python-code-review/SKILL.md`
+
+Covers:
+- PEP8 style (indentation, line length, naming, imports)
+- Type safety (type hints, avoid Any, union syntax)
+- Async patterns (blocking calls, missing await, concurrency)
+- Error handling (bare except, exception context, logging)
+- Common mistakes (mutable defaults, print vs logger, f-strings)
+
+Anti-pattern detection: Explicit "Valid Patterns" list prevents false positives
+
 ## YAGNI Check for "Professional" Features
 
 ```

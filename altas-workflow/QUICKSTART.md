@@ -513,7 +513,6 @@ mydocs/
 ├── codemap/       # 长期代码索引资产
 ├── context/       # 一次性需求整理
 ├── specs/         # 核心Spec（组织记忆）
-├── micro_specs/   # 轻量Spec
 └── archive/       # 知识沉淀
 ```
 

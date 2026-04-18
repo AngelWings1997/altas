@@ -141,7 +141,7 @@ def _write_file(path: str, content: str):
     print(f"  Created: {path}")
 
 
-def get_template_content(template_type: str, task_name: str, project_type: str) -> str:
+def get_template_content(template_type: str, task_name: str, project_type: str, root_dir: str) -> str:
     timestamp = "YYYY-MM-DD"
     
     if template_type == "lite":
@@ -322,7 +322,7 @@ def create_spec_scaffold(root_dir: str, task_name: str, template_type: str):
     if os.path.exists(spec_file):
         print(f"  Spec file already exists: {spec_file}")
     else:
-        content = get_template_content(template_type, task_name, project_type)
+        content = get_template_content(template_type, task_name, project_type, root_dir)
         with open(spec_file, "w") as f:
             f.write(content)
         print(f"  Created: {spec_file}")

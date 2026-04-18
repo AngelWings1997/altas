@@ -38,7 +38,7 @@ print_error()   { echo -e "${COLOR_RED}✗ $1${COLOR_NC}"; }
 find_repo_root() {
     local dir="$PWD"
     while [[ "$dir" != "/" ]]; do
-        if [[ -d "$dir/.git" ]] || [[ -d "$dir/.specify" ]] || [[ -f "$dir/altas-workflow/SKILL.md" ]]; then
+        if [[ -d "$dir/.git" ]] || [[ -d "$dir/.specify" ]] || [[ -f "$dir/altas-workflow/SKILL.md" ]] || [[ -d "$dir/.agents" ]] || [[ -d "$dir/.cursor" ]]; then
             echo "$dir"
             return 0
         fi
@@ -57,8 +57,8 @@ SPEC_FILE=""
 TASKS_FILE=""
 CONTRACTS_DIR=""
 
-# Search strategy: check .specify/specs, .start/specs, then current dir
-for base_dir in "$REPO_ROOT/.specify/specs" "$REPO_ROOT/.start/specs" "$REPO_ROOT/specs" "$REPO_ROOT"; do
+# Search strategy: check .specify/specs, .start/specs, mydocs/specs, then current dir
+for base_dir in "$REPO_ROOT/.specify/specs" "$REPO_ROOT/.start/specs" "$REPO_ROOT/mydocs/specs" "$REPO_ROOT/specs" "$REPO_ROOT"; do
     if [[ -d "$base_dir" ]]; then
         # Find the most recently modified spec.md
         found_spec=$(find "$base_dir" -name "spec.md" -o -name "requirements.md" 2>/dev/null | head -1)

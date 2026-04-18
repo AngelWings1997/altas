@@ -2,8 +2,8 @@
 
 > **Fusing Three Advantages | Intelligent Depth Adaptation | Progressive Disclosure | Step-by-Step Feedback | Testing Engineer Friendly**
 
-**Version:** 4.7 (2026-04-18)
-**Repository Size:** 8.3M, 200+ Markdown files, 95+ reference documents
+**Version:** 4.7 (2026-04-19)
+**Repository Size:** 17M, 165 Markdown files, 120+ reference documents
 
 ---
 
@@ -26,7 +26,7 @@ Dedicated to solving four major engineering pain points in AI programming:
 | **Context Decay** | CodeMap indexing + progressive disclosure, load reference materials on demand |
 | **Review Paralysis** | 4-level intelligent depth (XS/S/M/L), small tasks don't get stuck in approval |
 | **Code Distrust** | Spec-centric + three-axis review, Spec is Truth |
-| **Hard to Maintain** | Archive knowledge precipitation + TDD iron law, completion means asset |
+| **Hard to Maintain** | Archive knowledge accumulation + TDD iron law, completion means asset |
 
 ### Core Iron Laws
 
@@ -56,7 +56,7 @@ altas/
 │   ├── protocols/               # Specialized protocols (4)
 │   │   ├── RIPER-5.md           # Strict mode protocol
 │   │   ├── RIPER-DOC.md         # Documentation expert protocol
-│   │   └── SDD-RIPER-DUAL-COOP.md # Dual-model collaboration protocol
+│   │   ├── SDD-RIPER-DUAL-COOP.md # Dual-model collaboration protocol
 │   │   └── PROTOCOL-SELECTION.md # Protocol selection guide
 │   ├── docs/                    # Methodology documents (5)
 │   │   ├── 从传统编程转向大模型编程.md
@@ -80,7 +80,7 @@ altas/
 │   │   │   └── sdd-riper-one-light/      # Lightweight Agent
 │   │   ├── entry/                        # Entry configuration (5 docs)
 │   │   ├── special-modes/                # Special modes (5 docs)
-│   │   ├── prd-analysis/                 # PRD analysis workflow (6 docs)
+│   │   ├── prd-analysis/                 # 🆕 PRD analysis workflow (6 docs)
 │   │   └── testing/                      # 🆕 Testing engineering specialty (18+ docs)
 │   │       ├── test-strategy-template.md    # Test strategy template
 │   │       ├── pytest-patterns.md           # Pytest best practices
@@ -126,9 +126,9 @@ altas/
 
 ---
 
-## 🚀 v4.7 New Features (2026-04-18)
+## 🚀 v4.7 New Features (2026-04-19)
 
-### 🧪 Testing Engineer Specialty Optimization
+### 🧪 Testing Engineering Specialty Optimization
 
 - ✅ **E2E Testing Framework Reference Guide**: End-to-end testing best practices with Playwright/Cypress integration
 - ✅ **Performance/Load Testing Methodology**: Stress testing strategy, benchmark testing, performance metrics system
@@ -245,7 +245,7 @@ REVIEW: Review authentication module code quality (Go/Python)
 | `MAP` / `PROJECT MAP` | Read-only project analysis | All | Generate architecture map |
 | `DEBUG` | System debug mode | - | Root cause analysis→diagnostic report |
 | `MULTI` | Multi-project collaboration | L | Auto-discovery + scope isolation |
-| `ARCHIVE` | Knowledge precipitation | L | Human version + LLM version dual perspective |
+| `ARCHIVE` | Knowledge accumulation | L | Human version + LLM version dual perspective |
 | `DOC` | Documentation expert mode | - | ABSORB→OUTLINE→AUTHOR→FACT-CHECK |
 | `REVIEW SPEC` | Pre-execution review | M/L | Advisory pre-review |
 | `REVIEW EXECUTE` | Post-execution three-axis review | M/L | Spec/code/quality three-axis review |
@@ -269,7 +269,7 @@ REVIEW: Review authentication module code quality (Go/Python)
 | `DEBUG` / `排查` | Systematic Debug | - |
 | `REVIEW SPEC` / `计划评审` | Pre-execution advisory review | M/L |
 | `REVIEW EXECUTE` / `代码评审` | Post-execution three-axis review | M/L |
-| `ARCHIVE` / `归档` / `沉淀` | Knowledge precipitation | L |
+| `ARCHIVE` / `归档` / `沉淀` | Knowledge accumulation | L |
 | `DOC` / `写文档` | Documentation expert mode | - |
 | **`PRD` / `PRD ANALYSIS`** | **🆕 PRD Analysis** | **M/L** |
 | **`TEST` / `写测试` / `补测试`** | **🆕 Testing Specialty** | **M/L** |
@@ -309,7 +309,7 @@ flowchart LR
     I --> P["Plan<br>Task List"]
     P --> E["Execute TDD+Subagent<br>Parallel Implementation"]
     E --> RV["Review<br>Three-Axis Review"]
-    RV --> A["Archive<br>Knowledge Precipitation"]
+    RV --> A["Archive<br>Knowledge Accumulation"]
 ```
 
 **Workflow Description**:
@@ -317,7 +317,7 @@ flowchart LR
 - **Innovate**: Solution comparison, provide 2-3 solutions (Pros/Cons/Risks/Effort)
 - **Plan**: Atomic Checklist + Subagent allocation
 - **Execute**: TDD-driven + Subagent parallel implementation + two-stage Review
-- **Review**: Three-axis review + Archive precipitation
+- **Review**: Three-axis review + Archive accumulation
 - **Archive**: Generate dual-perspective documents (human version + LLM version)
 
 ---
@@ -394,6 +394,48 @@ flowchart LR
 - **[Modify]** + feedback: Adjust current achievement
 - **[Upgrade to X]** / **[Downgrade to X]**: Adjust size
 - **[Load Reference: XXX]**: View details of a reference document
+```
+
+### Checkpoint Example
+
+**After Research completes**:
+```markdown
+### Progress [Research ▸ Complete]
+[ ] ▸ **[Research]** ▸ [Plan] ▸ [Execute] ▸ [Review]
+
+### Current Achievement
+- Completed current status analysis, identified 3 core files
+- Found existing registration interface has no graphics library dependency
+- Spec draft established (Goal/Scope/Facts/Risks)
+
+### Expected Output
+- Plan phase will break down into atomic Checklist
+- Clarify specific changes and signatures for each file
+
+### Next Actions
+- **[Continue]**: Enter Plan phase
+- **[Modify]**: Adjust risk items in Spec
+- **[Load Reference: spec-template.md]**: View Spec template details
+```
+
+**After Plan completes**:
+```markdown
+### Progress [Plan ▸ Complete]
+[Research] ▸ **[Plan]** ▸ [Execute] ▸ [Review]
+
+### Current Achievement
+- Checklist broken down into 5 atomic tasks
+- Clarified 3 file changes + function signatures
+- Done Contract defined
+
+### Expected Output
+- Execute phase will implement sequentially per Checklist
+- TDD-driven: write failing test first→implement logic→verify pass
+
+### Next Actions
+- **[Approved]**: Approve Plan, enter Execute
+- **[Modify]**: Adjust Checklist order or implementation plan
+- **[Upgrade to L]**: Need Subagent parallel implementation
 ```
 
 ---
@@ -555,7 +597,7 @@ DEEP: Refactor authentication module to split into independent microservices
 4. ✅ **Innovate** → Provide 3 solutions (service-oriented/modularized/gateway layer) comparison
 5. ✅ **Plan** → Atomic Checklist + Subagent allocation
 6. ✅ **Execute** → TDD-driven + Subagent parallel implementation + two-stage Review
-7. ✅ **Review** → Three-axis review + Archive precipitation
+7. ✅ **Review** → Three-axis review + Archive accumulation
 
 **Output**:
 - CodeMap: `mydocs/codemap/YYYY-MM-DD_hh-mm_AuthenticationModule.md`
@@ -702,7 +744,7 @@ A: Size XS/S (typo, config, single file small change) can be exempt from TDD. Si
 
 **Q: What are the highlights of ALTAS v4.7's testing support?**
 
-A: v4.7 added a complete testing engineering specialty, including:
+A: v4.7 added complete testing engineering specialty, including:
 - E2E testing framework integration (Playwright/Cypress)
 - API testing full process (contract testing, security testing)
 - Performance/load testing methodology
@@ -735,7 +777,7 @@ A: v4.7 has built-in Go and Python code review skill packages, including static 
 
 **Q: Too many md files under mydocs/, should I commit to Git?**
 
-A: **Strongly recommend committing**. Spec and Archive are the project's single source of truth, preventing context decay, helping newcomers onboard.
+A: **Strongly recommend committing**. Spec and Archive are project's single source of truth, preventing context decay, helping newcomers onboard.
 
 **Q: How to manage files under mydocs/?**
 
@@ -780,7 +822,7 @@ A: First read [From Traditional Programming to LLM Programming](altas-workflow/d
 
 | Version | Date | Name | Status | Key Changes |
 |------|------|------|------|----------|
-| **v4.7** | 2026-04-18 | ALTAS Workflow | ✅ **Current Version** | 🧪Testing engineer specialty optimization, 🔍Code review skill packages, 📋PRD analysis workflow, 🛠️Automation enhancement |
+| **v4.7** | 2026-04-19 | ALTAS Workflow | ✅ **Current Version** | 🧪Testing engineer specialty optimization, 🔍Code review skill packages, 📋PRD analysis workflow, 🛠️Automation enhancement |
 | **v4.6** | 2026-04-16 | ALTAS Workflow | ✅ Stable version | Implementation plan refinement, protocol selection guide |
 | **v4.0** | 2026-04-13 | ALTAS Workflow | ✅ Historical version | Integrated three workflows, added intelligent depth adaptation, progress visualization, on-demand loading |
 | **v1.0** | 2026-04-12 | SIGMA Workflow | ❌ Deprecated | Initial version |
@@ -821,8 +863,8 @@ A: First read [From Traditional Programming to LLM Programming](altas-workflow/d
 ## 📊 Repository Statistics
 
 ```
-Repository Size: 8.3M
-Markdown Files: 200+
+Repository Size: 17M
+Markdown Files: 165
 Reference Materials: 95+
   - Spec-Driven Development: 7
   - Checkpoint-Driven: 4
@@ -932,6 +974,6 @@ Wiki Documents: 69 (.qoder/repowiki/)
 
 *Powered by the integration of SDD-RIPER, SDD-RIPER-Optimized (Checkpoint-Driven), Superpowers, and enhanced with Testing Engineering & Code Review capabilities.*
 
-**Last Updated**: 2026-04-18
+**Last Updated**: 2026-04-19
 **Current Version**: v4.7
 **Maintenance Status**: 🟢 Active Development

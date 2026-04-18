@@ -2,7 +2,7 @@
 
 > **融合三方优势 | 智能深度适配 | 渐进式披露 | 每步可反馈 | 测试工程师友好**
 
-**Version:** 4.7 (2026-04-18)
+**Version:** 4.7 (2026-04-19)
 
 ALTAS Workflow 是一套汲取了 SDD-RIPER、SDD-RIPER-Optimized 与 Superpowers 精华的综合性 AI 工作流程规范，并增强了**测试工程专项**、**代码审查技能包**和**PRD 分析工作流**能力。
 

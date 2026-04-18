@@ -300,7 +300,7 @@ ALTAS Workflow 会按场景自动读取 `references/` 下的资料，但**你自
 sdd_bootstrap: task=实现用户权限管理, goal=支持 RBAC 模型
 参考资料:
 - mydocs/specs/auth-rbac.md
-- references/superpowers/test-driven-development/tdd-workflow.md
+- references/superpowers/test-driven-development/SKILL.md
 ```
 
 ```text

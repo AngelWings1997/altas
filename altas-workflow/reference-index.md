@@ -384,4 +384,4 @@
 
 - **参考文件总数**: 70+
 - **来源分布**: SDD-RIPER (14), SDD-RIPER-Opt (6), Superpowers (24+), PRD Analysis (7), 测试开发 (16+), 工具脚本 (1+)
-- **目录结构**: references/ (5大类: entry/spec-driven-development/checkpoint-driven/superpowers/testing/prd-analysis), protocols/ (3), docs/ (4), skills/ (2), scripts/ (1)
+- **目录结构**: references/ (7大类: entry/spec-driven-development/checkpoint-driven/superpowers/testing/prd-analysis/agents), protocols/ (4), docs/ (4), scripts/ (3)

@@ -487,6 +487,12 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 - **非 Python 项目测试参考**:
   - Go: `references/testing/go-testing.md`（testify / ginkgo / httptest / gomock）
 - **微服务项目**额外加载 `references/testing/contract-testing.md`（Pact 消费者驱动契约测试）
+- **Python 安全测试时**额外加载 `references/testing/security-testing.md`
+- **Python 视觉测试时**额外加载 `references/testing/visual-testing.md`
+- **Python 移动端测试时**额外加载 `references/testing/mobile-testing.md`
+- **测试可观测性需求**加载 `references/testing/test-observability.md`
+- **测试维护/Flaky 处理**加载 `references/testing/test-maintenance.md`
+- **测试环境搭建**加载 `references/testing/test-environment.md`
 - **API 测试默认采用契约优先**：先识别 `OpenAPI / Swagger / GraphQL Schema / Proto` 等契约文件，再展开测试设计，禁止先从实现细节反推接口行为
 - **API 契约识别后的默认动作**：
   - 识别契约来源文件与协议类型（REST / GraphQL / gRPC）

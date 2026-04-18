@@ -303,9 +303,9 @@ altas-workflow/
 
 ## 统计
 
-- **参考文件总数**: 56+
-- **来源分布**: SDD-RIPER (14), SDD-RIPER-Opt (6), Superpowers (24+), PRD Analysis (6), 测试开发 (2), 工具脚本 (2)
-- **目录结构**: references/ (5大类), protocols/ (3), docs/ (4), scripts/ (3)
+- **参考文件总数**: 70+
+- **来源分布**: SDD-RIPER (14), SDD-RIPER-Opt (6), Superpowers (24+), PRD Analysis (6), 测试开发 (18+), 工具脚本 (3)
+- **目录结构**: references/ (7大类), protocols/ (4), docs/ (4), scripts/ (3)
 
 ---
 

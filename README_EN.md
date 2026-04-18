@@ -1,13 +1,13 @@
 # ALTAS Workflow
 
-> **Fusing Three Advantages | Intelligent Depth Adaptation | Progressive Disclosure | Step-by-Step Feedback**
+> **Fusing Three Advantages | Intelligent Depth Adaptation | Progressive Disclosure | Step-by-Step Feedback | Testing Engineer Friendly**
 
-**Version:** 4.0 (2026-04-16)  
-**Repository Size:** 8.3M, 169 Markdown files, 79 reference documents
+**Version:** 4.7 (2026-04-18)
+**Repository Size:** 8.3M, 200+ Markdown files, 95+ reference documents
 
 ---
 
-## 🌐 Language / 语言
+## 🌐 Language / Language
 
 [中文](README.md) | **English** | [日本語](README_JA.md) | [Français](README_FR.md) | [Deutsch](README_DE.md)
 
@@ -47,54 +47,117 @@ Dedicated to solving four major engineering pain points in AI programming:
 
 ```
 altas/
-├── altas-workflow/              # Main protocol directory (8.3M, 92 files)
-│   ├── SKILL.md                 # ⭐ Core system prompt (AI reads)
+├── altas-workflow/              # Main protocol directory (8.3M, 120+ files)
+│   ├── SKILL.md                 # ⭐ Core system prompt (AI reads) - v4.7
 │   ├── README.md                # ALTAS detailed description
 │   ├── QUICKSTART.md            # Scenario-based quick guide
 │   ├── reference-index.md       # Reference materials master index
-│   ├── protocols/               # Specialized protocols (3)
+│   ├── workflow-diagrams.md     # Mermaid flowchart collection
+│   ├── protocols/               # Specialized protocols (4)
 │   │   ├── RIPER-5.md           # Strict mode protocol
 │   │   ├── RIPER-DOC.md         # Documentation expert protocol
 │   │   └── SDD-RIPER-DUAL-COOP.md # Dual-model collaboration protocol
-│   ├── docs/                    # Methodology documents (4)
+│   │   └── PROTOCOL-SELECTION.md # Protocol selection guide
+│   ├── docs/                    # Methodology documents (5)
 │   │   ├── 从传统编程转向大模型编程.md
 │   │   ├── AI-原生研发范式.md
 │   │   ├── 团队落地指南.md
-│   │   └── 手把手教程.md
-│   ├── references/              # On-demand reference materials (79 files)
+│   │   ├── 手把手教程.md
+│   │   └── IMPLEMENTATION-PLAN-v4.6.md
+│   ├── references/              # On-demand reference materials (95+ files)
 │   │   ├── spec-driven-development/  # Spec-driven development (7 core docs)
 │   │   ├── checkpoint-driven/        # Checkpoint lightweight mode (4 docs)
-│   │   ├── superpowers/              # Superpowers (37 docs)
+│   │   ├── superpowers/              # Superpowers (50+ docs)
 │   │   │   ├── test-driven-development/  # TDD iron law
 │   │   │   ├── systematic-debugging/     # Systematic Debug
 │   │   │   ├── subagent-driven-development/ # Subagent driven
 │   │   │   ├── brainstorming/            # Design brainstorming
 │   │   │   ├── writing-plans/            # Write Plan best practices
+│   │   │   ├── code-review/              # Code review (Go/Python)
 │   │   │   └── ... (more superpowers)
 │   │   ├── agents/                       # Agent definitions (22 docs)
 │   │   │   ├── sdd-riper-one/            # Standard Agent
 │   │   │   └── sdd-riper-one-light/      # Lightweight Agent
-│   │   ├── entry/                        # Entry configuration (4 docs)
-│   │   └── special-modes/                # Special modes (5 docs)
+│   │   ├── entry/                        # Entry configuration (5 docs)
+│   │   ├── special-modes/                # Special modes (5 docs)
+│   │   ├── prd-analysis/                 # PRD analysis workflow (6 docs)
+│   │   └── testing/                      # 🆕 Testing engineering specialty (18+ docs)
+│   │       ├── test-strategy-template.md    # Test strategy template
+│   │       ├── pytest-patterns.md           # Pytest best practices
+│   │       ├── e2e-testing.md               # E2E testing guide
+│   │       ├── api-testing.md               # API testing reference
+│   │       ├── performance-testing.md       # Performance testing methodology
+│   │       ├── security-testing.md          # Security testing
+│   │       ├── contract-testing.md          # Contract testing
+│   │       ├── test-data-management.md      # Test data management
+│   │       ├── test-environment.md          # Test environment management
+│   │       ├── ci-cd-integration.md         # CI/CD integration
+│   │       └── templates/                   # Test scaffold templates
 │   └── scripts/                 # Automation tools
-│       └── archive_builder.py   # Archive builder
+│       ├── archive_builder.py   # Archive builder
+│       ├── scaffold.py          # Project scaffold
+│       └── validate_aliases_sync.py # Alias sync validation
+├── .agents/skills/              # 🆕 Independent skill packages (6)
+│   ├── advanced-api-testing/   # Advanced API testing
+│   ├── go-code-review/         # Go code review
+│   ├── python-code-review/     # Python code review
+│   ├── pytest-patterns/        # Pytest patterns
+│   ├── specify-requirements/   # Requirements specification
+│   └── implementation-verify/  # Implementation verification
 ├── .qoder/repowiki/             # Wiki documents (69 docs)
 ├── AGENTS.md                    # General AI behavior guidelines
-├── CLAUDE.md                    # General AI behavior guidelines
-└── EXAMPLES.md                  # Four principles code examples
+├── CLAUDE.md                    # Claude-specific behavior guidelines
+├── EXAMPLES.md                  # Four principles code examples
+└── skills-lock.json             # Skill package version lock
 ```
 
 ### Core Asset Statistics
 
 | Category | Count | Description |
 |------|------|------|
-| **Core Protocol** | 1 | SKILL.md (ALTAS Workflow main protocol) |
-| **Specialized Protocols** | 3 | RIPER-5 / RIPER-DOC / DUAL-COOP |
-| **Methodology** | 4 | Traditional to LLM / AI-native paradigm / Team adoption / Step-by-step tutorial |
-| **Reference Materials** | 79 | Spec-driven (7) / Checkpoint (4) / Superpowers (37) / Agents (22) / Entry (4) / Special-Modes (5) |
+| **Core Protocol** | 1 | SKILL.md (ALTAS Workflow main protocol) v4.7 |
+| **Specialized Protocols** | 4 | RIPER-5 / RIPER-DOC / DUAL-COOP / PROTOCOL-SELECTION |
+| **Methodology** | 5 | Traditional to LLM / AI-native paradigm / Team adoption / Step-by-step tutorial / v4.6 implementation plan |
+| **Reference Materials** | 95+ | Spec-driven (7) / Checkpoint (4) / Superpowers (50+) / Agents (22) / Entry (5) / Special-Modes (5) / PRD Analysis (6) / Testing (18+) |
 | **Independent Agents** | 2 | SDD-RIPER-ONE (standard/lightweight) |
+| **🆕 Skill Packages** | 6 | API Testing / Go Review / Python Review / Pytest / Requirements Spec / Implementation Verify |
 | **Code Examples** | 1 | EXAMPLES.md (four principles practical examples) |
-| **Automation Tools** | 1 | archive_builder.py (Archive builder) |
+| **Automation Tools** | 3 | archive_builder.py / scaffold.py / validate_aliases_sync.py |
+
+---
+
+## 🚀 v4.7 New Features (2026-04-18)
+
+### 🧪 Testing Engineer Specialty Optimization
+
+- ✅ **E2E Testing Framework Reference Guide**: End-to-end testing best practices with Playwright/Cypress integration
+- ✅ **Performance/Load Testing Methodology**: Stress testing strategy, benchmark testing, performance metrics system
+- ✅ **API Testing Complete Process**: Contract testing, security testing, API test matrix templates
+- ✅ **Pytest Testing Pattern Document Suite**: Fixture design, parameterization, Mock strategies, coverage
+- ✅ **Test Data Management**: Factory pattern, fixture hierarchy, test isolation
+- ✅ **Test Environment Management**: Docker Compose, dependency injection, environment consistency
+- ✅ **CI/CD Integration Testing**: Automated pipeline, quality gates, test reports
+- ✅ **Test Scaffold Templates**: Out-of-the-box conftest.py / factories / fixtures
+- ✅ **Go/Python Testing Support**: Multi-language testing best practices and anti-patterns
+
+### 🔍 Code Review Skill Packages
+
+- ✅ **Go Code Review**: Static analysis, performance audit, concurrency safety checks
+- ✅ **Python Code Review**: Type safety, async patterns, error handling standards
+- ✅ **Review Process Standardization**: Review Request → Code Quality → Spec Compliance
+
+### 📋 PRD Analysis Workflow
+
+- ✅ **Structured Requirement Analysis**: Brainstorm → Discover → Document → Review → Validate
+- ✅ **PRD Template & Validation**: Product overview, user personas, journey, functional requirements, success metrics
+- ✅ **Quality Metrics Standards**: Structural integrity, content quality, boundary validation, cross-section consistency
+
+### 🛠️ Other Improvements
+
+- ✅ **Alias Sync Validation Script**: Automatically check trigger word consistency
+- ✅ **Project Scaffold Automation**: Quickly initialize project structure and conventions
+- ✅ **Implementation Verification Skill**: Automated acceptance testing and coverage checking
+- ✅ **Advanced API Testing Patterns**: Idempotency, input validation, error handling, concurrency testing
 
 ---
 
@@ -156,6 +219,18 @@ DEBUG: log_path=./logs/error.log, issue=Authorization not obtained after approva
 MULTI: task=Frontend-backend joint feature release
 ```
 
+**🆕 PRD Analysis**:
+```
+PRD: Analyze e-commerce shopping cart requirements, output structured PRD document
+```
+
+**🆕 Testing Specialty**:
+```
+TEST: Supplement E2E test cases for payment module
+PERF: Performance stress test on order query interface
+REVIEW: Review authentication module code quality (Go/Python)
+```
+
 ---
 
 ## 📚 Core Commands
@@ -174,6 +249,12 @@ MULTI: task=Frontend-backend joint feature release
 | `DOC` | Documentation expert mode | - | ABSORB→OUTLINE→AUTHOR→FACT-CHECK |
 | `REVIEW SPEC` | Pre-execution review | M/L | Advisory pre-review |
 | `REVIEW EXECUTE` | Post-execution three-axis review | M/L | Spec/code/quality three-axis review |
+| **`PRD`** | **🆕 PRD Analysis** | **M/L** | **Brainstorm→Discover→Document→Review→Validate** |
+| **`TEST`** | **🆕 Testing Specialty** | **M/L** | **Test strategy→Case design→Implementation→Verification** |
+| **`PERF`** | **🆕 Performance Optimization** | **L** | **Baseline measurement→Bottleneck analysis→Optimization→Regression verification** |
+| **`REVIEW`** | **🆕 Code Review** | **M/L** | **Request review→Quality check→Compliance verification** |
+| **`REFACTOR`** | **Refactoring Specialty** | **L** | **CodeMap→Plan(TDD)→Execute→Review** |
+| **`MIGRATE`** | **Migration Specialty** | **L** | **Risk assessment→Migration→Verification** |
 
 ### Trigger Words Quick Reference
 
@@ -190,6 +271,12 @@ MULTI: task=Frontend-backend joint feature release
 | `REVIEW EXECUTE` / `代码评审` | Post-execution three-axis review | M/L |
 | `ARCHIVE` / `归档` / `沉淀` | Knowledge precipitation | L |
 | `DOC` / `写文档` | Documentation expert mode | - |
+| **`PRD` / `PRD ANALYSIS`** | **🆕 PRD Analysis** | **M/L** |
+| **`TEST` / `写测试` / `补测试`** | **🆕 Testing Specialty** | **M/L** |
+| **`PERF` / `性能优化`** | **🆕 Performance Optimization** | **L** |
+| **`REVIEW` / `代码审查` / `审查PR`** | **🆕 Code Review** | **M/L** |
+| **`REFACTOR` / `重构`** | **🆕 Refactoring Specialty** | **L** |
+| **`MIGRATE` / `迁移`** | **🆕 Migration Specialty** | **L** |
 | `EXIT ALTAS` / `退出协议` | Disable protocol | - |
 | `全部` / `all` / `execute all` | Batch execution | M/L |
 
@@ -260,6 +347,8 @@ flowchart LR
 | "Cross-module data model change" | L | Cross-module impact |
 | "Architecture-level refactor" | L | Global impact |
 | "Frontend-backend joint" | L (MULTI) | Multi-project collaboration |
+| "Supplement E2E tests" | M (TEST) | 🆕 Testing specialty |
+| "Performance stress test" | L (PERF) | 🆕 Performance optimization |
 
 ### Auto Upgrade/Downgrade
 
@@ -307,48 +396,6 @@ flowchart LR
 - **[Load Reference: XXX]**: View details of a reference document
 ```
 
-### Checkpoint Examples
-
-**After Research completes**:
-```markdown
-### Progress [Research ▸ Complete]
-[ ] ▸ **[Research]** ▸ [Plan] ▸ [Execute] ▸ [Review]
-
-### Current Achievement
-- Current status analysis completed, identified 3 core files
-- Found existing registration interface has no image library dependency
-- Spec draft established (Goal/Scope/Facts/Risks)
-
-### Expected Output
-- Plan phase will break down into atomic Checklist
-- Clarify specific changes and signatures for each file
-
-### Next Actions
-- **[Continue]**: Enter Plan phase
-- **[Modify]**: Adjust risk items in Spec
-- **[Load Reference: spec-template.md]**: View Spec template details
-```
-
-**After Plan completes**:
-```markdown
-### Progress [Plan ▸ Complete]
-[Research] ▸ **[Plan]** ▸ [Execute] ▸ [Review]
-
-### Current Achievement
-- Checklist broken down into 5 atomic tasks
-- Clarified 3 file changes + function signatures
-- Done Contract defined
-
-### Expected Output
-- Execute phase will implement according to Checklist item by item
-- TDD-driven: Write failing test first → implement logic → verify pass
-
-### Next Actions
-- **[Approved]**: Approve Plan, enter Execute
-- **[Modify]**: Adjust Checklist order or implementation approach
-- **[Upgrade to L]**: Need Subagent parallel implementation
-```
-
 ---
 
 ## 📖 Detailed Documentation
@@ -357,19 +404,51 @@ flowchart LR
 
 | Document | Purpose | Length |
 |------|------|------|
-| [ALTAS Workflow Detailed Description](altas-workflow/README.md) | Complete workflow protocol | 650+ lines |
+| [ALTAS Workflow Detailed Description](altas-workflow/README.md) | Complete workflow protocol | 300+ lines |
 | [Quick Start Guide](altas-workflow/QUICKSTART.md) | 30-second onboarding | 170+ lines |
 | [Reference Materials Master Index](altas-workflow/reference-index.md) | On-demand loading map | 200+ lines |
 | [SKILL.md](altas-workflow/SKILL.md) | AI system prompt | 650+ lines |
+| [Flowchart Collection](altas-workflow/workflow-diagrams.md) | Mermaid visualization | - |
 
 ### Methodology Documents (Theory)
 
 | Document | Topic | Target Audience |
 |------|------|----------|
 | [From Traditional Programming to LLM Programming](altas-workflow/docs/从传统编程转向大模型编程.md) | Paradigm shift | All |
-| [AI-Native Development Paradigm](altas-workflow/docs/AI-原生研发范式 - 从代码中心到文档驱动的演进.md) | Document-driven | Architect/Tech Lead |
+| [AI-Native Development Paradigm](altas-workflow/docs/AI-原生研发范式-从代码中心到文档驱动的演进.md) | Document-driven | Architect/Tech Lead |
 | [Team Adoption Guide](altas-workflow/docs/团队落地指南.md) | Team promotion | Tech Lead/Manager |
-| [Step-by-Step Tutorial](altas-workflow/docs/如何快速从零开始落地大模型编程%20--%20手把手教程.md) | From scratch | Beginners |
+| [Step-by-Step Tutorial](altas-workflow/docs/如何快速从零开始落地大模型编程--手把手教程.md) | From scratch | Beginners |
+| [v4.6 Implementation Plan](altas-workflow/docs/IMPLEMENTATION-PLAN-v4.6.md) | Version upgrade | Tech Lead |
+
+### 🆕 Testing Engineering Specialty (v4.7 New)
+
+| Document | Topic | Target Audience |
+|------|------|----------|
+| [Test Strategy Template](altas-workflow/references/testing/test-strategy-template.md) | Test strategy formulation | QA/Tech Lead |
+| [E2E Testing Guide](altas-workflow/references/testing/e2e-testing.md) | End-to-end testing | Test Engineers |
+| [API Testing Reference](altas-workflow/references/testing/api-testing.md) | API testing full process | Backend/QA |
+| [Performance Testing Methodology](altas-workflow/references/testing/performance-testing.md) | Stress testing and tuning | Performance Engineers |
+| [Pytest Testing Patterns](altas-workflow/references/testing/pytest-patterns.md) | Python testing best practices | Python Developers |
+| [Security Testing](altas-workflow/references/testing/security-testing.md) | Security testing checklist | Security Engineers |
+| [CI/CD Integration](altas-workflow/references/testing/ci-cd-integration.md) | Automated pipeline | DevOps |
+| [Test Scaffold Templates](altas-workflow/references/testing/test-scaffold-templates.md) | Out-of-the-box templates | All |
+
+### 🆕 Code Review Skill Packages (v4.7 New)
+
+| Skill | Language | Purpose |
+|------|------|----------|
+| [Go Code Review](.agents/skills/go-code-review/SKILL.md) | Go | Static analysis, concurrency safety, performance audit |
+| [Python Code Review](.agents/skills/python-code-review/SKILL.md) | Python | Type safety, async patterns, error handling |
+| [Advanced API Testing](.agents/skills/advanced-api-testing/SKILL.md) | - | Idempotency, concurrency, contract testing |
+
+### 🆕 PRD Analysis Workflow (v4.7 New)
+
+| Document | Purpose |
+|------|------|
+| [PRD Analysis Skill](altas-workflow/references/prd-analysis/SKILL.md) | Complete PRD analysis process |
+| [PRD Template](altas-workflow/references/prd-analysis/template.md) | Structured template |
+| [PRD Validation](altas-workflow/references/prd-analysis/validation.md) | Quality metrics standards |
+| [Good PRD Example](altas-workflow/references/prd-analysis/examples/good-prd.md) | Reference example |
 
 ### Specialized Protocols (Special Scenarios)
 
@@ -378,6 +457,7 @@ flowchart LR
 | [RIPER-5 Strict Mode](altas-workflow/protocols/RIPER-5.md) | Strict phase gates | High-risk projects |
 | [RIPER-DOC Documentation Expert](altas-workflow/protocols/RIPER-DOC.md) | Documentation writing | `DOC` command |
 | [Dual-Model Collaboration Protocol](altas-workflow/protocols/SDD-RIPER-DUAL-COOP.md) | Multi-model collaboration | Complex architecture |
+| [Protocol Selection Guide](altas-workflow/protocols/PROTOCOL-SELECTION.md) | Protocol selection decision | Consult when uncertain |
 
 ### Skill Packages (Independent Agents)
 
@@ -416,6 +496,9 @@ flowchart LR
 | **SDD-RIPER** | 14+ | spec-template.md, commands.md, multi-project.md, archive-template.md |
 | **SDD-RIPER-Optimized** | 6+ | spec-lite-template.md, modules.md, conventions.md |
 | **Superpowers** | 24+ | TDD, Debug, Subagent, Brainstorming, Writing-Plans, Verification |
+| **🆕 Testing** | 18+ | E2E, API, Performance, Security, Pytest, CI/CD |
+| **🆕 Code Review** | 6+ | Go Review, Python Review, Advanced API Testing |
+| **🆕 PRD Analysis** | 6 | SKILL, Template, Validation, Examples |
 
 ---
 
@@ -520,6 +603,50 @@ MULTI: task=Frontend-backend joint feature release
 
 ---
 
+### 🆕 Scenario 6: PRD Analysis (v4.7)
+
+**Input**:
+```
+PRD: Analyze e-commerce shopping cart requirements, goal=Increase conversion rate by 20%
+```
+
+**AI Behavior**:
+1. ✅ Enter PRD analysis mode
+2. ✅ **Brainstorm** → Collect stakeholder input, competitive analysis
+3. ✅ **Discover** → User research, data analysis, technical feasibility
+4. ✅ **Document** → Output structured PRD (Product Overview/User Personas/Journey/Functional Requirements/Success Metrics)
+5. ✅ **Review** → Stakeholder review
+6. ✅ **Validate** → Quality metrics validation (Structural Integrity/Content Quality/Boundary Validation)
+
+**Output**:
+- PRD document: `mydocs/prds/YYYY-MM-DD_hh-mm_ECommerceCartOptimization.md`
+- Validation report: Pass/Fail items list
+
+---
+
+### 🆕 Scenario 7: E2E Testing Specialty (v4.7)
+
+**Input**:
+```
+TEST: Supplement critical path E2E tests for payment module
+Scope: src/modules/payment
+Goal: Cover Order→Payment→Callback complete flow
+Constraints: Use Playwright, no real payment gateway dependency
+```
+
+**AI Behavior**:
+1. ✅ Enter TEST mode
+2. ✅ **Strategy** → Refer to [test-strategy-template.md](altas-workflow/references/testing/test-strategy-template.md) to formulate test strategy
+3. ✅ **Design** → Refer to [e2e-testing.md](altas-workflow/references/testing/e2e-testing.md) to design test cases
+4. ✅ **Implement** → Use [templates/](altas-workflow/references/testing/templates/) scaffolding for quick implementation
+5. ✅ **Verify** → Run tests, generate reports
+
+**Output**:
+- Test file: `src/modules/payment/e2e/checkout-flow.spec.ts`
+- Test report: Coverage, pass rate, performance metrics
+
+---
+
 ## 📊 Size Assessment Quick Reference
 
 | Signal | Recommended Size |
@@ -534,6 +661,10 @@ MULTI: task=Frontend-backend joint feature release
 | "Cross-module data model change" | L |
 | "Architecture-level refactor" | L |
 | "Frontend-backend joint" | L (MULTI) |
+| "Write PRD document" | M (PRD) |
+| "Supplement E2E tests" | M (TEST) |
+| "Performance stress test" | L (PERF) |
+| "Code review" | M (REVIEW) |
 
 ---
 
@@ -567,6 +698,39 @@ A: Size XS/S (typo, config, single file small change) can be exempt from TDD. Si
 
 ---
 
+### 🆕 Testing Specialty (v4.7)
+
+**Q: What are the highlights of ALTAS v4.7's testing support?**
+
+A: v4.7 added a complete testing engineering specialty, including:
+- E2E testing framework integration (Playwright/Cypress)
+- API testing full process (contract testing, security testing)
+- Performance/load testing methodology
+- Pytest testing patterns and scaffold templates
+- CI/CD integration and quality gates
+- Go/Python multi-language testing support
+
+**Q: How to use test scaffolding?**
+
+A: Refer to [test-scaffold-templates.md](altas-workflow/references/testing/test-scaffold-templates.md), providing out-of-the-box conftest.py, factories.py, fixtures, etc.
+
+---
+
+### 🆕 Code Review (v4.7)
+
+**Q: How to trigger code review?**
+
+A: Use `REVIEW` command or `代码审查`/`审查 PR` trigger words:
+```
+REVIEW: Review src/auth/ module code quality
+```
+
+**Q: Which languages' code review are supported?**
+
+A: v4.7 has built-in Go and Python code review skill packages, including static analysis, type safety, concurrency safety, performance audit, etc.
+
+---
+
 ### Document Management
 
 **Q: Too many md files under mydocs/, should I commit to Git?**
@@ -591,6 +755,8 @@ A: View [reference-index.md](altas-workflow/reference-index.md), each file is ma
 - When writing Spec → Read `spec-template.md`
 - When executing TDD → Read `test-driven-development/SKILL.md`
 - When debugging → Read `systematic-debugging/SKILL.md`
+- 🆕 When testing specialty → Read `testing/test-strategy-template.md`
+- 🆕 When PRD analysis → Read `prd-analysis/SKILL.md`
 
 ---
 
@@ -606,7 +772,7 @@ A: Any model can use standard mode (M/L). Lightweight mode (S/XS) is especially 
 
 **Q: How to train team members?**
 
-A: First read [From Traditional Programming to LLM Programming](altas-workflow/docs/从传统编程转向大模型编程.md), then practice [Step-by-Step Tutorial](altas-workflow/docs/如何快速从零开始落地大模型编程%20--%20手把手教程.md).
+A: First read [From Traditional Programming to LLM Programming](altas-workflow/docs/从传统编程转向大模型编程.md), then practice [Step-by-Step Tutorial](altas-workflow/docs/如何快速从零开始落地大模型编程--手把手教程.md).
 
 ---
 
@@ -614,17 +780,41 @@ A: First read [From Traditional Programming to LLM Programming](altas-workflow/d
 
 | Version | Date | Name | Status | Key Changes |
 |------|------|------|------|----------|
-| **v4.0** | 2026-04-13 | ALTAS Workflow | ✅ Current version | Integrated three workflows, added intelligent depth adaptation, progress visualization, on-demand loading |
+| **v4.7** | 2026-04-18 | ALTAS Workflow | ✅ **Current Version** | 🧪Testing engineer specialty optimization, 🔍Code review skill packages, 📋PRD analysis workflow, 🛠️Automation enhancement |
+| **v4.6** | 2026-04-16 | ALTAS Workflow | ✅ Stable version | Implementation plan refinement, protocol selection guide |
+| **v4.0** | 2026-04-13 | ALTAS Workflow | ✅ Historical version | Integrated three workflows, added intelligent depth adaptation, progress visualization, on-demand loading |
 | **v1.0** | 2026-04-12 | SIGMA Workflow | ❌ Deprecated | Initial version |
 
-### v4.0 Core Features
+### v4.7 Core Features
 
-- ✅ **Intelligent Depth Adaptation**: 4-level task depth (XS/S/M/L), auto-assessment + manual upgrade/downgrade
-- ✅ **Progress Visualization**: Standardized checkpoint mechanism, pause after each step for confirmation
-- ✅ **Progressive Disclosure**: On-demand loading of reference materials, avoiding context pollution
-- ✅ **Core Iron Laws**: 8 non-negotiable iron laws (No Spec No Code, TDD Iron Law, etc.)
-- ✅ **Complete Documentation**: 70+ reference materials, covering Spec-driven/Checkpoint/Superpowers three categories
-- ✅ **Independent Agents**: SDD-RIPER-ONE standard/lightweight versions
+#### 🧪 Testing Engineering Specialty
+- ✅ E2E testing framework reference guide (Playwright/Cypress)
+- ✅ Performance/load testing methodology and stress testing strategy
+- ✅ API testing complete process (contract testing, security testing)
+- ✅ Pytest testing pattern document suite (Fixture/parameterization/Mock)
+- ✅ Test data management and factory pattern
+- ✅ Test environment management and Docker integration
+- ✅ CI/CD integration testing and quality gates
+- ✅ Test scaffold templates (out-of-the-box)
+- ✅ Go/Python multi-language testing support
+
+#### 🔍 Code Review Skill Packages
+- ✅ Go code review (static analysis, concurrency safety, performance audit)
+- ✅ Python code review (type safety, async patterns, error handling)
+- ✅ Advanced API testing patterns (idempotency, concurrency, contract testing)
+- ✅ Review process standardization (Request → Quality → Compliance)
+
+#### 📋 PRD Analysis Workflow
+- ✅ Structured requirement analysis five-phase process
+- ✅ PRD template and validation standards
+- ✅ Quality metrics four-dimension evaluation
+- ✅ Good PRD example reference
+
+#### 🛠️ Automation Enhancement
+- ✅ Alias sync validation script
+- ✅ Project scaffold automation
+- ✅ Implementation verification skill
+- ✅ Requirements specification skill
 
 ---
 
@@ -632,19 +822,22 @@ A: First read [From Traditional Programming to LLM Programming](altas-workflow/d
 
 ```
 Repository Size: 8.3M
-Markdown Files: 169
-Reference Materials: 79
+Markdown Files: 200+
+Reference Materials: 95+
   - Spec-Driven Development: 7
   - Checkpoint-Driven: 4
-  - Superpowers: 37
+  - Superpowers: 50+
   - Agents: 22
-  - Entry: 4
+  - Entry: 5
   - Special-Modes: 5
-Core Protocols: 1 (SKILL.md)
-Specialized Protocols: 3 (RIPER-5/RIPER-DOC/DUAL-COOP)
-Methodology: 4
+  - 🆕 PRD Analysis: 6
+  - 🆕 Testing: 18+
+Core Protocols: 1 (SKILL.md v4.7)
+Specialized Protocols: 4 (RIPER-5/RIPER-DOC/DUAL-COOP/PROTOCOL-SELECTION)
+Methodology: 5
 Independent Agents: 2 (standard/lightweight)
-Automation Tools: 1 (archive_builder.py)
+🆕 Skill Packages: 6 (API Testing/Go Review/Python Review/Pytest/Requirements Spec/Implementation Verify)
+Automation Tools: 3 (archive_builder/scaffold/validate_aliases)
 Wiki Documents: 69 (.qoder/repowiki/)
 ```
 
@@ -656,7 +849,14 @@ Wiki Documents: 69 (.qoder/repowiki/)
 
 1. [Quick Start Guide](altas-workflow/QUICKSTART.md) - 30-second onboarding
 2. [From Traditional Programming to LLM Programming](altas-workflow/docs/从传统编程转向大模型编程.md) - Paradigm shift
-3. [Step-by-Step Tutorial](altas-workflow/docs/如何快速从零开始落地大模型编程%20--%20手把手教程.md) - From scratch
+3. [Step-by-Step Tutorial](altas-workflow/docs/如何快速从零开始落地大模型编程--手把手教程.md) - From scratch
+
+### 🆕 Testing Engineer Onboarding (v4.7)
+
+1. [Test Strategy Template](altas-workflow/references/testing/test-strategy-template.md) - Formulate test strategy
+2. [E2E Testing Guide](altas-workflow/references/testing/e2e-testing.md) - End-to-end testing
+3. [Pytest Testing Patterns](altas-workflow/references/testing/pytest-patterns.md) - Python testing
+4. [Test Scaffold Templates](altas-workflow/references/testing/test-scaffold-templates.md) - Out-of-the-box
 
 ### Quick Reference
 
@@ -664,15 +864,74 @@ Wiki Documents: 69 (.qoder/repowiki/)
 - [Size Assessment](#-intelligent-depth-adaptation) - How to choose XS/S/M/L
 - [Reference Materials Index](altas-workflow/reference-index.md) - On-demand loading map
 - [Detailed Documentation](#-detailed-documentation) - Complete document list
+- [Flowchart Collection](altas-workflow/workflow-diagrams.md) - Mermaid visualization
 
 ### Advanced Usage
 
 - [RIPER-5 Strict Mode](altas-workflow/protocols/RIPER-5.md) - High-risk projects
 - [Subagent-Driven Development](altas-workflow/references/superpowers/subagent-driven-development/SKILL.md) - Parallel implementation
 - [Systematic Debug](altas-workflow/references/superpowers/systematic-debugging/SKILL.md) - Root cause analysis
+- [🆕 PRD Analysis Workflow](altas-workflow/references/prd-analysis/SKILL.md) - Requirements analysis
+- [🆕 Code Review Skills](.agents/skills/go-code-review/SKILL.md) - Go/Python review
 
 ---
 
-*Powered by the integration of SDD-RIPER, SDD-RIPER-Optimized (Checkpoint-Driven), and Superpowers.*
+## 📊 Technology Stack Compatibility
 
-**Last Updated**: 2026-04-16
+### Programming Language Support
+
+| Language | Test Framework | Code Review | Documentation Coverage |
+|------|----------|----------|----------|
+| **Python** | Pytest, unittest | ✅ Python Code Review | Type safety, async patterns, error handling |
+| **Go** | testing, ginkgo | ✅ Go Code Review | Static analysis, concurrency safety, performance audit |
+| **JavaScript/TypeScript** | Jest, Playwright, Cypress | ⚠️ Through API Testing | E2E, API testing |
+| **Java** | JUnit, TestNG | ⚠️ General process | TDD, test strategy |
+| **General** | - | Implementation Verify | Coverage, acceptance testing |
+
+### Platform Compatibility
+
+| Platform | Support Level | Notes |
+|------|----------|------|
+| **Cursor** | ✅ Full support | Recommended, `.cursorrules` integration |
+| **Trae** | ✅ Full support | Native integration |
+| **Claude Desktop** | ✅ Full support | System Prompt injection |
+| **OpenAI Agents** | ✅ Full support | System Prompt injection |
+| **Qoder** | ✅ Full support | `.qoder/skills/` integration |
+| **VS Code + Copilot** | ⚠️ Basic support | Manual configuration required |
+
+---
+
+## 📈 Project Health
+
+### Documentation Completeness
+
+- ✅ Core protocol documentation complete (SKILL.md 650+ lines)
+- ✅ Reference materials index complete (reference-index.md 200+ lines)
+- ✅ Quick start guide complete (QUICKSTART.md 170+ lines)
+- ✅ Flowchart visualization (workflow-diagrams.md)
+- ✅ Multi-language support (Chinese/English/Japanese/French/German)
+- ✅ Version lock and dependency management (skills-lock.json)
+
+### Code Quality Assurance
+
+- ✅ TDD iron law enforced
+- ✅ Three-axis review mechanism
+- ✅ Code review skill packages (Go/Python)
+- ✅ Implementation verification automation
+- ✅ Test scaffold templates
+
+### Team Collaboration Ready
+
+- ✅ Spec as single source of truth
+- ✅ Git-friendly document management
+- ✅ Checkpoint mechanism ensures synchronization
+- ✅ Multi-project collaboration support
+- ✅ Team adoption guide
+
+---
+
+*Powered by the integration of SDD-RIPER, SDD-RIPER-Optimized (Checkpoint-Driven), Superpowers, and enhanced with Testing Engineering & Code Review capabilities.*
+
+**Last Updated**: 2026-04-18
+**Current Version**: v4.7
+**Maintenance Status**: 🟢 Active Development

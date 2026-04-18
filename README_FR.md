@@ -1,9 +1,9 @@
 # ALTAS Workflow
 
-> **Fusion de trois avantages | Adaptation intelligente de la profondeur | Divulgation progressive | Retour à chaque étape**
+> **Fusion de trois avantages | Adaptation intelligente en profondeur | Divulgation progressive | Rétroaction étape par étape | Amical pour les ingénieurs de test**
 
-**Version:** 4.0 (2026-04-16)  
-**Taille du dépôt:** 8.3M, 169 fichiers Markdown, 79 documents de référence
+**Version :** 4.7 (2026-04-18)
+**Taille du dépôt :** 8.3M, 200+ fichiers Markdown, 95+ documents de référence
 
 ---
 
@@ -13,363 +13,379 @@
 
 ---
 
-## 🎯 Qu'est-ce que c'est?
+## 🎯 Qu'est-ce que c'est ?
 
-**ALTAS Workflow** est une spécification de workflow de développement AI-native complète qui intègre l'essence de trois excellents workflows: **SDD-RIPER**, **SDD-RIPER-Optimized (Checkpoint-Driven)**, et **Superpowers**.
+**ALTAS Workflow** est une spécification complète de workflow de développement AI-native qui intègre l'essence de trois excellents workflows : **SDD-RIPER**, **SDD-RIPER-Optimized (Checkpoint-Driven)** et **Superpowers**.
 
-### Mission principale
+### Mission Principale
 
-Dédié à résoudre quatre principaux points de douleur en ingénierie dans la programmation AI:
+Dédié à résoudre quatre douleurs majeures d'ingénierie dans la programmation AI :
 
-| Point de douleur | Solution ALTAS |
+| Douleur | Solution ALTAS |
 |------|-----------|
-| **Dégradation du contexte** | Indexation CodeMap + divulgation progressive, chargement des documents de référence à la demande |
-| **Paralysie de révision** | 4 niveaux de profondeur intelligente (XS/S/M/L), les petites tâches ne restent pas bloquées |
-| **Méfiance du code** | Centralisation Spec + révision à trois axes, Spec is Truth |
-| **Difficulté de maintenance** | Archivage des connaissances + loi de fer TDD, l'achèvement signifie actif |
+| **Pourriture du contexte** | Indexation CodeMap + divulgation progressive, charger les références à la demande |
+| **Paralysie de la revue** | 4 niveaux de profondeur intelligente (XS/S/M/L), petites tâches ne bloquent pas l'approbation |
+| **Méfiance du code** | Centré sur Spec + revue à trois axes, Spec is Truth |
+| **Difficile à maintenir** | Accumulation des connaissances Archive + loi TDD, complément = actif |
 
-### Lois de fer principales
+### Lois de Fer Principales
 
-1. **No Spec, No Code** — Pas de code avant de former le Spec minimum (Size XS exempté)
-2. **No Approval, No Execute** — Jamais de code si l'humain ne hoche pas la tête en phase Plan
+1. **No Spec, No Code** — Pas de code avant formation du minimum Spec (Size XS exempté)
+2. **No Approval, No Execute** — Jamais de code si l'humain n'a pas approuvé dans la phase Plan
 3. **Spec is Truth** — Quand Spec entre en conflit avec le code, le code a tort
-4. **Reverse Sync** — Déviation trouvée en exécution → mettre à jour Spec d'abord → puis corriger le code
-5. **Evidence First** — L'achèvement est prouvé par les résultats de vérification, pas par l'auto-déclaration du modèle
+4. **Reverse Sync** — Écart découvert pendant l'exécution → mettre à jour Spec d'abord → puis corriger le code
+5. **Evidence First** — Complétion prouvée par résultats de vérification, pas auto-déclaration du modèle
 6. **No Root Cause, No Fix** — Analyse de cause racine requise avant correction de bug, corrections aveugles interdites
-7. **TDD Iron Law** — Size M/L: Pas de code de production sans tests échoués
-8. **Resume Ready** — Laisser une ancre de récupération dans Spec avant la pause de tâche longue
+7. **TDD Iron Law** — Size M/L : Pas de code production sans test échouant
+8. **Resume Ready** — Laisser une ancre de récupération dans Spec avant pause longue tâche
 
 ---
 
-## 📦 Qu'est-ce qui est inclus?
+## 📦 Qu'est-ce qui est inclus ?
 
-### Aperçu de la structure du dépôt
+### Aperçu de la Structure du Dépôt
 
 ```
 altas/
-├── altas-workflow/              # Répertoire principal du protocole (8.3M, 92 fichiers)
-│   ├── SKILL.md                 # ⭐ Prompt système principal (AI lit)
+├── altas-workflow/              # Répertoire principal du protocole (8.3M, 120+ fichiers)
+│   ├── SKILL.md                 # ⭐ Prompt système central (lu par l'IA) - v4.7
 │   ├── README.md                # Description détaillée ALTAS
-│   ├── QUICKSTART.md            # Guide rapide basé sur les scénarios
-│   ├── reference-index.md       # Index principal des documents de référence
-│   ├── protocols/               # Protocoles spécialisés (3)
+│   ├── QUICKSTART.md            # Guide rapide basé sur scénarios
+│   ├── reference-index.md       # Index maître des matériaux de référence
+│   ├── workflow-diagrams.md     # Collection de diagrammes Mermaid
+│   ├── protocols/               # Protocoles spécialisés (4)
 │   │   ├── RIPER-5.md           # Protocole mode strict
 │   │   ├── RIPER-DOC.md         # Protocole expert documentation
-│   │   └── SDD-RIPER-DUAL-COOP.md # Protocole collaboration double-modèle
-│   ├── docs/                    # Documents méthodologiques (4)
-│   │   ├── 从传统编程转向大模型编程.md
-│   │   ├── AI-原生研发范式.md
-│   │   ├── 团队落地指南.md
-│   │   └── 手把手教程.md
-│   ├── references/              # Documents de référence à la demande (79 fichiers)
-│   │   ├── spec-driven-development/  # Développement piloté par Spec (7 documents principaux)
+│   │   └── SDD-RIPER-DUAL-COOP.md # Protocole collaboration double modèle
+│   │   └── PROTOCOL-SELECTION.md # Guide de sélection de protocole
+│   ├── docs/                    # Documents méthodologiques (5)
+│   ├── references/              # Matériaux de référence à la demande (95+ fichiers)
+│   │   ├── spec-driven-development/  # Développement piloté par Spec (7 documents)
 │   │   ├── checkpoint-driven/        # Mode léger Checkpoint (4 documents)
-│   │   ├── superpowers/              # Super-pouvoirs (37 documents)
-│   │   │   ├── test-driven-development/  # Loi de fer TDD
-│   │   │   ├── systematic-debugging/     # Debug systématique
+│   │   ├── superpowers/              # Super-pouvoirs (50+ documents)
+│   │   │   ├── test-driven-development/  # Loi TDD
+│   │   │   ├── systematic-debugging/     # Débugage systématique
 │   │   │   ├── subagent-driven-development/ # Piloté par Subagent
 │   │   │   ├── brainstorming/            # Brainstorming de conception
 │   │   │   ├── writing-plans/            # Meilleures pratiques d'écriture Plan
+│   │   │   ├── code-review/              # Revue de code (Go/Python)
 │   │   │   └── ... (plus de super-pouvoirs)
-│   │   ├── agents/                       # Définitions Agent (22 documents)
-│   │   │   ├── sdd-riper-one/            # Agent standard
-│   │   │   └── sdd-riper-one-light/      # Agent léger
-│   │   ├── entry/                        # Configuration d'entrée (4 documents)
-│   │   └── special-modes/                # Modes spéciaux (5 documents)
+│   │   ├── agents/                       # Définitions d'agents (22 documents)
+│   │   ├── entry/                        # Configuration d'entrée (5 documents)
+│   │   ├── special-modes/                # Modes spéciaux (5 documents)
+│   │   ├── prd-analysis/                 # 🆕 Workflow analyse PRD (6 documents)
+│   │   └── testing/                      # 🆕 Spécialité ingénierie de test (18+ documents)
+│   │       ├── test-strategy-template.md    # Modèle stratégie de test
+│   │       ├── pytest-patterns.md           # Meilleures pratiques Pytest
+│   │       ├── e2e-testing.md               # Guide E2E
+│   │       ├── api-testing.md               # Référence API test
+│   │       ├── performance-testing.md       # Méthodologie performance test
+│   │       ├── security-testing.md          # Test sécurité
+│   │       ├── contract-testing.md          # Test contrat
+│   │       ├── test-data-management.md      # Gestion données test
+│   │       ├── test-environment.md          # Gestion environnement test
+│   │       ├── ci-cd-integration.md         # Intégration CI/CD
+│   │       └── templates/                   # Modèles scaffolding test
 │   └── scripts/                 # Outils d'automatisation
-│       └── archive_builder.py   # Constructeur d'archive
+├── .agents/skills/              # 🆕 Paquets de compétences indépendants (6)
+│   ├── advanced-api-testing/   # Test API avancé
+│   ├── go-code-review/         # Revue code Go
+│   ├── python-code-review/     # Revue code Python
+│   ├── pytest-patterns/        # Motifs Pytest
+│   ├── specify-requirements/   # Spécification exigences
+│   └── implementation-verify/  # Vérification implémentation
 ├── .qoder/repowiki/             # Documents Wiki (69 documents)
-├── AGENTS.md                    # Directives comportementales AI générales
-├── CLAUDE.md                    # Directives comportementales AI générales
-└── EXAMPLES.md                  # Exemples de code des quatre principes
+├── AGENTS.md                    # Lignes directrices comportement IA générales
+├── CLAUDE.md                    # Lignes directrices comportement Claude
+├── EXAMPLES.md                  # Exemples code quatre principes
+└── skills-lock.json             # Verrouillage version paquets compétences
 ```
 
-### Statistiques des actifs principaux
+### Statistiques des Actifs Principaux
 
 | Catégorie | Quantité | Description |
 |------|------|------|
-| **Protocole principal** | 1 | SKILL.md (Protocole principal ALTAS Workflow) |
-| **Protocoles spécialisés** | 3 | RIPER-5 / RIPER-DOC / DUAL-COOP |
-| **Méthodologie** | 4 | Traditionnel vers LLM / Paradigme AI-native / Adoption équipe / Tutoriel pas à pas |
-| **Documents de référence** | 79 | Piloté par Spec (7) / Checkpoint (4) / Superpowers (37) / Agents (22) / Entry (4) / Special-Modes (5) |
-| **Agents indépendants** | 2 | SDD-RIPER-ONE (standard/léger) |
-| **Exemples de code** | 1 | EXAMPLES.md (exemples pratiques des quatre principes) |
-| **Outils d'automatisation** | 1 | archive_builder.py (Constructeur d'archive) |
+| **Protocole Central** | 1 | SKILL.md (protocole principal ALTAS Workflow) v4.7 |
+| **Protocoles Spécialisés** | 4 | RIPER-5 / RIPER-DOC / DUAL-COOP / PROTOCOL-SELECTION |
+| **Méthodologie** | 5 | Traditionnel vers LLM / Paradigme AI-native / Adoption équipe / Tutoriel pas à pas / Plan implémentation v4.6 |
+| **Matériaux Référence** | 95+ | Spec-driven (7) / Checkpoint (4) / Superpowers (50+) / Agents (22) / Entry (5) / Special-Modes (5) / PRD Analyse (6) / Testing (18+) |
+| **Agents Indépendants** | 2 | SDD-RIPER-ONE (standard/léger) |
+| **🆕 Paquets Compétences** | 6 | API Test / Revue Go / Revue Python / Pytest / Spécification Exigences / Vérification Implémentation |
+| **Exemples Code** | 1 | EXAMPLES.md (exemples pratiques quatre principes) |
+| **Outils Automatisation** | 3 | archive_builder.py / scaffold.py / validate_aliases_sync.py |
 
 ---
 
-## 🚀 Comment utiliser rapidement?
+## 🚀 Nouveautés v4.7 (2026-04-18)
 
-### Installation en 30 secondes
+### 🧪 Optimisation Spécialité Ingénierie de Test
 
-**Méthode 1**: Copier le contenu de `altas-workflow/SKILL.md` dans les Instructions Personnalisées de l'assistant AI
+- ✅ **Guide de Référence Framework E2E** : Meilleures pratiques test bout-en-bout avec intégration Playwright/Cypress
+- ✅ **Méthodologie Test Performance/Charge** : Stratégie stress test, benchmark test, système métriques performance
+- ✅ **Processus Complet API Test** : Test contrat, test sécurité, modèles matrice API test
+- ✅ **Suite Documents Motifs Pytest** : Conception Fixture, paramétrisation, stratégies Mock, couverture
+- ✅ **Gestion Données Test** : Pattern usine, hiérarchie Fixture, isolation test
+- ✅ **Gestion Environnement Test** : Docker Compose, injection dépendance, cohérence environnement
+- ✅ **Intégration Test CI/CD** : Pipeline automatisé, portes qualité, rapports test
+- ✅ **Modèles Scaffolding Test** : Prêt à l'emploi conftest.py / factories / fixtures
+- ✅ **Support Test Go/Python** : Meilleures pratiques et anti-patterns multi-langages
 
-**Méthode 2**: Exécuter dans Cursor/Trae:
+### 🔍 Paquets Compétences Revue de Code
+
+- ✅ **Revue Code Go** : Analyse statique, audit performance, vérifications sécurité concurrence
+- ✅ **Revue Code Python** : Sécurité type, motifs asynchrones, normes gestion erreurs
+- ✅ **Standardisation Processus Revue** : Review Request → Code Quality → Spec Compliance
+
+### 🆕 Autres Améliorations
+
+- ✅ Script validation synchronisation alias
+- ✅ Automatisation scaffolding projet
+- ✅ Compétence vérification implémentation
+- ✅ Motifs test API avancés
+
+---
+
+## 🚀 Comment Utiliser Rapidement ?
+
+### Installation 30 Secondes
+
+**Méthode 1** : Copier contenu `altas-workflow/SKILL.md` dans Custom Instructions assistant IA
+
+**Méthode 2** : Exécuter dans Cursor/Trae :
 ```bash
 cp altas-workflow/SKILL.md .cursorrules
 ```
 
-**Méthode 3**: Configuration du projet
+**Méthode 3** : Configuration projet
 ```bash
 mkdir -p mydocs/{codemap,context,specs,micro_specs,archive}
 ```
 
-### Adaptation plateforme
+### Utilisation Immédiate
 
-| Plateforme | Méthode d'installation |
-|------|----------|
-| **Cursor / Trae** | Copier le contenu de `SKILL.md` dans `.cursorrules` ou Règles AI globales |
-| **Claude / OpenAI Agent** | Injecter le contenu de `SKILL.md` comme Prompt Système |
-| **Qoder** | Placer `SKILL.md` dans le répertoire `.qoder/skills/` du projet |
-
----
-
-### Utilisation immédiate
-
-**Modification extrêmement rapide (Size XS)**:
+**Modification Ultra Rapide (Size XS)**:
 ```
 >> Changer MAX_RETRIES de 3 à 5 dans src/config.ts
 ```
 
-**Petite tâche (Size S)**:
+**Petite Tâche (Size S)**:
 ```
-FAST: Ajouter un code de vérification d'image à l'interface de connexion
-```
-
-**Développement standard (Size M)**:
-```
-sdd_bootstrap: task=Ajouter une fonction anti-scraping à l'interface d'enregistrement utilisateur, goal=Amélioration de la sécurité
+FAST: Ajouter code verification image à interface connexion
 ```
 
-**Refactoring d'architecture (Size L)**:
+**Développement Standard (Size M)**:
 ```
-DEEP: Refactorer le module d'authentification pour le diviser en microservices indépendants
-```
-
-**Investigation de bug**:
-```
-DEBUG: log_path=./logs/error.log, issue=Autorisation non obtenue après approbation
+sdd_bootstrap: task=Ajouter fonction anti-scraping par code image à inscription utilisateur, goal=Amélioration sécurité
 ```
 
-**Collaboration multi-projets**:
+**Refactoring Architecture (Size L)**:
 ```
-MULTI: task=Publication de fonctionnalité conjointe frontend-backend
+DEEP: Refactor module authentification pour séparer en microservices indépendants
+```
+
+**🆕 Analyse PRD**:
+```
+PRD: Analyser exigences panier e-commerce, sortie document PRD structuré
+```
+
+**🆕 Spécialité Test**:
+```
+TEST: Compléter cas test E2E module paiement
+PERF: Stress test performance interface requête commande
+REVIEW: Revue qualité code module authentification (Go/Python)
 ```
 
 ---
 
-## 📚 Commandes principales
+## 📚 Commandes Principales
 
-### Aperçu des commandes
+### Aperçu des Commandes
 
-| Commande | Objectif | Taille applicable | Impact workflow |
+| Commande | Usage | Taille Applicable | Impact Workflow |
 |------|------|----------|----------|
-| `>>` / `FAST` | Piste rapide, sauter Research/Plan | XS/S | Exécuter directement→vérifier→résumer |
+| `>>` / `FAST` | Voie rapide, sauter Research/Plan | XS/S | Exécuter directement→vérifier→résumé |
 | `sdd_bootstrap` | Démarrer workflow RIPER | M/L | Research→Plan→Execute→Review |
-| `create_codemap` | Générer carte de code | M/L | Analyse en lecture seule, pas de modification de code |
-| `MAP` / `PROJECT MAP` | Analyse de projet en lecture seule | Tous | Générer carte d'architecture |
-| `DEBUG` | Mode debug système | - | Analyse de cause racine→rapport de diagnostic |
-| `MULTI` | Collaboration multi-projets | L | Découverte automatique + isolation de portée |
-| `ARCHIVE` | Archivage des connaissances | L | Version humaine + version LLM double perspective |
-| `DOC` | Mode expert documentation | - | ABSORB→OUTLINE→AUTHOR→FACT-CHECK |
-| `REVIEW SPEC` | Révision pré-exécution | M/L | Pré-révision consultative |
-| `REVIEW EXECUTE` | Révision post-exécution à trois axes | M/L | Révision à trois axes Spec/code/qualité |
-
-### Référence rapide des mots déclencheurs
-
-| Mot déclencheur | Action | Taille |
-|--------|------|------|
-| `FAST` / `快速` / `>>` | Piste extrêmement rapide | XS/S |
-| `DEEP` | Mode profond | L |
-| `MAP` / `链路梳理` | CodeMap niveau fonctionnalité | - |
-| `PROJECT MAP` / `项目总图` | CodeMap niveau projet | - |
-| `MULTI` / `多项目` | Mode multi-projets | L |
-| `CROSS` / `跨项目` | Autoriser modifications cross-projet | L |
-| `DEBUG` / `排查` | Debug systématique | - |
-| `REVIEW SPEC` / `计划评审` | Révision consultative pré-exécution | M/L |
-| `REVIEW EXECUTE` / `代码评审` | Révision à trois axes post-exécution | M/L |
-| `ARCHIVE` / `归档` / `沉淀` | Archivage des connaissances | L |
-| `DOC` / `写文档` | Mode expert documentation | - |
-| `EXIT ALTAS` / `退出协议` | Désactiver protocole | - |
-| `全部` / `all` / `execute all` | Exécution par lots | M/L |
+| `create_codemap` | Générer carte code | M/L | Analyse lecture seule, pas modification code |
+| `DEBUG` | Mode debug système | - | Analyse cause racine→rapport diagnostic |
+| `MULTI` | Collaboration multi-projet | L | Auto-découverte + isolation scope |
+| `ARCHIVE` | Accumulation connaissances | L | Version humaine + version LLM double perspective |
+| **`PRD`** | **🆕 Analyse PRD** | **M/L** | **Brainstorm→Discover→Document→Review→Validate** |
+| **`TEST`** | **🆕 Spécialité Test** | **M/L** | **Stratégie test→Conception cas→Implémentation→Vérification** |
+| **`PERF`** | **🆕 Optimisation Performance** | **L** | **Mesure baseline→Analyse goulot→Optimisation→Vérification régression** |
+| **`REVIEW`** | **🆕 Revue Code** | **M/L** | **Demande revue→Vérification qualité→Validation conformité** |
+| **`REFACTOR`** | **🆕 Spécialité Refactoring** | **L** | **CodeMap→Plan(TDD)→Execute→Review** |
+| **`MIGRATE`** | **🆕 Spécialité Migration** | **L** | **Évaluation risque→Migration→Vérification** |
 
 ---
 
-## 🏗️ Étapes du workflow
+## ⚡ Adaptation Intelligente Profondeur
 
-### Workflow Size M (Standard)
+### Quatre Niveaux Profondeur Tâche
 
-```mermaid
-flowchart LR
-    R["Research<br>Brouillon Spec"] --> P["Plan<br>Liste de tâches"]
-    P --> E["Execute TDD<br>Tests échoués"]
-    E --> RV["Review<br>Révision à trois axes"]
-    RV --> V["Verification<br>Preuves"]
-```
-
-**Description du workflow**:
-- **Research**: Alignement de recherche, former Spec (Goal, In-Scope, Out-of-Scope, Facts, Risks, Open Questions)
-- **Plan**: Planification détaillée, décomposer en Checklist atomique, clarifier File Changes + Signatures + Done Contract
-- **Execute**: Implémentation pilotée par TDD (RED→GREEN→REFACTOR)
-- **Review**: Révision à trois axes (Qualité Spec / Cohérence Spec-code / Qualité intrinsèque du code)
-- **Verification**: Preuves de vérification, s'assurer que les tests passent
-
-### Workflow Size L (Profond)
-
-```mermaid
-flowchart LR
-    R["Research<br>Brouillon Spec"] --> I["Innovate<br>Comparaison de solutions"]
-    I --> P["Plan<br>Liste de tâches"]
-    P --> E["Execute TDD+Subagent<br>Implémentation parallèle"]
-    E --> RV["Review<br>Révision à trois axes"]
-    RV --> A["Archive<br>Archivage des connaissances"]
-```
-
-**Description du workflow**:
-- **Research**: Recherche approfondie, organiser les liens de statut actuel, identifier les risques
-- **Innovate**: Comparaison de solutions, fournir 2-3 solutions (Pros/Cons/Risks/Effort)
-- **Plan**: Checklist atomique + allocation Subagent
-- **Execute**: Piloté par TDD + implémentation parallèle Subagent + révision en deux étapes
-- **Review**: Révision à trois axes + archivage
-- **Archive**: Générer documents à double perspective (version humaine + version LLM)
-
----
-
-## ⚡ Adaptation intelligente de la profondeur
-
-### Quatre niveaux de profondeur de tâche
-
-| Taille | Condition déclencheuse | Exigence Spec | Workflow | Scénarios typiques |
+| Taille | Condition Déclencheur | Exigence Spec | Workflow | Scénarios Typiques |
 |------|----------|----------|--------|----------|
-| **XS (Extrêmement rapide)** | typo, valeur de config, <10 lignes | Sauter, résumé d'1 ligne après | Exécuter directement→vérifier→résumer | Changer config, corriger typo, logs |
+| **XS (Ultra Rapide)** | typo, config valeur, <10 lignes | Sauter, résumé 1 ligne après | Direct exécuter→vérifier→résumé | Modifier config, corriger typo, logs |
 | **S (Rapide)** | 1-2 fichiers, logique claire | micro-spec (1-3 phrases) | micro-spec→approuver→exécuter→réécrire | Ajouter paramètre, fonction simple |
-| **M (Standard)** | 3-10 fichiers, dans module | Spec léger persisté | Research→Plan→Execute(TDD)→Review | Nouvelle interface, refactor module |
-| **L (Profond)** | Cross-module, >500 lignes, niveau architecture | Spec complet + Innovate + Archive | Research→Innovate→Plan→Execute→Subagent→Review→Archive | Division architecture, transformation cross-équipe |
-
-### Table de référence rapide d'évaluation de taille
-
-| Signal | Taille recommandée | Description |
-|------|----------|------|
-| "Corriger un typo" | XS | Changement purement mécanique |
-| "Ajouter un élément de config" | XS | Pas d'impact sur l'architecture |
-| "Changer le texte du bouton" | XS/S | Scénario limite |
-| "Ajouter un paramètre à cette interface" | S | Petit changement dans un seul fichier |
-| "Ajouter une gestion d'erreur à cette fonction" | S | Logique claire |
-| "Ajouter une nouvelle interface CRUD" | M | Développement dans module |
-| "Refactorer ce module" | M/L | Scénario limite |
-| "Changement de modèle de données cross-module" | L | Impact cross-module |
-| "Refactoring niveau architecture" | L | Impact global |
-| "Jointure frontend-backend" | L (MULTI) | Collaboration multi-projets |
-
-### Mise à niveau/rétrogradation automatique
-
-- **Complexité trouvée dépassant les attentes pendant l'exécution** → L'AI fait une pause immédiate, propose une mise à niveau
-- **L'utilisateur peut utiliser à tout moment** `[Upgrade to M]` / `[Downgrade to S]` pour ajuster
-- **Spécification forcée**: `>>`=XS, `FAST`=S, défaut=M, `DEEP`=L
+| **M (Standard)** | 3-10 fichiers, dans module | Spec léger persisté | Research→Plan→Execute(TDD)→Review | Nouvelle interface, refactoring module |
+| **L (Profond)** | Cross-module, >500 lignes, architecture | Spec complet + Innovate + Archive | Research→Innovate→Plan→Execute→Subagent→Review→Archive | Séparation architecture, transformation cross-équipe |
 
 ---
 
-## 🛡️ Lois de fer de qualité
+## 🛡️ Lois de Fer Qualité
 
-| # | Loi de fer | Signification |
+| # | Loi de Fer | Signification |
 |---|------|------|
-| 1 | **No Spec, No Code** | Pas de code avant de former le Spec minimum (Size XS exempté) |
-| 2 | **No Approval, No Execute** | Jamais de code si l'humain ne hoche pas la tête en phase Plan |
-| 3 | **Spec is Truth** | Quand Spec entre en conflit avec le code, le code a tort |
-| 4 | **Reverse Sync** | Déviation trouvée en exécution → mettre à jour Spec d'abord → puis corriger le code |
-| 5 | **Evidence First** | L'achèvement est prouvé par les résultats de vérification, pas par l'auto-déclaration du modèle |
-| 6 | **No Root Cause, No Fix** | Analyse de cause racine requise avant correction de bug, corrections aveugles interdites |
-| 7 | **TDD Iron Law** | Size M/L: Pas de code de production sans tests échoués |
-| 8 | **Resume Ready** | Laisser une ancre de récupération dans Spec avant la pause de tâche longue |
+| 1 | **No Spec, No Code** | Pas de code avant minimum Spec (Size XS exempté) |
+| 2 | **No Approval, No Execute** | Pas de code si humain n'approuve pas phase Plan |
+| 3 | **Spec is Truth** | Quand Spec conflit avec code, code a tort |
+| 4 | **Reverse Sync** | Écart trouvé exécution → mettre à jour Spec → puis corriger code |
+| 5 | **Evidence First** | Complétion prouvée par vérification, pas auto-déclaration modèle |
+| 6 | **No Root Cause, No Fix** | Analyse cause racine requise avant fix bug, corrections aveugles interdites |
+| 7 | **TDD Iron Law** | Size M/L: Pas de code production sans test échouant |
+| 8 | **Resume Ready** | Laisser ancre récupération Spec avant pause tâche longue |
 
 ---
 
-## 🎯 Système de visualisation de progression
+## 🎓 Scénarios d'Utilisation Typiques
 
-### Mécanisme de point de contrôle
+### 🆕 Scénario 6 : Analyse PRD (v4.7)
 
-**Après chaque étape terminée**, l'AI doit produire un point de contrôle standardisé:
-
-```markdown
-### Progression [Phase ▸ Étape]
-[Terminé] ▸ **[Actuel]** ▸ [Suivant] ▸ [Suite...]
-
-### Réalisation actuelle
-- Ce qui vient d'être terminé (sortie spécifique)
-
-### Sortie attendue
-- Ce qui sera produit ensuite
-
-### Actions suivantes
-- **[Continue/Approved]**: Accepter, passer à l'étape suivante
-- **[Modify]** + retour: Ajuster la réalisation actuelle
-- **[Upgrade to X]** / **[Downgrade to X]**: Ajuster la taille
-- **[Load Reference: XXX]**: Voir les détails d'un document de référence
+**Entrée**:
+```
+PRD: Analyser exigences panier e-commerce, objectif=Augmenter taux conversion 20%
 ```
 
----
+**Comportement IA**:
+1. ✅ Entrer mode analyse PRD
+2. ✅ **Brainstorm** → Collecter input parties prenantes, analyse concurrentielle
+3. ✅ **Discover** → Recherche utilisateur, analyse données, faisabilité technique
+4. ✅ **Document** → Sortir PRD structuré (Aperçu produit/Personas/Journey/Exigences fonctionnelles/Métriques succès)
+5. ✅ **Review** → Revue parties prenantes
+6. ✅ **Validate** → Validation métriques qualité (Intégrité structurelle/Qualité contenu/Validation frontières)
 
-## 📖 Documentation détaillée
-
-### Documents principaux (Lecture obligatoire)
-
-| Document | Objectif | Longueur |
-|------|------|------|
-| [Description détaillée ALTAS Workflow](altas-workflow/README.md) | Protocole de workflow complet | 650+ lignes |
-| [Guide de démarrage rapide](altas-workflow/QUICKSTART.md) | Intégration en 30 secondes | 170+ lignes |
-| [Index principal des documents de référence](altas-workflow/reference-index.md) | Carte de chargement à la demande | 200+ lignes |
-| [SKILL.md](altas-workflow/SKILL.md) | Prompt système AI | 650+ lignes |
-
-### Documents méthodologiques (Théorie)
-
-| Document | Sujet | Public cible |
-|------|------|----------|
-| [De la programmation traditionnelle à la programmation LLM](altas-workflow/docs/从传统编程转向大模型编程.md) | Changement de paradigme | Tous |
-| [Paradigme de développement AI-native](altas-workflow/docs/AI-原生研发范式 - 从代码中心到文档驱动的演进.md) | Piloté par documents | Architecte/Tech Lead |
-| [Guide d'adoption en équipe](altas-workflow/docs/团队落地指南.md) | Promotion équipe | Tech Lead/Manager |
-| [Tutoriel pas à pas](altas-workflow/docs/如何快速从零开始落地大模型编程%20--%20手把手教程.md) | À partir de zéro | Débutants |
+**Résultat**:
+- Document PRD: `mydocs/prds/YYYY-MM-DD_hh-mm_OptimisationPanierECommerce.md`
+- Rapport validation: Liste items passés/non passés
 
 ---
 
-## 📊 Statistiques du dépôt
+### 🆕 Scénario 7 : Spécialité Test E2E (v4.7)
+
+**Entrée**:
+```
+TEST: Compléter tests E2E chemin critique module paiement
+Scope: src/modules/payment
+Objectif: Couvrir flux complet Commande→Paiement→Rappel
+Contraintes: Utiliser Playwright, sans dépendance passerelle paiement réelle
+```
+
+**Comportement IA**:
+1. ✅ Entrer mode TEST
+2. ✅ **Strategy** → Référer [test-strategy-template.md](altas-workflow/references/testing/test-strategy-template.md) formuler stratégie test
+3. ✅ **Design** → Référer [e2e-testing.md](altas-workflow/references/testing/e2e-testing.md) concevoir cas test
+4. ✅ **Implement** → Utiliser [templates/](altas-workflow/references/testing/templates/) scaffolding implémentation rapide
+5. ✅ **Verify** → Exécuter tests, générer rapports
+
+**Résultat**:
+- Fichier test: `src/modules/payment/e2e/checkout-flow.spec.ts`
+- Rapport test: Couverture, taux passage, métriques performance
+
+---
+
+## 📋 Historique des Versions
+
+| Version | Date | Nom | Statut | Changements Clés |
+|------|------|------|------|----------|
+| **v4.7** | 2026-04-18 | ALTAS Workflow | ✅ **Version Actuelle** | 🧪Optimisation spécialité ingénierie test, 🔍Paquets compétences revue code, 📋Workflow analyse PRD, 🛠️Amélioration automatisation |
+| **v4.6** | 2026-04-16 | ALTAS Workflow | ✅ Version Stable | Affinement plan implémentation, guide sélection protocole |
+| **v4.0** | 2026-04-13 | ALTAS Workflow | ✅ Version Historique | Intégration trois workflows, ajout adaptation profondeur intelligente, visualisation progression, chargement à la demande |
+| **v1.0** | 2026-04-12 | SIGMA Workflow | ❌ Obsolète | Version initiale |
+
+### Caractéristiques Principales v4.7
+
+#### 🧪 Spécialité Ingénierie de Test
+- ✅ Guide référence framework E2E (Playwright/Cypress)
+- ✅ Méthodologie test performance/charge et stratégie stress test
+- ✅ Processus complet API test (test contrat, test sécurité)
+- ✅ Suite documents motifs Pytest (Fixture/paramétrage/Mock)
+- ✅ Gestion données test et pattern usine
+- ✅ Gestion environnement test et intégration Docker
+- ✅ Intégration test CI/CD et portes qualité
+- ✅ Modèles scaffolding test (prêt à l'emploi)
+- ✅ Support test multi-langages Go/Python
+
+#### 🔍 Paquets Compétences Revue de Code
+- ✅ Revue code Go (analyse statique, sécurité concurrence, audit performance)
+- ✅ Revue code Python (sécurité type, motifs asynchrones, gestion erreurs)
+- ✅ Motifs test API avancés (idempotence, concurrence, test contrat)
+- ✅ Standardisation processus revue (Request → Quality → Compliance)
+
+#### 📋 Workflow Analyse PRD
+- ✅ Processus cinq phases analyse exigences structurées
+- ✅ Modèle PRD et standards validation
+- ✅ Évaluation métriques qualité quatre dimensions
+- ✅ Exemple bon PRD référence
+
+#### 🛠️ Amélioration Automatisation
+- ✅ Script validation synchronisation alias
+- ✅ Automatisation scaffolding projet
+- ✅ Compétence vérification implémentation
+- ✅ Compétence spécification exigences
+
+---
+
+## 📊 Statistiques du Dépôt
 
 ```
-Taille du dépôt: 8.3M
-Fichiers Markdown: 169
-Documents de référence: 79
+Taille Dépôt: 8.3M
+Fichiers Markdown: 200+
+Matériaux Référence: 95+
   - Spec-Driven Development: 7
   - Checkpoint-Driven: 4
-  - Superpowers: 37
+  - Superpowers: 50+
   - Agents: 22
-  - Entry: 4
+  - Entry: 5
   - Special-Modes: 5
-Protocoles principaux: 1 (SKILL.md)
-Protocoles spécialisés: 3 (RIPER-5/RIPER-DOC/DUAL-COOP)
-Méthodologie: 4
-Agents indépendants: 2 (standard/léger)
-Outils d'automatisation: 1 (archive_builder.py)
+  - 🆕 PRD Analysis: 6
+  - 🆕 Testing: 18+
+Protocoles Centraux: 1 (SKILL.md v4.7)
+Protocoles Spécialisés: 4 (RIPER-5/RIPER-DOC/DUAL-COOP/PROTOCOL-SELECTION)
+Méthodologie: 5
+Agents Indépendants: 2 (standard/léger)
+🆕 Paquets Compétences: 6 (API Test/Revue Go/Revue Python/Pytest/Spécification Exigences/Vérification Implémentation)
+Outils Automatisation: 3 (archive_builder/scaffold/validate_aliases)
 Documents Wiki: 69 (.qoder/repowiki/)
 ```
 
 ---
 
-## 🎯 Navigation rapide
+## 📊 Compatibilité Stack Technique
 
-### Intégration débutants
+### Support Langages Programmation
 
-1. [Guide de démarrage rapide](altas-workflow/QUICKSTART.md) - Intégration en 30 secondes
-2. [De la programmation traditionnelle à la programmation LLM](altas-workflow/docs/从传统编程转向大模型编程.md) - Changement de paradigme
-3. [Tutoriel pas à pas](altas-workflow/docs/如何快速从零开始落地大模型编程%20--%20手把手教程.md) - À partir de zéro
+| Langage | Framework Test | Revue Code | Couverture Documentation |
+|------|----------|----------|----------|
+| **Python** | Pytest, unittest | ✅ Python Code Review | Sécurité type, motifs asynchrones, gestion erreurs |
+| **Go** | testing, ginkgo | ✅ Go Code Review | Analyse statique, sécurité concurrence, audit performance |
+| **JavaScript/TypeScript** | Jest, Playwright, Cypress | ⚠️ Via API Testing | E2E, test API |
+| **Java** | JUnit, TestNG | ⚠️ Processus général | TDD, stratégie test |
+| **Général** | - | Implementation Verify | Couverture, test acceptation |
 
-### Référence rapide
+### Compatibilité Plateforme
 
-- [Commandes principales](#-commandes-principales) - Tous les mots déclencheurs et commandes
-- [Évaluation de taille](#-adaptation-intelligente-de-la-profondeur) - Comment choisir XS/S/M/L
-- [Index des documents de référence](altas-workflow/reference-index.md) - Carte de chargement à la demande
-- [Documentation détaillée](#-documentation-détaillée) - Liste complète des documents
+| Plateforme | Niveau Support | Notes |
+|------|----------|------|
+| **Cursor** | ✅ Support complet | Recommandé, intégration `.cursorrules` |
+| **Trae** | ✅ Support complet | Intégration native |
+| **Claude Desktop** | ✅ Support complet | Injection System Prompt |
+| **OpenAI Agents** | ✅ Support complet | Injection System Prompt |
+| **Qoder** | ✅ Support complet | Intégration `.qoder/skills/` |
+| **VS Code + Copilot** | ⚠️ Support basique | Configuration manuelle requise |
 
 ---
 
-*Propulsé par l'intégration de SDD-RIPER, SDD-RIPER-Optimized (Checkpoint-Driven), et Superpowers.*
+*Propulsé par l'intégration de SDD-RIPER, SDD-RIPER-Optimized (Checkpoint-Driven), Superpowers, et amélioré avec capacités Ingénierie de Test & Revue de Code.*
 
-**Dernière mise à jour**: 2026-04-16
+**Dernière mise à jour**: 2026-04-18
+**Version actuelle**: v4.7
+**Statut maintenance**: 🟢 Développement actif

@@ -1,8 +1,12 @@
 # ALTAS Workflow
 
-> **融合三方优势 | 智能深度适配 | 渐进式披露 | 每步可反馈**
+> **融合三方优势 | 智能深度适配 | 渐进式披露 | 每步可反馈 | 测试工程师友好**
 
-ALTAS Workflow 是一套汲取了 SDD-RIPER、SDD-RIPER-Optimized 与 Superpowers 精华的综合性 AI 工作流程规范。本规范致力于解决 AI 编程中的**上下文腐烂**、**审查瘫痪**、**代码不信任**和**难以维护**等四大工程痛点。
+**Version:** 4.7 (2026-04-18)
+
+ALTAS Workflow 是一套汲取了 SDD-RIPER、SDD-RIPER-Optimized 与 Superpowers 精华的综合性 AI 工作流程规范，并增强了**测试工程专项**、**代码审查技能包**和**PRD 分析工作流**能力。
+
+本规范致力于解决 AI 编程中的**上下文腐烂**、**审查瘫痪**、**代码不信任**、**难以维护**以及**测试覆盖不足**等核心工程痛点。
 
 ---
 
@@ -32,7 +36,39 @@ ALTAS Workflow 是一套汲取了 SDD-RIPER、SDD-RIPER-Optimized 与 Superpower
 - 复杂细节写入磁盘Spec，对话中只呈现摘要和高危风险
 - 参考文档按需加载，不常驻上下文
 
-### 4. 快速启动
+### 4. 🆕 测试工程师专项支持 (v4.7)
+
+完整的测试工程体系，覆盖 E2E、API、性能、安全等多维度测试：
+
+| 能力 | 说明 |
+|------|------|
+| **E2E 测试框架** | Playwright/Cypress 集成指南与最佳实践 |
+| **性能/负载测试** | 压测策略、基准测试、性能指标体系 |
+| **API 测试完整流程** | 契约测试、安全测试、API 测试矩阵模板 |
+| **Pytest 测试模式** | Fixture 设计、参数化、Mock 策略、覆盖率 |
+| **测试数据管理** | 工厂模式、Fixture 层级、测试隔离 |
+| **测试环境管理** | Docker Compose、依赖注入、环境一致性 |
+| **CI/CD 集成测试** | 自动化流水线、质量门禁、测试报告 |
+| **测试脚手架模板** | 开箱即用的 conftest.py / factories / fixtures |
+
+### 5. 🆕 代码审查技能包 (v4.7)
+
+多语言代码审查标准化流程：
+
+| 语言 | 审查维度 |
+|------|----------|
+| **Go** | 静态分析、并发安全、性能审计、错误处理规范 |
+| **Python** | 类型安全、异步模式、错误处理、代码风格 |
+
+### 6. 🆕 PRD 分析工作流 (v4.7)
+
+结构化需求分析五阶段流程：
+
+```
+Brainstorm → Discover → Document → Review → Validate
+```
+
+### 7. 快速启动
 
 5分钟武装你的AI Agent。详见 [QUICKSTART.md](./QUICKSTART.md)
 
@@ -46,6 +82,8 @@ ALTAS Workflow 是一套汲取了 SDD-RIPER、SDD-RIPER-Optimized 与 Superpower
 4. **No Fixes Without Root Cause**: 系统化调试，禁止盲改
 5. **TDD Iron Law**: M/L规模先写失败测试再写生产代码
 6. **Reverse Sync**: Bug先修Spec再修代码
+7. **🆕 Test Coverage First**: 测试覆盖率作为质量门禁
+8. **🆕 Code Quality Standards**: 代码审查作为发布前置条件
 
 ---
 
@@ -56,6 +94,9 @@ ALTAS Workflow 是一套汲取了 SDD-RIPER、SDD-RIPER-Optimized 与 Superpower
 | **SDD-RIPER** | Spec中心论、RIPER状态机、三轴Review、Multi-Project自动发现、Debug/Archive协议 |
 | **SDD-RIPER-Optimized** | Checkpoint-Driven轻量模式、4级任务深度(zero/fast/standard/deep)、Done Contract、Resume Ready、Hot/Warm/Cold上下文装配 |
 | **Superpowers** | TDD铁律与反模式、系统化Debug四阶段法、Subagent驱动+两阶段Review、并行Agent派遣、验证优先铁律、Rationalization预防表 |
+| **🆕 Testing Engineering** | E2E/API/Performance/Security测试方法论、Pytest最佳实践、CI/CD集成、测试脚手架模板 |
+| **🆕 Code Review Skills** | Go/Python静态分析、类型安全检查、并发安全审计、性能优化建议 |
+| **🆕 PRD Analysis** | 结构化需求分析方法论、PRD模板与校验标准、质量度量四维度评估 |
 
 ---
 
@@ -65,7 +106,7 @@ ALTAS Workflow 是一套汲取了 SDD-RIPER、SDD-RIPER-Optimized 与 Superpower
 
 | 文件 | 说明 |
 |------|------|
-| [SKILL.md](./SKILL.md) | Bootstrap 入口提示词（供AI读取，负责路由/规模/门禁） |
+| [SKILL.md](./SKILL.md) | Bootstrap 入口提示词（供AI读取，负责路由/规模/门禁） - v4.7 |
 | [QUICKSTART.md](./QUICKSTART.md) | 快速启动命令与典型场景 |
 | [reference-index.md](./reference-index.md) | 参考资料统一索引入口 |
 | [workflow-diagrams.md](./workflow-diagrams.md) | Mermaid 流程图集（可视化参考） |
@@ -75,21 +116,59 @@ ALTAS Workflow 是一套汲取了 SDD-RIPER、SDD-RIPER-Optimized 与 Superpower
 
 ```
 altas-workflow/
-├── SKILL.md                    # 主入口 Skill
+├── SKILL.md                    # 主入口 Skill v4.7
 ├── QUICKSTART.md               # 快速启动指南
 ├── reference-index.md          # 参考资料总索引
 ├── workflow-diagrams.md        # 流程图集
 ├── SKILL-entry-review.md       # Skill 复核文档
-├── references/                 # 按需加载的参考资料
-│   ├── entry/                  # 入口相关
-│   ├── spec-driven-development/# SDD-RIPER 完整协议
-│   ├── checkpoint-driven/      # Checkpoint 轻量模式
-│   ├── superpowers/            # TDD/Debug/Subagent 技能
-│   ├── special-modes/          # 特殊模式协议
-│   └── agents/                 # Agent 定义
-├── protocols/                  # 专用协议
-├── docs/                       # 方法论文档
-└── scripts/                    # 自动化工具
+├── references/                 # 按需加载的参考资料 (95+)
+│   ├── entry/                  # 入口相关 (5)
+│   ├── spec-driven-development/# SDD-RIPER 完整协议 (7)
+│   ├── checkpoint-driven/      # Checkpoint 轻量模式 (4)
+│   ├── superpowers/            # TDD/Debug/Subagent 技能 (50+)
+│   │   ├── test-driven-development/  # TDD 铁律
+│   │   ├── systematic-debugging/     # 系统化 Debug
+│   │   ├── subagent-driven-development/ # Subagent 驱动
+│   │   ├── brainstorming/            # 设计头脑风暴
+│   │   ├── writing-plans/            # 写 Plan 最佳实践
+│   │   ├── code-review/              # 🆕 代码审查 (Go/Python)
+│   │   └── ... (更多超级能力)
+│   ├── special-modes/          # 特殊模式协议 (5)
+│   │   ├── test.md             # 🆕 TEST 模式
+│   │   ├── perf.md             # 🆕 PERF 模式
+│   │   ├── review.md           # 🆕 REVIEW 模式
+│   │   ├── refactor.md         # 🆕 REFACTOR 模式
+│   │   └── migrate.md          # 🆕 MIGRATE 模式
+│   ├── prd-analysis/           # 🆕 PRD 分析工作流 (6)
+│   │   ├── SKILL.md            # PRD 分析主流程
+│   │   ├── template.md         # PRD 模板
+│   │   ├── validation.md       # PRD 校验标准
+│   │   └── examples/           # PRD 示例
+│   ├── testing/                # 🆕 测试工程专项 (18+)
+│   │   ├── test-strategy-template.md    # 测试策略模板
+│   │   ├── pytest-patterns.md           # Pytest 最佳实践
+│   │   ├── e2e-testing.md               # E2E 测试指引
+│   │   ├── api-testing.md               # API 测试参考
+│   │   ├── performance-testing.md       # 性能测试方法论
+│   │   ├── security-testing.md          # 安全测试
+│   │   ├── contract-testing.md          # 契约测试
+│   │   ├── test-data-management.md      # 测试数据管理
+│   │   ├── test-environment.md          # 测试环境管理
+│   │   ├── ci-cd-integration.md         # CI/CD 集成
+│   │   └── templates/                   # 测试脚手架模板
+│   └── agents/                 # Agent 定义 (22)
+│       ├── sdd-riper-one/      # 标准 RIPER Agent
+│       └── sdd-riper-one-light/# Checkpoint 轻量 Agent
+├── protocols/                  # 专用协议 (4)
+│   ├── RIPER-5.md              # 严格模式
+│   ├── RIPER-DOC.md            # 文档专家
+│   ├── SDD-RIPER-DUAL-COOP.md  # 双模型协作
+│   └── PROTOCOL-SELECTION.md   # 协议选择指南
+├── docs/                       # 方法论文档 (5)
+└── scripts/                    # 自动化工具 (3)
+    ├── archive_builder.py      # Archive 构建器
+    ├── scaffold.py             # 项目脚手架
+    └── validate_aliases_sync.py # 别名同步验证
 ```
 
 ---
@@ -104,6 +183,35 @@ altas-workflow/
 |------|----------|
 | [workflow-diagrams.md](./workflow-diagrams.md) | 需要可视化理解工作流、规模评估、铁律门禁、TDD循环、三轴评审等流程时 |
 
+### 🆕 测试工程专项索引 (v4.7)
+
+| 文件 | 调用时机 |
+|------|----------|
+| [references/testing/test-strategy-template.md](./references/testing/test-strategy-template.md) | 制定测试策略时 |
+| [references/testing/e2e-testing.md](./references/testing/e2e-testing.md) | 进行端到端测试时 |
+| [references/testing/api-testing.md](./references/testing/api-testing.md) | API 测试全流程参考 |
+| [references/testing/performance-testing.md](./references/testing/performance-testing.md) | 性能/负载测试时 |
+| [references/testing/security-testing.md](./references/testing/security-testing.md) | 安全测试 checklist |
+| [references/testing/pytest-patterns.md](./references/testing/pytest-patterns.md) | Python Pytest 最佳实践 |
+| [references/testing/ci-cd-integration.md](./references/testing/ci-cd-integration.md) | CI/CD 集成测试时 |
+| [references/testing/test-scaffold-templates.md](./references/testing/test-scaffold-templates.md) | 使用测试脚手架模板时 |
+
+### 🆕 PRD 分析索引 (v4.7)
+
+| 文件 | 调用时机 |
+|------|----------|
+| [references/prd-analysis/SKILL.md](./references/prd-analysis/SKILL.md) | PRD 分析完整工作流（Brainstorm → Discover → Document → Review → Validate） |
+| [references/prd-analysis/template.md](./references/prd-analysis/template.md) | PRD 模板结构（产品概述/用户画像/旅程/功能需求/成功指标） |
+| [references/prd-analysis/validation.md](./references/prd-analysis/validation.md) | PRD 验证清单（结构验证/内容质量/边界验证/跨节一致性） |
+| [references/prd-analysis/examples/good-prd.md](./references/prd-analysis/examples/good-prd.md) | 优质 PRD 示例参考 |
+
+### 🆕 代码审查索引 (v4.7)
+
+| 文件 | 调用时机 |
+|------|----------|
+| [references/superpowers/code-review/go-code-review.md](./references/superpowers/code-review/go-code-review.md) | Go 代码审查（静态分析、并发安全、性能审计） |
+| [references/superpowers/code-review/python-code-review.md](./references/superpowers/code-review/python-code-review.md) | Python 代码审查（类型安全、异步模式、错误处理） |
+
 ### 入口参考
 
 | 文件 | 调用时机 |
@@ -112,17 +220,6 @@ altas-workflow/
 | [references/entry/sources.md](./references/entry/sources.md) | 需要了解入口整合来源、方法论来源映射或做工作流介绍时 |
 | [references/entry/exceptions-recovery.md](./references/entry/exceptions-recovery.md) | 遇到问题升级、不确定、需要退出协议或能力降级时 |
 | [references/entry/discipline-enforcing.md](./references/entry/discipline-enforcing.md) | Agent 即将违反铁律、使用借口绕过规则、或出现常见使用错误时 |
-
-### PRD 分析 / 需求文档
-
-| 文件 | 调用时机 |
-|------|----------|
-| [references/prd-analysis/SKILL.md](./references/prd-analysis/SKILL.md) | PRD 分析完整工作流（Brainstorm → Discover → Document → Review → Validate） |
-| [references/prd-analysis/template.md](./references/prd-analysis/template.md) | PRD 模板结构（产品概述/用户画像/旅程/功能需求/成功指标） |
-| [references/prd-analysis/validation.md](./references/prd-analysis/validation.md) | PRD 验证清单（结构验证/内容质量/边界验证/跨节一致性） |
-| [references/prd-analysis/reference/output-format.md](./references/prd-analysis/reference/output-format.md) | PRD 状态报告和多角度最终验证指南 |
-| [references/prd-analysis/examples/good-prd.md](./references/prd-analysis/examples/good-prd.md) | 优质 PRD 示例参考 |
-| [references/prd-analysis/examples/output-example.md](./references/prd-analysis/examples/output-example.md) | 预期输出格式具体示例 |
 
 ### 按工作流阶段索引
 
@@ -164,9 +261,6 @@ altas-workflow/
 | [references/superpowers/test-driven-development/SKILL.md](./references/superpowers/test-driven-development/SKILL.md) | M/L规模TDD执行时 |
 | [references/superpowers/test-driven-development/testing-anti-patterns.md](./references/superpowers/test-driven-development/testing-anti-patterns.md) | 避免测试反模式时 |
 | [references/superpowers/subagent-driven-development/SKILL.md](./references/superpowers/subagent-driven-development/SKILL.md) | L规模Subagent驱动时 |
-| [references/superpowers/subagent-driven-development/implementer-prompt.md](./references/superpowers/subagent-driven-development/implementer-prompt.md) | 派遣实现者Subagent时 |
-| [references/superpowers/subagent-driven-development/spec-reviewer-prompt.md](./references/superpowers/subagent-driven-development/spec-reviewer-prompt.md) | Subagent Spec合规审查时 |
-| [references/superpowers/subagent-driven-development/code-quality-reviewer-prompt.md](./references/superpowers/subagent-driven-development/code-quality-reviewer-prompt.md) | Subagent代码质量审查时 |
 | [references/superpowers/dispatching-parallel-agents/SKILL.md](./references/superpowers/dispatching-parallel-agents/SKILL.md) | 多独立故障并行派遣时 |
 | [references/superpowers/executing-plans/SKILL.md](./references/superpowers/executing-plans/SKILL.md) | 无Subagent支持时执行Plan |
 | [references/superpowers/using-git-worktrees/SKILL.md](./references/superpowers/using-git-worktrees/SKILL.md) | 需要隔离工作空间时 |
@@ -178,7 +272,6 @@ altas-workflow/
 | [references/checkpoint-driven/modules.md](./references/checkpoint-driven/modules.md) | 进入Review时 (含Deep/Debug/Review/Multi模块) |
 | [references/superpowers/verification-before-completion/SKILL.md](./references/superpowers/verification-before-completion/SKILL.md) | 完成前验证时 |
 | [references/superpowers/requesting-code-review/SKILL.md](./references/superpowers/requesting-code-review/SKILL.md) | 请求代码审查时 |
-| [references/superpowers/requesting-code-review/code-reviewer.md](./references/superpowers/requesting-code-review/code-reviewer.md) | 派遣审查Agent模板 |
 | [references/superpowers/receiving-code-review/SKILL.md](./references/superpowers/receiving-code-review/SKILL.md) | 收到审查反馈时 |
 
 #### ARCHIVE / 知识沉淀
@@ -230,23 +323,29 @@ altas-workflow/
 | [references/superpowers/test-driven-development/SKILL.md](./references/superpowers/test-driven-development/SKILL.md) | TDD 执行验证 |
 | [references/spec-driven-development/commands.md](./references/spec-driven-development/commands.md) (create_codemap) | CodeMap 生成 |
 
-#### TEST 模式
+#### 🆕 TEST 模式 (v4.7)
 
 | 文件 | 调用时机 |
 |------|----------|
 | [references/special-modes/test.md](./references/special-modes/test.md) | 进入 TEST 模式时 |
+| [references/testing/test-strategy-template.md](./references/testing/test-strategy-template.md) | 制定测试策略 |
 | [references/superpowers/test-driven-development/SKILL.md](./references/superpowers/test-driven-development/SKILL.md) | TDD 最佳实践 |
-| [references/superpowers/test-driven-development/testing-anti-patterns.md](./references/superpowers/test-driven-development/testing-anti-patterns.md) | 测试反模式 |
+| [references/testing/e2e-testing.md](./references/testing/e2e-testing.md) | E2E 测试指引 |
+| [references/testing/api-testing.md](./references/testing/api-testing.md) | API 测试参考 |
+| [references/testing/pytest-patterns.md](./references/testing/pytest-patterns.md) | Pytest 测试模式 |
+| [references/testing/performance-testing.md](./references/testing/performance-testing.md) | 性能测试方法论 |
+| [references/testing/templates/](./references/testing/templates/) | 测试脚手架模板 |
 
-#### PERF 模式
+#### 🆕 PERF 模式 (v4.7)
 
 | 文件 | 调用时机 |
 |------|----------|
 | [references/special-modes/perf.md](./references/special-modes/perf.md) | 进入 PERF 模式时 |
+| [references/testing/performance-testing.md](./references/testing/performance-testing.md) | 性能测试方法论 |
 | [references/superpowers/verification-before-completion/SKILL.md](./references/superpowers/verification-before-completion/SKILL.md) | 验证策略 |
 | [references/superpowers/finishing-a-development-branch/SKILL.md](./references/superpowers/finishing-a-development-branch/SKILL.md) | 完成分支决策 |
 
-#### MIGRATE 模式
+#### 🆕 MIGRATE 模式 (v4.7)
 
 | 文件 | 调用时机 |
 |------|----------|
@@ -269,6 +368,7 @@ altas-workflow/
 | [protocols/RIPER-5.md](./protocols/RIPER-5.md) | 高风险代码修改时 |
 | [protocols/SDD-RIPER-DUAL-COOP.md](./protocols/SDD-RIPER-DUAL-COOP.md) | 双模型环境时 |
 | [protocols/RIPER-DOC.md](./protocols/RIPER-DOC.md) | DOC模式时 |
+| [protocols/PROTOCOL-SELECTION.md](./protocols/PROTOCOL-SELECTION.md) | 不确定选择哪个协议时 |
 
 ### 方法论文档
 
@@ -278,19 +378,16 @@ altas-workflow/
 | [docs/团队落地指南.md](./docs/团队落地指南.md) | 团队推广时 |
 | [docs/如何快速从零开始落地大模型编程 -- 手把手教程.md](./docs/如何快速从零开始落地大模型编程 -- 手把手教程.md) | 入门学习时 |
 | [docs/AI-原生研发范式-从代码中心到文档驱动的演进.md](./docs/AI-原生研发范式-从代码中心到文档驱动的演进.md) | 深入理解理论时 |
+| [docs/IMPLEMENTATION-PLAN-v4.6.md](./docs/IMPLEMENTATION-PLAN-v4.6.md) | 版本升级实施方案 |
 
 ### Superpowers 扩展参考
 
 | 文件 | 调用时机 |
 |------|----------|
 | [references/superpowers/using-superpowers/SKILL.md](./references/superpowers/using-superpowers/SKILL.md) | 检查Skill适用性时 |
-| [references/superpowers/using-superpowers/references/codex-tools.md](./references/superpowers/using-superpowers/references/codex-tools.md) | Codex 平台工具映射 |
-| [references/superpowers/using-superpowers/references/copilot-tools.md](./references/superpowers/using-superpowers/references/copilot-tools.md) | Copilot CLI 工具映射 |
-| [references/superpowers/using-superpowers/references/gemini-tools.md](./references/superpowers/using-superpowers/references/gemini-tools.md) | Gemini 平台工具映射 |
 | [references/superpowers/writing-skills/SKILL.md](./references/superpowers/writing-skills/SKILL.md) | 创建新Skill时 |
 | [references/superpowers/writing-skills/persuasion-principles.md](./references/superpowers/writing-skills/persuasion-principles.md) | 优化 Skill 效果时 |
 | [references/superpowers/writing-skills/testing-skills-with-subagents.md](./references/superpowers/writing-skills/testing-skills-with-subagents.md) | 验证 Skill 有效性时 |
-| [references/superpowers/writing-skills/anthropic-best-practices.md](./references/superpowers/writing-skills/anthropic-best-practices.md) | Anthropic 最佳实践参考 |
 
 ### 自动化工具
 
@@ -298,15 +395,62 @@ altas-workflow/
 |------|----------|
 | [scripts/archive_builder.py](./scripts/archive_builder.py) | 自动化归档时 |
 | [scripts/validate_aliases_sync.py](./scripts/validate_aliases_sync.py) | 验证 aliases 同步状态时 |
+| [scripts/scaffold.py](./scripts/scaffold.py) | 项目初始化脚手架时 |
 
 ---
 
 ## 统计
 
-- **参考文件总数**: 70+
-- **来源分布**: SDD-RIPER (14), SDD-RIPER-Opt (6), Superpowers (24+), PRD Analysis (6), 测试开发 (18+), 工具脚本 (3)
-- **目录结构**: references/ (7大类), protocols/ (4), docs/ (4), scripts/ (3)
+- **参考文件总数**: 95+
+- **来源分布**: SDD-RIPER (14), SDD-RIPER-Opt (6), Superpowers (50+), PRD Analysis (6), Testing Engineering (18+), Code Review (6), 工具脚本 (3)
+- **目录结构**: references/ (9大类), protocols/ (4), docs/ (5), scripts/ (3)
+- **🆕 技能包**: 6 个独立技能包 (API Testing, Go Review, Python Review, Pytest, Requirements Spec, Implementation Verify)
+- **版本**: v4.7 (2026-04-18)
 
 ---
 
-*Powered by the integration of SDD-RIPER, SDD-RIPER-Optimized (Checkpoint-Driven), and Superpowers.*
+## v4.7 核心变更
+
+### 🧪 测试工程专项 (Testing Engineering Specialty)
+
+新增完整的测试工程体系：
+
+- ✅ **E2E 测试框架**: Playwright/Cypress 集成指南
+- ✅ **性能/负载测试**: 压测策略、基准测试、性能指标
+- ✅ **API 测试**: 契约测试、安全测试、测试矩阵模板
+- ✅ **Pytest 测试模式**: Fixture、参数化、Mock、覆盖率
+- ✅ **测试数据管理**: 工厂模式、Fixture 层级、测试隔离
+- ✅ **测试环境管理**: Docker Compose、依赖注入、环境一致性
+- ✅ **CI/CD 集成**: 自动化流水线、质量门禁、测试报告
+- ✅ **测试脚手架**: 开箱即用的模板集合
+
+### 🔍 代码审查技能包 (Code Review Skills)
+
+多语言代码审查标准化：
+
+- ✅ **Go 代码审查**: 静态分析、并发安全、性能审计
+- ✅ **Python 代码审查**: 类型安全、异步模式、错误处理
+- ✅ **高级 API 测试**: 幂等性、输入验证、错误处理、并发测试
+
+### 📋 PRD 分析工作流 (PRD Analysis Workflow)
+
+结构化需求分析：
+
+- ✅ **五阶段流程**: Brainstorm → Discover → Document → Review → Validate
+- ✅ **PRD 模板**: 产品概述、用户画像、旅程、功能需求、成功指标
+- ✅ **校验标准**: 结构完整性、内容质量、边界验证、跨节一致性
+- ✅ **示例参考**: 优质 PRD 示例和输出格式
+
+### 🛠️ 其他改进
+
+- ✅ 别名同步验证脚本
+- ✅ 项目脚手架自动化工具
+- ✅ 实现验证技能包
+- ✅ 需求规格说明技能包
+
+---
+
+*Powered by the integration of SDD-RIPER, SDD-RIPER-Optimized (Checkpoint-Driven), Superpowers, and enhanced with Testing Engineering, Code Review & PRD Analysis capabilities.*
+
+**最后更新**: 2026-04-18
+**当前版本**: v4.7

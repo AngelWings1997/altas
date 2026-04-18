@@ -98,10 +98,10 @@
 **接口测试矩阵模板**:
 
 ```markdown
-| Contract Item | Source | Happy Path | Validation | Auth | Idempotency | Error Path | Schema |
-|---------------|--------|------------|------------|------|-------------|------------|--------|
-| `POST /orders` | `openapi.yaml#/paths/~1orders/post` | `201 create order` | `422 missing field` | `401/403` | `same Idempotency-Key` | `409/500` | `response schema matches` |
-| `GetUser` | `user.proto#rpc GetUser` | `OK returns user` | `INVALID_ARGUMENT` | `UNAUTHENTICATED` | `N/A` | `NOT_FOUND` | `protobuf fields match` |
+| Contract Item | Source | Happy Path | Validation | Auth | Idempotency | Error Path | Schema | Compatibility |
+|---------------|--------|------------|------------|------|-------------|------------|--------|---------------|
+| `POST /orders` | `openapi.yaml#/paths/~1orders/post` | `201 create order` | `422 missing field` | `401/403` | `same Idempotency-Key` | `409/500` | `response schema matches` | `v1+v2 both work` |
+| `GetUser` | `user.proto#rpc GetUser` | `OK returns user` | `INVALID_ARGUMENT` | `UNAUTHENTICATED` | `N/A` | `NOT_FOUND` | `protobuf fields match` | `old data accessible` |
 ```
 
 ### 5) 测试优先级排序
@@ -112,7 +112,8 @@
 | **P1** | 边界条件测试 | 极值/空值/非法输入 |
 | **P2** | 异常路径测试 | 错误处理/降级逻辑 |
 | **P3** | 集成测试 | 跨模块/跨系统交互 |
-| **P4** | 性能测试 | 响应时间/吞吐量/资源消耗 |
+| **P4** | 性能测试 | 响应时间/吞吐量/资源消耗；详见 `references/testing/performance-testing.md` |
+| **P5** | 兼容性测试 | API 版本共存、废弃字段、数据库迁移后数据完整 |
 
 ### 6) 先输出测试策略产物（必填）
 

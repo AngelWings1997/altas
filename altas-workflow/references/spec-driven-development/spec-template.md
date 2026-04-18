@@ -80,6 +80,14 @@
 ### 4.4 Test Strategy (M/L required, S optional)
 
 > 按固定字段顺序填写；不适用项显式写 `N/A`，不要省略整个小节。
+>
+> **重要：Test Strategy 是强制结构化产物**，不是可选建议。
+>
+> - M/L 规模必须填写此节，每个字段都不可省略
+> - 每个字段必须是具体的、可验证的，不得使用泛化描述（如"补充必要测试"）
+> - Test Levels 中至少有一个层级不是 N/A
+> - Quality Gates 中必须给出具体数值
+> - Traceability 中每个需求/契约条目都必须有对应测试
 
 - **Test Framework**: `<Jest / Pytest / Go test / ...>`
 - **Run Command**: `<npm test / pytest / go test / ...>`
@@ -112,6 +120,19 @@
 - **Test Debt Register** (Optional):
   - `<DEBT-1>`: `<描述>` | Priority: `<P0/P1/P2>` | ETA: `<sprint/版本>` | Owner: `<谁负责>`
   - `<DEBT-2>`: `<描述>` | Priority: `<P0/P1/P2>` | ETA: `<sprint/版本>` | Owner: `<谁负责>`
+
+### 4.4.1 Test Strategy 验证清单
+
+> PLAN 阶段结束时，自检以下项是否都通过：
+
+- [ ] Test Framework 和 Run Command 明确且可执行
+- [ ] 至少一个 Test Level 不是 N/A
+- [ ] P0/P1/P2 都有具体场景描述，不是泛化标签
+- [ ] Traceability 中每个需求/契约条目都有对应测试用例
+- [ ] Mock/Stub/Fake Strategy 明确哪些依赖用真实、哪些用替身
+- [ ] Test Data Strategy 三个子字段都填写
+- [ ] Quality Gates 四个子字段都有具体数值或阈值
+- [ ] Deferred Tests 明确写 None 或列出具体项
 
 ### 4.6 Spec Review Notes (Optional Advisory, Pre-Execute)
 - Spec Review Matrix:
@@ -277,6 +298,8 @@
 ### 4.4 Test Strategy (M/L required, grouped by project)
 
 > 每个项目都按同一字段顺序填写；不适用项显式写 `N/A`，不要省略整个小节。
+>
+> **重要：Test Strategy 是强制结构化产物**，每个项目都必须填写。
 
 #### [api-service]
 - **Test Framework**: `<...>`
@@ -333,6 +356,13 @@
   - Flaky Tolerance: `<...>`
   - Time Budget: `<...>`
 - **Deferred / Out of Scope Tests**: `<...>`
+
+#### 4.4.1 Test Strategy 验证清单（每个项目自检）
+
+- [ ] 每个项目的 Test Framework 和 Run Command 明确且可执行
+- [ ] 每个项目至少一个 Test Level 不是 N/A
+- [ ] 每个项目的 P0/P1/P2 都有具体场景描述
+- [ ] 跨项目契约接口有对应集成测试
 
 ### 4.5 Contract Interfaces (cross-project only)
 | Provider | Interface / API | Consumer(s) | Breaking Change? | Migration Plan |

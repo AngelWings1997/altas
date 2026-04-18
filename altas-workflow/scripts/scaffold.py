@@ -73,9 +73,15 @@ DB_CONFTEST_PY = '''\
 import pytest
 from sqlalchemy.orm import sessionmaker
 
+# TODO: 将 `your_project.database` 替换为实际项目的数据库模块路径
+# 例如: `from app.db import engine` 或 `from myapp.database import engine`
+DATABASE_MODULE = "your_project.database"
+
 @pytest.fixture(scope="function")
 def db_session():
-    from myapp.database import engine
+    import importlib
+    db_module = importlib.import_module(DATABASE_MODULE)
+    engine = db_module.engine
     connection = engine.connect()
     transaction = connection.begin()
     session = sessionmaker(bind=connection)()

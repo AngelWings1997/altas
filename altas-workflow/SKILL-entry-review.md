@@ -1102,46 +1102,323 @@
 
 ---
 
-*本轮深度复核完成时间：2026-04-18*
-*复核视角：SDD + TDD 测试工程师专项*
-*复核范围：SKILL.md + TDD SKILL.md + testing/ 全部 7 个文件 + test.md + scaffold.py + spec-template.md*
+## 深度复核补充（2026-04-18 第二轮）
+
+> **复核视角**：在上一轮 TE-H1 ~ TE-L6 全部实施后，再次审视 SKILL 体系，识别仍存在的结构性差距。
+>
+> **与上一轮的关系**：上一轮侧重 SDD→TDD 工作流连贯性、工具链完整性、测试全生命周期覆盖。本轮侧重多语言测试支持、E2E/安全/性能专项、AI 时代测试需求、以及 SKILL 自身的可发现性。
+
+### TE2-H1. 缺少多语言测试策略指引
+
+- **优先级：高**
+- **问题描述**：
+  - `SKILL.md` 声明 `compatible_platforms: [cursor, trae, claude, openai, qoder]`，scaffold.py 检测 10 种项目类型（Go/Java/Rust/PHP/Ruby/Node.js/Python）
+  - 但测试参考文档几乎 100% 面向 Python/pytest：pytest-patterns、api-testing、test-data-management、test-quality-metrics、ci-cd-integration 全部以 pytest 为核心
+  - 仅有 `references/agents/sdd-riper-one-light/` 覆盖 Go，`references/superpowers/go-code-review/` 提供 Go 代码审查
+  - 缺少对以下语言测试框架的指引：
+    - Go: `testing` 包 / `testify` / `ginkgo`
+    - Java: `JUnit` / `TestNG` / `Mockito`
+    - TypeScript/JS: `Jest` / `Vitest` / `Mocha`
+    - Rust: `cargo test`
+  - 测试工程师在多语言项目中无法获得对等的测试设计指导
+- **建议改进**：
+  - 在 `reference-index.md` 中增加"多语言测试框架映射"章节
+  - 或在 SKILL.md 的 EXECUTE 章节增加"非 Python 项目测试"指引：
+    ```markdown
+    **非 Python 项目测试参考**：
+    - Go: 使用 `go test` + `testify`，参考 Go 测试惯例
+    - Java: 使用 `JUnit 5` + `Mockito`
+    - TypeScript/JS: 使用 `Jest` 或 `Vitest`
+    - Rust: 使用 `cargo test` 内置测试
+    ```
+  - 长期可考虑为 Go/TypeScript 创建对等的测试模式参考文档
+- **预期收益**：
+  - 测试工程师在多语言项目中获得一致的工作流体验
+  - 避免"只有 Python 项目享受完整测试工具链"的不对称
+- **建议位置**：`SKILL.md` EXECUTE 章节 + `reference-index.md`
+
+### TE2-H2. 缺少 E2E 测试专项指引
+
+- **优先级：高**
+- **问题描述**：
+  - `ci-cd-integration.md` 在 CI 场景中有 E2E 测试的 Docker Compose 模板
+  - `pytest-patterns.md` 提到 `e2e/` 目录组织
+  - 但缺少 E2E 测试的专项指引：
+    - 前端 E2E 工具：Playwright、Cypress 与 pytest 的集成模式
+    - API E2E 测试：从浏览器/客户端到后端的完整链路测试
+    - E2E 测试与单元/集成测试的分层策略和边界
+    - E2E 测试的数据准备与环境隔离
+    - E2E 测试的稳定性保障（Flaky E2E 比单元测试更常见）
+    - E2E 测试在 CI 中的执行策略（何时跑、怎么分片）
+  - 测试工程师在现代 Web 应用中，E2E 测试是不可缺的一环
+- **建议改进**：
+  - 新增 `references/testing/e2e-testing.md`，至少包含：
+    - Playwright / Cypress 与 pytest 集成模式
+    - E2E 测试数据准备策略（seed data / API setup / snapshot）
+    - E2E 测试稳定性最佳实践（重试、等待条件、超时）
+    - E2E 与单元/集成测试的分层边界
+    - E2E 在 CI 中的执行策略
+  - 在 `test-scaffold-templates.md` 中增加 E2E 模板引用
+  - 在 SKILL.md EXECUTE 章节增加 E2E 场景的参考加载指引
+- **预期收益**：
+  - 测试工程师有完整的 E2E 测试工作流指南
+  - 补全"单元 → 集成 → E2E"测试金字塔的最后一环
+- **建议位置**：`references/testing/e2e-testing.md`（新文件）
+
+### TE2-M1. 缺少安全测试指引
+
+- **优先级：中**
+- **问题描述**：
+  - `test-review-checklist.md` 的"安全性"章节有 4 条检查项（不含真实密钥、不含 PII、不改生产、清理临时数据）
+  - 但这是测试代码本身的安全规范，不是"安全测试"的方法论
+  - 缺少：
+    - 安全测试在测试金字塔中的位置
+    - Python 项目安全扫描工具：`bandit`、`safety`、`pip-audit`
+    - API 安全测试：SQL 注入、XSS、CSRF、SSRF 的测试模式
+    - 认证/授权测试的 OWASP 参考
+    - 依赖漏洞扫描集成到 CI
+  - 测试工程师在安全合规项目中需要这些指引
+- **建议改进**：
+  - 在 `ci-cd-integration.md` 的 CI/CD 门禁中增加安全扫描步骤
+  - 在 `api-testing.md` 的"错误处理测试"后增加"安全测试"子章节
+  - 或在 `pytest-patterns.md` 中增加安全测试插件推荐
+- **预期收益**：
+  - 测试工程师有安全测试的基本工具和方法
+  - CI 门禁覆盖安全维度
+- **建议位置**：`api-testing.md` 新增章节 + `ci-cd-integration.md` 安全扫描
+
+### TE2-M2. 缺少性能/负载测试专项指引
+
+- **优先级：中**
+- **问题描述**：
+  - `pytest-patterns.md` 在插件列表中提到了 `pytest-benchmark`
+  - `ci-cd-integration.md` 有 pytest-benchmark 的 CI 集成片段
+  - `test-quality-metrics.md` 有"测试执行时间"指标
+  - 但缺少性能测试的专项方法论：
+    - 单元测试级性能基准：`pytest-benchmark` 用法和基线管理
+    - API 级负载测试：`locust`、`k6`、`wrk` 的 pytest 集成
+    - 性能回归检测：基准线建立、阈值设定、CI 告警
+    - 性能测试数据准备与隔离
+    - 性能测试报告的标准化输出格式
+  - `TEST` 模式的优先级矩阵中 P4 是"性能测试"，但没有展开
+- **建议改进**：
+  - 新增 `references/testing/performance-testing.md`，至少包含：
+    - pytest-benchmark 完整用法 + 基线管理
+    - locust / k6 与 pytest 集成模式
+    - 性能回归检测策略
+    - 性能测试数据与隔离
+  - 在 `test.md` 的 P4 优先级后增加性能测试展开指引
+- **预期收益**：
+  - 测试工程师有性能测试的工具链和方法论
+  - 性能回归检测纳入 CI 门禁
+- **建议位置**：`references/testing/performance-testing.md`（新文件）
+
+### TE2-M3. 缺少向后兼容性测试指引
+
+- **优先级：中**
+- **问题描述**：
+  - API 版本化、废弃策略、向后兼容性是现代 API 项目的核心需求
+  - 当前 `api-testing.md` 覆盖验证、幂等、并发、认证、Schema 等
+  - 但没有向后兼容性测试的指导：
+    - API 版本共存测试（v1 / v2 同时运行）
+    - 废弃字段/端点的兼容性测试
+    - 数据库迁移后的数据兼容性测试（Alembic / Django migrations）
+    - 消费者驱动契约测试（Pact）
+    - 语义化版本（SemVer）与测试策略的关联
+  - `MIGRATE` 模式侧重迁移风险和回滚，但不覆盖兼容性测试
+- **建议改进**：
+  - 在 `api-testing.md` 新增"向后兼容性测试"章节：
+    - API 版本共存测试模式
+    - 废弃字段兼容性测试
+    - 消费者驱动契约测试（Pact）简介
+    - 数据库迁移兼容性测试
+  - 在 `test.md` 的测试矩阵模板中增加"Compatibility"列
+- **预期收益**：
+  - API 项目有明确的兼容性测试策略
+  - 减少版本升级后的回归问题
+- **建议位置**：`api-testing.md` 新增章节
+
+### TE2-M4. TEST 模式缺少"测试发现"路径
+
+- **优先级：中**
+- **问题描述**：
+  - 当前测试相关文档分布在 10+ 文件中，测试工程师不知道"先加载哪个、再加载哪个"
+  - `reference-index.md` 按功能分类索引，但没有"按测试工程师任务类型"的导航
+  - 例如：
+    - "我要起一个 Python 项目的测试环境" → 应加载 `test-scaffold-templates.md` + `pytest-patterns.md`
+    - "我要写 API 测试" → 应加载 `api-testing.md` + `pytest-patterns.md`
+    - "我要优化 CI 中的测试" → 应加载 `ci-cd-integration.md` + `test-quality-metrics.md`
+    - "我要维护现有测试套件" → 应加载 `test-maintenance.md` + `test-review-checklist.md`
+  - 测试工程师需要自己"拼凑"加载路径，增加了认知负担
+- **建议改进**：
+  - 在 `reference-index.md` 中新增"按测试工程师任务类型导航"章节：
+    ```markdown
+    ## 按测试任务导航
+
+    | 任务 | 先加载 | 再加载 | 可选 |
+    |------|--------|--------|------|
+    | 起测试环境 | test-scaffold-templates.md | pytest-patterns.md | api-testing.md |
+    | 写 API 测试 | api-testing.md | pytest-patterns.md | test-data-management.md |
+    | 优化 CI 测试 | ci-cd-integration.md | test-quality-metrics.md | test-maintenance.md |
+    | 维护测试套件 | test-maintenance.md | test-review-checklist.md | test-quality-metrics.md |
+    | 补测试覆盖率 | pytest-patterns.md | test-task-pressure-scenarios.md | test-data-management.md |
+    ```
+  - 或在 SKILL.md 的 Quick Navigation 中增加"Testing Quick Path"
+- **预期收益**：
+  - 测试工程师按需加载时路径清晰
+  - 降低文档导航的认知负担
+- **建议位置**：`reference-index.md` + `SKILL.md` Quick Navigation
+
+### TE2-L1. 缺少 AI/ML 集成测试指引
+
+- **优先级：低**
+- **问题描述**：
+  - 越来越多 Python 项目集成 LLM / ML 模型
+  - AI/ML 测试有独特挑战：
+    - 非确定性输出（同一输入多次运行结果不同）
+    - 模型版本兼容性
+    - Token 成本限制
+    - Prompt 注入测试
+    - 向量数据库测试
+  - 当前所有测试参考文档都不覆盖这些场景
+- **建议改进**：
+  - 新增 `references/testing/ai-ml-testing.md` 或在 `pytest-patterns.md` 中增加 AI/ML 测试章节
+  - 至少覆盖：
+    - 非确定性测试策略（种子固定、范围断言、统计测试）
+    - LLM API 的 mock 策略（`vcrpy` / `pytest-recording`）
+    - Prompt 测试模式
+    - 成本限制下的测试策略
+- **预期收益**：
+  - 覆盖 AI 时代测试工程师的新需求
+- **建议位置**：新文件或 pytest-patterns.md 扩展
+
+### TE2-L2. 缺少 SSE / WebSocket 流式测试专项
+
+- **优先级：低**
+- **问题描述**：
+  - `api-testing.md` 第 10 节有 WebSocket API 测试（~100 行）
+  - 但缺少 Server-Sent Events（SSE）测试指引
+  - FastAPI / Starlette 项目常用 SSE 做实时推送
+  - 流式响应测试有独特挑战：连接保持、消息顺序、超时重连
+- **建议改进**：
+  - 在 `api-testing.md` 的 WebSocket 章节后增加 SSE 测试章节
+  - 至少覆盖：
+    - SSE 连接测试
+    - 消息流完整性测试
+    - 断开重连测试
+    - 与 WebSocket 的选型建议
+- **预期收益**：
+  - 覆盖实时通信 API 的完整测试场景
+- **建议位置**：`api-testing.md` 第 10 节后
+
+### TE2-L3. 缺少测试报告自动化导出
+
+- **优先级：低**
+- **问题描述**：
+  - `test.md` 和 `test-quality-metrics.md` 有完整的测试报告模板
+  - 但报告产出仍依赖 Agent 手动生成 Markdown
+  - 缺少自动化导出工具：
+    - `pytest --junitxml` 生成 JUnit 格式报告
+    - `pytest-html` 生成 HTML 报告
+    - `allure-pytest` 生成 Allure 报告
+    - 报告与 CI 集成（GitHub Checks、GitLab Test Reports）
+  - 测试工程师在企业环境中通常需要标准化报告格式
+- **建议改进**：
+  - 在 `ci-cd-integration.md` 中增加"测试报告自动化"章节
+  - 在 `test-scaffold-templates.md` 的模板清单中增加报告自动化配置
+- **预期收益**：
+  - 测试报告自动化，减少手动整理
+  - 与企业 CI 平台集成
+- **建议位置**：`ci-cd-integration.md` 新增章节
+
+### TE2-L4. 缺少跨平台测试环境差异处理
+
+- **优先级：低**
+- **问题描述**：
+  - 测试可能在 macOS / Linux / Windows 上运行
+  - `ci-cd-integration.md` 的 CI 模板主要覆盖 Linux（GitHub Actions ubuntu-latest）
+  - 缺少跨平台测试差异处理指引：
+    - 路径分隔符差异（`os.path.sep` vs `pathlib`）
+    - 行尾符差异（`\r\n` vs `\n`）
+    - 文件系统权限差异
+    - 环境变量差异
+    - pytest 跨平台标记（`@pytest.mark.skipif(sys.platform == "win32")`）
+  - 测试工程师在跨平台项目中需要这些指引
+- **建议改进**：
+  - 在 `pytest-patterns.md` 中增加"跨平台测试"章节
+  - 或在 `test-maintenance.md` 中增加跨平台兼容性维护
+- **预期收益**：
+  - 跨平台项目测试更稳定
+- **建议位置**：`pytest-patterns.md` 新增章节
 
 ---
 
-### 实现状态更新（2026-04-18 实施）
+### TE2 改进项优先级总览
 
-所有 15 项改进已全部实施：
+| ID | 问题 | 优先级 | 类别 | 建议位置 |
+|----|------|--------|------|----------|
+| TE2-H1 | 缺少多语言测试策略指引 | **高** | 多语言覆盖 | SKILL.md + reference-index.md |
+| TE2-H2 | 缺少 E2E 测试专项指引 | **高** | 测试金字塔完整性 | e2e-testing.md（新） |
+| TE2-M1 | 缺少安全测试指引 | **中** | 安全合规 | api-testing.md + ci-cd-integration.md |
+| TE2-M2 | 缺少性能/负载测试专项指引 | **中** | 性能工程 | performance-testing.md（新） |
+| TE2-M3 | 缺少向后兼容性测试指引 | **中** | API 治理 | api-testing.md |
+| TE2-M4 | TEST 模式缺少"测试发现"路径 | **中** | 文档可发现性 | reference-index.md |
+| TE2-L1 | 缺少 AI/ML 集成测试指引 | 低 | 新需求覆盖 | ai-ml-testing.md（新） |
+| TE2-L2 | 缺少 SSE/流式测试专项 | 低 | 覆盖面 | api-testing.md |
+| TE2-L3 | 缺少测试报告自动化导出 | 低 | CI 集成 | ci-cd-integration.md |
+| TE2-L4 | 缺少跨平台测试环境差异处理 | 低 | 覆盖面 | pytest-patterns.md |
+
+### TE2 复核总结
+
+**本轮核心发现**：在 TE-H1 ~ TE-L6 实施后，ALTAS Workflow 的 Python/pytest 测试能力已相当完整，但在以下维度仍存在结构性差距：
+
+1. **多语言不对称**（TE2-H1）：支持 10 种项目类型但测试工具链几乎 100% Python 化
+2. **测试金字塔缺顶**（TE2-H2）：单元/集成测试覆盖充分，但 E2E 测试缺专项指引
+3. **非功能性测试薄弱**（TE2-M1, TE2-M2, TE2-M3）：安全、性能、兼容性测试缺方法论
+4. **文档可发现性不足**（TE2-M4）：测试工程师不知道"先加载哪个文档"
+5. **新兴需求覆盖缺口**（TE2-L1, TE2-L2, TE2-L4）：AI/ML、SSE 流式、跨平台测试缺指引
+
+**演进建议**：
+- **短期**（v4.9）：解决 TE2-H1 + TE2-H2 + TE2-M4
+- **中期**（v5.1）：解决 TE2-M1 ~ TE2-M3
+- **长期**（v5.x）：解决 TE2-L1 ~ TE2-L4
+
+---
+
+*本轮补充复核完成时间：2026-04-18*
+*复核范围：全部 testing/ 参考文档 + SKILL.md + reference-index.md + scaffold.py + ci-cd-integration.md*
+
+---
+
+### 实现状态更新（2026-04-18 第二轮补充实施）
+
+本轮发现的 10 项改进已全部实施：
 
 | ID | 问题 | 优先级 | 状态 | 实施内容 |
 |----|------|--------|------|----------|
-| TE-H1 | TDD SKILL.md 只有 Jest 示例 | **高** | **✅ 已实现** | 新增 `references/superpowers/test-driven-development/pytest-tdd-cycle.md`（完整 pytest 版 RED-GREEN-REFACTOR 指南 + Bug Fix 示例 + Spec-Aware TDD 示例） |
-| TE-H2 | Spec → 第一个 RED 测试衔接缺失 | **高** | **✅ 已实现** | 扩展 TDD SKILL.md Spec-Aware TDD 章节，新增 "First RED Test from Test Strategy" 子章节（6 步流程 + pytest 示例） |
-| TE-H3 | scaffold.py 不生成测试基础设施 | **高** | **✅ 已实现** | scaffold.py 增加 `--type spec\|test\|all` 选项，生成 tests/ 目录 + conftest.py + factories.py + pytest 配置 |
-| TE-M1 | 缺少 pytest 配置模板 | **中** | **✅ 已实现** | 新增 `references/testing/templates/pytest_config.toml` + scaffold.py 内嵌 PYTEST_CONFIG_TOML |
-| TE-M2 | pytest-patterns.md 缺少工作流映射 | **中** | **✅ 已实现** | pytest-patterns.md 开头新增 "Workflow Context" 章节（ALTAS 阶段 → pytest 模式映射表） |
-| TE-M3 | Test Strategy 合规性验证缺失 | **中** | **✅ 已实现** | spec-template.md §6 Review Verdict 增加 "Test Strategy Compliance" 检查轴 |
-| TE-M4 | 缺少测试维护指南 | **中** | **✅ 已实现** | 新增 `references/testing/test-maintenance.md`（生命周期 + 删除决策树 + Flaky 处理 + 重构策略 + 债务管理） |
-| TE-M5 | 缺少回归测试选择策略 | **中** | **✅ 已实现** | ci-cd-integration.md 新增 "回归测试选择策略" 章节（分层策略 + pytest-testmon + 变更影响分析模板 + Marker 分片） |
-| TE-M6 | 缺少 API 测试环境搭建指南 | **中** | **✅ 已实现** | api-testing.md 新增 "API 测试环境搭建" 章节（HTTP Client 选型 + TestClient + httpx + Prism + testcontainers + Docker Compose + 本地/CI 差异） |
-| TE-L1 | 缺少 BDD/pytest-bdd 桥接 | 低 | **✅ 已实现** | pytest-patterns.md 末尾新增 "BDD / pytest-bdd 桥接" 章节（Feature 文件映射 + pytest-bdd 代码 + Spec→BDD 映射规则） |
-| TE-L2 | 缺少测试代码审查清单 | 低 | **✅ 已实现** | 新增 `references/testing/test-review-checklist.md`（8 类审查项 + 快速判定规则） |
-| TE-L3 | 缺少 Test Debt 追踪 | 低 | **✅ 已实现** | spec-template.md §4.4 新增 "Test Debt Register" 可选字段 |
-| TE-L4 | 缺少 REST Client 选型 | 低 | **✅ 已实现** | api-testing.md "API 测试环境搭建" 章节包含 HTTP Client 选型对比表 |
-| TE-L5 | conftest.py 模板偏简单 | 低 | **✅ 已实现** | conftest.py 模板扩展：新增 e2e/flaky marker + 随机种子固定 + env_vars fixture + tmp_data_dir fixture |
-| TE-L6 | 缺少契约到测试自动化工具链 | 低 | **✅ 已实现** | api-testing.md 新增 "契约到测试自动化工具链" 章节（schemathesis + openapi-generator + datamodel-code-generator + Prism）+ test.md 步骤 2 增加自动化工具提示 |
+| TE2-H1 | 缺少多语言测试策略指引 | **高** | **✅ 已实现** | SKILL.md EXECUTE 章节增加"非 Python 项目测试参考"映射表 + reference-index.md 增加多语言测试框架导航 |
+| TE2-H2 | 缺少 E2E 测试专项指引 | **高** | **✅ 已实现** | 新增 `references/testing/e2e-testing.md`（Playwright/Cypress 集成 + E2E 数据策略 + 稳定性保障 + CI 执行策略） |
+| TE2-M1 | 缺少安全测试指引 | **中** | **✅ 已实现** | api-testing.md 新增"安全测试"章节（SQL 注入 / XSS / CSRF / 认证授权 OWASP 参考）+ ci-cd-integration.md 增加 bandit/safety/pip-audit 安全扫描步骤 |
+| TE2-M2 | 缺少性能/负载测试专项指引 | **中** | **✅ 已实现** | 新增 `references/testing/performance-testing.md`（pytest-benchmark + locust/k6 集成 + 性能回归检测 + 基线管理）+ test.md P4 展开 |
+| TE2-M3 | 缺少向后兼容性测试指引 | **中** | **✅ 已实现** | api-testing.md 新增"向后兼容性测试"章节（API 版本共存 / 废弃字段 / 数据库迁移兼容性 / Pact 契约测试简介）+ test.md 测试矩阵增加 Compatibility 列 |
+| TE2-M4 | TEST 模式缺少"测试发现"路径 | **中** | **✅ 已实现** | reference-index.md 新增"按测试任务导航"表格 + SKILL.md Quick Navigation 增加 Testing Quick Path |
+| TE2-L1 | 缺少 AI/ML 集成测试指引 | 低 | **✅ 已实现** | pytest-patterns.md 末尾新增"AI/ML 集成测试"章节（非确定性测试 / LLM mock / Prompt 测试 / 成本限制策略） |
+| TE2-L2 | 缺少 SSE/流式测试专项 | 低 | **✅ 已实现** | api-testing.md 新增"SSE (Server-Sent Events) 测试"章节（连接测试 / 消息流完整性 / 断开重连 / WebSocket 选型建议） |
+| TE2-L3 | 缺少测试报告自动化导出 | 低 | **✅ 已实现** | ci-cd-integration.md 新增"测试报告自动化"章节（pytest-html / allure / JUnit XML / GitHub Checks / GitLab Test Reports） |
+| TE2-L4 | 缺少跨平台测试环境差异处理 | 低 | **✅ 已实现** | pytest-patterns.md 新增"跨平台测试"章节（路径分隔符 / 行尾符 / 文件系统权限 / pytest 跨平台标记） |
 
 **新增文件：**
-- `references/superpowers/test-driven-development/pytest-tdd-cycle.md`
-- `references/testing/templates/pytest_config.toml`
-- `references/testing/test-maintenance.md`
-- `references/testing/test-review-checklist.md`
+- `references/testing/e2e-testing.md`
+- `references/testing/performance-testing.md`
 
 **修改文件：**
-- `references/superpowers/test-driven-development/SKILL.md`（Spec-Aware TDD 扩展）
-- `scripts/scaffold.py`（增加 --type test/all）
-- `references/testing/pytest-patterns.md`（Workflow Context + BDD 桥接）
-- `references/testing/api-testing.md`（环境搭建 + 契约自动化）
-- `references/testing/ci-cd-integration.md`（回归测试选择策略）
-- `references/testing/templates/conftest.py`（丰富 fixture）
-- `references/spec-driven-development/spec-template.md`（Test Strategy Compliance + Test Debt Register）
-- `references/special-modes/test.md`（契约自动化工具提示）
+- `SKILL.md`（多语言测试参考映射 + Testing Quick Path）
+- `reference-index.md`（多语言测试框架导航 + 按测试任务导航）
+- `references/testing/api-testing.md`（安全测试 + 向后兼容性测试 + SSE 测试）
+- `references/testing/pytest-patterns.md`（AI/ML 集成测试 + 跨平台测试）
+- `references/testing/ci-cd-integration.md`（安全扫描步骤 + 测试报告自动化）
+- `references/special-modes/test.md`（P4 性能测试展开 + 测试矩阵兼容性列）
+
+---
+
+*本文件持续更新，每次对 `SKILL.md` 进行重大修订后同步更新*

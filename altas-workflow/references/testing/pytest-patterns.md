@@ -827,3 +827,179 @@ def check_order_id(client):
 | §4.4 P0/P1/P2 | Scenario tag `@P0`/`@P1`/`@P2` |
 | §4.4 Mock Strategy | `@given` 中的 mock/stub 设置 |
 | §4.4 Test Data Strategy | `@given` 中的 factory/fixture |
+
+---
+
+## AI/ML 集成测试
+
+> **适用场景**: Python 项目集成 LLM / ML 模型，需要测试非确定性输出、Prompt 行为、Token 成本等
+
+### 非确定性测试策略
+
+```python
+def test_llm_output_format(client):
+    """LLM 输出格式应一致，即使内容不确定"""
+    response = client.post("/api/chat", json={"prompt": "Tell me a joke"})
+    data = response.json()
+
+    assert "response" in data
+    assert isinstance(data["response"], str)
+    assert len(data["response"]) > 0
+    assert "usage" in data
+    assert isinstance(data["usage"]["tokens"], int)
+
+def test_llm_output_in_reasonable_range(client):
+    """输出应在合理范围内"""
+    response = client.post("/api/summarize", json={"text": "A" * 1000})
+    data = response.json()
+
+    assert len(data["summary"]) < 1000
+    assert len(data["summary"]) > 50
+```
+
+### LLM API Mock 策略
+
+```python
+import pytest
+from unittest.mock import patch, MagicMock
+
+@pytest.fixture
+def mock_llm_response():
+    """Mock LLM API 调用"""
+    return {
+        "choices": [{"message": {"content": "Mocked response"}}],
+        "usage": {"total_tokens": 50}
+    }
+
+def test_chat_with_mock_llm(client, mock_llm_response):
+    """使用 Mock LLM 测试业务逻辑"""
+    with patch("openai.ChatCompletion.create") as mock_create:
+        mock_create.return_value = MagicMock(**mock_llm_response)
+
+        response = client.post("/api/chat", json={"prompt": "Hello"})
+
+        assert response.status_code == 200
+        assert response.json()["response"] == "Mocked response"
+        mock_create.assert_called_once()
+```
+
+### Prompt 测试模式
+
+```python
+class TestPromptTemplates:
+    @pytest.mark.parametrize("template_name", [
+        "summarize",
+        "translate",
+        "extract_entities",
+    ])
+    def test_prompt_template_not_empty(self, template_name):
+        """所有 Prompt 模板应有内容"""
+        from app.prompts import get_prompt
+        prompt = get_prompt(template_name)
+        assert len(prompt) > 50
+        assert "{input}" in prompt
+
+    def test_prompt_no_leak_system_instructions(self):
+        """Prompt 不应暴露系统指令"""
+        from app.prompts import get_prompt
+        prompt = get_prompt("summarize")
+        assert "ignore previous instructions" not in prompt.lower()
+```
+
+### 成本限制测试
+
+```python
+def test_token_usage_within_budget(client):
+    """Token 消耗应在预算内"""
+    response = client.post("/api/chat", json={
+        "prompt": "A" * 5000,
+        "max_tokens": 500
+    })
+    data = response.json()
+
+    assert data["usage"]["total_tokens"] <= 1000
+    assert data["usage"]["completion_tokens"] <= 500
+```
+
+---
+
+## 跨平台测试
+
+> **适用场景**: 测试需在 macOS / Linux / Windows 上运行
+
+### 跨平台标记
+
+```python
+import sys
+import pytest
+
+@pytest.mark.skipif(sys.platform == "win32", reason="Unix only feature")
+def test_unix_path_handling():
+    assert os.path.sep == "/"
+
+@pytest.mark.skipif(sys.platform != "win32", reason="Windows only")
+def test_windows_path_handling():
+    assert os.path.sep == "\\"
+
+@pytest.mark.skipif(sys.platform == "darwin", reason="Not supported on macOS")
+def test_linux_specific_feature():
+    pass
+```
+
+### 路径分隔符差异
+
+```python
+from pathlib import Path
+
+def test_path_handling():
+    """使用 pathlib 而不是 os.path 来处理跨平台"""
+    base = Path("tests") / "fixtures" / "data.txt"
+    assert base.exists()
+```
+
+### 行尾符差异
+
+```python
+def test_file_content_with_universal_newlines():
+    """读取文件时使用 universal_newlines 处理行尾符"""
+    with open("tests/fixtures/output.txt", "r", newline=None) as f:
+        content = f.read()
+
+    assert "expected line" in content
+```
+
+### 文件系统权限差异
+
+```python
+@pytest.mark.skipif(sys.platform == "win32", reason="Windows file permissions differ")
+def test_file_permission_enforcement():
+    """Unix 文件系统权限测试"""
+    import stat
+    path = Path("/tmp/test_file")
+    path.touch()
+    path.chmod(0o600)
+
+    assert stat.S_IMODE(path.stat().st_mode) == 0o600
+```
+
+### 环境变量差异
+
+```python
+import pytest
+
+@pytest.fixture
+def temp_dir(tmp_path):
+    """跨平台临时目录"""
+    return tmp_path
+
+def test_temp_file_creation(temp_dir):
+    """使用 pytest tmp_path fixture，跨平台兼容"""
+    test_file = temp_dir / "test.txt"
+    test_file.write_text("content")
+    assert test_file.exists()
+```
+
+---
+
+**版本**: 1.3.0
+**兼容**: pytest 7.0+, Python 3.8+

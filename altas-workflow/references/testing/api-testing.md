@@ -631,6 +631,289 @@ tests/
 
 ---
 
+## 11. 安全测试
+
+> **适用场景**: API 安全合规项目、渗透测试、OWASP Top 10 验证
+
+### 11.1 SQL 注入测试
+
+```python
+class TestSQLInjection:
+    @pytest.mark.parametrize("payload", [
+        {"name": "'; DROP TABLE users; --"},
+        {"name": "1' OR '1'='1"},
+        {"name": "admin' UNION SELECT * FROM passwords --"},
+    ])
+    def test_sql_injection_in_params(self, client, payload):
+        """SQL 注入应被参数化查询防御"""
+        response = client.post("/api/users", json=payload)
+        assert response.status_code in [201, 422]
+        assert "SQL" not in str(response.json()).upper()
+        assert "SYNTAX" not in str(response.json()).upper()
+```
+
+### 11.2 XSS 测试
+
+```python
+class TestXSS:
+    @pytest.mark.parametrize("payload", [
+        {"bio": "<script>alert('xss')</script>"},
+        {"bio": "<img src=x onerror=alert(1)>"},
+        {"name": 'javascript:alert(document.cookie)'},
+    ])
+    def test_xss_in_user_input(self, client, auth_headers, payload):
+        """XSS 载荷应被转义"""
+        response = client.patch("/api/users/me", json=payload, headers=auth_headers)
+        assert response.status_code == 200
+        
+        data = response.json()
+        for field, value in payload.items():
+            if field in data:
+                assert "<script>" not in data[field]
+                assert "onerror=" not in data[field]
+```
+
+### 11.3 CSRF 测试
+
+```python
+def test_csrf_protection(self, client, auth_headers):
+    """敏感操作应需要 CSRF token"""
+    response = client.post("/api/users/me/delete", headers=auth_headers)
+    assert response.status_code in [403, 419]
+    
+    with_csrf = client.post(
+        "/api/users/me/delete",
+        headers={**auth_headers, "X-CSRF-Token": "valid_token"}
+    )
+    assert with_csrf.status_code == 200
+```
+
+### 11.4 认证与授权 OWASP 参考
+
+```python
+class TestAuthSecurity:
+    def test_brute_force_protection(self, client):
+        """连续失败登录应触发锁定"""
+        for i in range(10):
+            response = client.post("/api/login", json={
+                "email": "victim@example.com",
+                "password": f"wrong_{i}"
+            })
+            if i >= 5:
+                assert response.status_code == 429
+    
+    def test_token_reuse_protection(self, client):
+        """登出后 token 应失效"""
+        login = client.post("/api/login", json={"email": "test@test.com", "password": "pass"})
+        token = login.json()["token"]
+        
+        client.post("/api/logout", headers={"Authorization": f"Bearer {token}"})
+        
+        response = client.get("/api/users/me", headers={"Authorization": f"Bearer {token}"})
+        assert response.status_code == 401
+    
+    def test_privilege_escalation(self, client, user_headers):
+        """普通用户不能提升为管理员"""
+        response = client.patch(
+            "/api/users/me",
+            json={"role": "admin"},
+            headers=user_headers
+        )
+        assert response.status_code in [403, 400]
+        assert response.json().get("role") != "admin"
+```
+
+### 11.5 敏感信息泄露测试
+
+```python
+def test_no_sensitive_data_in_responses(self, client, auth_headers):
+    """API 响应不应包含敏感信息"""
+    response = client.get("/api/users/me", headers=auth_headers)
+    data = response.json()
+    
+    assert "password" not in data
+    assert "password_hash" not in data
+    assert "secret_key" not in data
+    assert "access_token" not in data or "refresh_token" not in data
+
+def test_error_messages_no_leakage(self, client):
+    """错误消息不应暴露内部细节"""
+    response = client.get("/api/users/nonexistent-id")
+    body = response.json()
+    
+    assert "Traceback" not in str(body)
+    assert "stack" not in str(body).lower()
+    assert "Internal Server Error" not in str(body)
+    assert "sql" not in str(body).lower()
+```
+
+### 安全测试清单
+
+- [ ] SQL 注入：参数化查询防御，无原始错误泄露
+- [ ] XSS：用户输入转义，CSP 头配置
+- [ ] CSRF：敏感操作需要 CSRF token
+- [ ] 暴力破解：登录频率限制、账户锁定
+- [ ] Token 安全：JWT 签名验证、过期处理、登出失效
+- [ ] 权限提升：水平/垂直越权防护
+- [ ] 敏感信息：密码/密钥/Token 不出现在响应或日志
+- [ ] 错误处理：不暴露堆栈、SQL、内部路径
+
+---
+
+## 12. 向后兼容性测试
+
+> **适用场景**: API 版本升级、废弃字段迁移、数据库 schema 变更
+
+### 12.1 API 版本共存测试
+
+```python
+class TestAPIVersionCompatibility:
+    def test_v1_and_v2_both_work(self, client, auth_headers):
+        """v1 和 v2 端点应同时可用"""
+        v1_response = client.get("/api/v1/users/me", headers=auth_headers)
+        v2_response = client.get("/api/v2/users/me", headers=auth_headers)
+        
+        assert v1_response.status_code == 200
+        assert v2_response.status_code == 200
+    
+    def test_v2_has_new_fields_v1_does_not(self, client, auth_headers):
+        """v2 的新字段在 v1 中不存在"""
+        v1_data = client.get("/api/v1/users/me", headers=auth_headers).json()
+        v2_data = client.get("/api/v2/users/me", headers=auth_headers).json()
+        
+        assert "avatar_url" in v2_data  # v2 新增
+        assert "avatar_url" not in v1_data  # v1 没有
+        assert v1_data["id"] == v2_data["id"]  # 核心字段一致
+```
+
+### 12.2 废弃字段兼容性
+
+```python
+def test_deprecated_field_still_works(self, client, auth_headers):
+    """废弃字段应继续返回（带 warning）"""
+    response = client.get("/api/v2/users/me", headers=auth_headers)
+    
+    # 废弃字段仍应存在
+    assert "legacy_name" in response.json()
+    # 但应标记为 deprecated
+    assert "Deprecated" in response.headers.get("Warning", "")
+```
+
+### 12.3 数据库迁移兼容性
+
+```python
+def test_data_accessible_after_migration(self, db_session):
+    """迁移后旧数据应仍可访问"""
+    user = db_session.query(User).filter_by(id=1).first()
+    assert user is not None
+    assert user.email == "old@example.com"
+    assert user.created_at is not None
+```
+
+### 向后兼容性测试清单
+
+- [ ] 旧版本端点仍可用
+- [ ] 新版本端点包含所有旧字段
+- [ ] 废弃字段仍返回但标记为 deprecated
+- [ ] 迁移后数据完整无损
+- [ ] 消费者不受 breaking change 影响
+
+---
+
+## 13. SSE (Server-Sent Events) 测试
+
+> **适用场景**: 实时推送、通知流、进度更新
+
+### 13.1 SSE 连接测试
+
+```python
+import httpx
+import asyncio
+
+@pytest.mark.asyncio
+async def test_sse_connection(base_url, auth_headers):
+    """SSE 连接应成功建立"""
+    async with httpx.AsyncClient() as client:
+        async with client.stream(
+            "GET",
+            f"{base_url}/api/events",
+            headers=auth_headers,
+            timeout=10.0
+        ) as response:
+            assert response.status_code == 200
+            assert "text/event-stream" in response.headers["Content-Type"]
+```
+
+### 13.2 消息流完整性
+
+```python
+@pytest.mark.asyncio
+async def test_sse_messages_received(base_url, auth_headers):
+    """应收到预期数量和格式的消息"""
+    messages = []
+    async with httpx.AsyncClient() as client:
+        async with client.stream(
+            "GET",
+            f"{base_url}/api/events",
+            headers=auth_headers,
+            timeout=10.0
+        ) as response:
+            async for line in response.aiter_lines():
+                if line.startswith("data:"):
+                    messages.append(json.loads(line[5:].strip()))
+                if len(messages) >= 3:
+                    break
+    
+    assert len(messages) >= 3
+    for msg in messages:
+        assert "type" in msg
+        assert "data" in msg
+        assert "timestamp" in msg
+```
+
+### 13.3 断开重连测试
+
+```python
+@pytest.mark.asyncio
+async def test_sse_reconnection(base_url, auth_headers):
+    """断开后应能重连并继续接收"""
+    async with httpx.AsyncClient() as client:
+        # 第一次连接，超时后自动断开
+        async with client.stream(
+            "GET",
+            f"{base_url}/api/events",
+            headers=auth_headers,
+            timeout=2.0
+        ) as response:
+            assert response.status_code == 200
+        
+        # 重新连接
+        async with client.stream(
+            "GET",
+            f"{base_url}/api/events",
+            headers=auth_headers,
+            timeout=5.0
+        ) as response:
+            assert response.status_code == 200
+            async for line in response.aiter_lines():
+                if line.startswith("data:"):
+                    break  
+```
+
+### 13.4 SSE vs WebSocket 选型建议
+
+| 特性 | SSE | WebSocket |
+|------|-----|-----------|
+| 通信方向 | 服务端→客户端 | 双向 |
+| 协议 | HTTP | ws/wss |
+| 重连 | 浏览器自动 | 需手动实现 |
+| 适用场景 | 通知/进度/推送 | 聊天/协作/实时编辑 |
+| 复杂度 | 低 | 中高 |
+
+**建议**: 仅需要服务端推送时用 SSE；需要双向交互时用 WebSocket。
+
+---
+
 ## 测试清单
 
 编写 API 测试时，逐项检查：

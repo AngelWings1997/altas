@@ -1237,6 +1237,222 @@ pytest -n auto
 
 ---
 
-**版本**: 1.1.0
+## 安全扫描集成
+
+> CI 门禁中集成安全扫描，阻止已知漏洞进入生产
+
+### Python 安全扫描工具
+
+| 工具 | 扫描内容 | 安装 | 运行 |
+|------|---------|------|------|
+| `bandit` | 代码安全问题 | `pip install bandit` | `bandit -r src/` |
+| `safety` | 依赖漏洞 | `pip install safety` | `safety check` |
+| `pip-audit` | PyPI 漏洞数据库 | `pip install pip-audit` | `pip-audit` |
+
+### GitHub Actions 安全扫描
+
+```yaml
+# .github/workflows/security.yml
+name: Security Scan
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install bandit safety pip-audit
+
+      - name: Run bandit (code security)
+        run: bandit -r src/ -f json -o bandit-report.json || true
+
+      - name: Run safety (dependency vulns)
+        run: safety check --json --output safety-report.json || true
+
+      - name: Run pip-audit
+        run: pip-audit --format json --output pip-audit-report.json || true
+
+      - name: Upload security reports
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: security-reports
+          path: '*-report.json'
+
+      - name: Check for high severity
+        run: |
+          pip-audit --desc --vuln-filter "severity:high,critical"
+          if [ $? -ne 0 ]; then
+            echo "High/critical severity vulnerabilities found"
+            exit 1
+          fi
+```
+
+### 安全扫描 CI 集成策略
+
+| 阶段 | 工具 | 失败条件 | 动作 |
+|------|------|---------|------|
+| PR | bandit | 高危漏洞 | 阻塞合并 |
+| PR | safety | 已知漏洞 | 警告（不阻塞） |
+| Main | pip-audit | 高/严重漏洞 | 阻塞合并 |
+| Release | trivy/snyk | 任何漏洞 | 阻塞发布 |
+
+---
+
+## 测试报告自动化
+
+> 自动生成标准化测试报告，与企业 CI 平台集成
+
+### pytest-html HTML 报告
+
+```bash
+pip install pytest-html
+
+pytest tests/ --html=report.html --self-contained-html
+```
+
+```yaml
+# GitHub Actions
+- name: Run tests
+  run: pytest --html=report.html --self-contained-html
+
+- name: Upload HTML report
+  if: always()
+  uses: actions/upload-artifact@v3
+  with:
+    name: test-report
+    path: report.html
+```
+
+### Allure 报告
+
+```bash
+pip install allure-pytest
+
+pytest tests/ --alluredir=allure-results
+allure generate allure-results -o allure-report --clean
+```
+
+```yaml
+# GitHub Actions
+- name: Run tests with Allure
+  run: pytest --alluredir=allure-results
+
+- name: Generate Allure report
+  run: |
+  docker run -p 5050:5050 -v $(pwd)/allure-results:/allure-results frankescobar/allure-docker-api generate
+
+- name: Deploy report
+  uses: peaceiris/actions-gh-pages@v3
+  with:
+    publish_dir: ./allure-report
+```
+
+### JUnit XML（GitHub Checks / GitLab Test Reports）
+
+```bash
+pytest tests/ --junitxml=junit.xml
+```
+
+```yaml
+# GitHub Checks
+- name: Publish test results
+  uses: dorny/test-reporter@v1
+  if: always()
+  with:
+    name: Pytest Results
+    path: junit.xml
+    reporter: java-junit
+
+# GitLab Test Reports
+test:
+  script: pytest --junitxml=report.xml
+  artifacts:
+    reports:
+      junit: report.xml
+```
+
+### 测试报告对比趋势
+
+```yaml
+# 使用 pytest-benchmark + 历史对比
+- name: Run benchmarks
+  run: pytest tests/performance/ --benchmark-json=benchmark.json
+
+- name: Compare with baseline
+  run: |
+  python -c "
+  import json
+  with open('benchmark.json') as f:
+      data = json.load(f)
+  with open('baseline.json') as b:
+      baseline = json.load(b)
+  
+  for bench in data['benchmarks']:
+      name = bench['name']
+      current = bench['stats']['mean']
+      base = baseline.get(name, {}).get('mean', current)
+      change = (current - base) / base * 100
+      print(f'{name}: {change:+.1f}%')
+      if change > 10:
+          print(f'REGRESSION: {name} degraded by {change:.1f}%')
+          exit(1)
+  "
+```
+
+### 测试报告标准化输出模板
+
+```markdown
+## 测试执行报告
+
+**执行时间**: YYYY-MM-DD HH:MM
+**分支**: feature/xxx
+**Commit**: abc123
+
+### 执行摘要
+| 指标 | 值 | 状态 |
+|------|-----|------|
+| 总用例数 | 245 | - |
+| 通过 | 243 | ✅ |
+| 失败 | 1 | ❌ |
+| 跳过 | 1 | ⚠️ |
+| 通过率 | 99.2% | ✅ (>= 98%) |
+
+### 覆盖率
+| 类型 | 目标 | 实际 | 状态 |
+|------|------|------|------|
+| Line | >= 80% | 85.3% | ✅ |
+| Branch | >= 70% | 72.1% | ✅ |
+
+### 性能指标
+| 测试 | P95 | 基线 | 变化 | 状态 |
+|------|-----|------|------|------|
+| POST /orders | 120ms | 115ms | +4.3% | ✅ (< 20%) |
+
+### 失败用例
+- `tests/api/test_orders.py::test_concurrent_create` - Timeout after 30s
+
+### 建议
+- 1 个失败用例需修复
+- 覆盖率达标
+- 无性能回归
+- **可以合并**
+```
+
+---
+
+**版本**: 1.2.0
 **兼容**: GitHub Actions v4+, GitLab CI 15.0+, pytest 7.0+
-**核心依赖**: `pytest-xdist`, `pytest-timeout`, `pytest-rerunfailures`, `pytest-cov`, `codecov`
+**核心依赖**: `pytest-xdist`, `pytest-timeout`, `pytest-rerunfailures`, `pytest-cov`, `codecov`, `bandit`, `safety`, `pytest-html`

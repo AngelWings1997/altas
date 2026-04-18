@@ -1,6 +1,6 @@
 ---
 name: altas-workflow
-version: "4.6"
+version: "4.7"
 description: Use when handling repository-grounded engineering tasks requiring structured phased execution with checkpoints and verification gates
 trigger_keywords: ["FAST", "DEEP", "DEBUG", "MULTI", "DOC", "MAP", "PROJECT MAP", "MAP ALL", "ARCHIVE", "REVIEW", "REVIEW SPEC", "REVIEW EXECUTE", "REFACTOR", "TEST", "PERF", "MIGRATE", "CROSS", "PRD", "PRD ANALYSIS", ">>", "sdd_bootstrap", "EXIT ALTAS", "快速", "排查", "日志分析", "多项目", "写文档", "链路梳理", "只看代码", "项目总图", "全局地图", "归档", "沉淀", "代码审查", "审查 PR", "评审规格", "计划评审", "代码评审", "实现复盘", "重构", "写测试", "补测试", "性能优化", "迁移", "版本升级", "跨项目", "验证功能", "需求分析", "评审 PRD", "PRD 质量", "退出协议"]
 dependencies:
@@ -14,7 +14,7 @@ min_context_window: 128k
 
 # ALTAS Workflow
 
-**Version:** 4.6 — TDD 与 Spec-First 融合对齐、增加测试策略、强制检查点约束、规模再评估。
+**Version:** 4.7 — 测试工程师专项优化、E2E/性能测试指引、多语言测试支持、测试文档可发现性。
 > 📋 **版本升级参考**：完整变更日志见 [SDD-RIPER-ONE Agent Changelog](./references/agents/sdd-riper-one/CHANGELOG.md)。从旧版本（3.x / 4.0 / 4.1）升级时，请阅读该日志了解 breaking changes。
 
 ## Quick Navigation
@@ -482,6 +482,10 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 - 读取 `references/superpowers/test-driven-development/SKILL.md`；`L` 可追加 `references/superpowers/subagent-driven-development/SKILL.md`
 - **Python 项目编写测试时**加载 `references/testing/pytest-patterns.md`
 - **Python API 项目编写测试时**额外加载 `references/testing/api-testing.md`
+- **Python E2E 测试时**额外加载 `references/testing/e2e-testing.md`
+- **Python 性能测试时**额外加载 `references/testing/performance-testing.md`
+- **非 Python 项目测试参考**:
+  - Go: `go test` + `testify` / `ginkgo`
 - **API 测试默认采用契约优先**：先识别 `OpenAPI / Swagger / GraphQL Schema / Proto` 等契约文件，再展开测试设计，禁止先从实现细节反推接口行为
 - **API 契约识别后的默认动作**：
   - 识别契约来源文件与协议类型（REST / GraphQL / gRPC）

@@ -63,3 +63,21 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 ---
 
 **These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
+
+## 5. Self-Improvement
+
+**Record learnings. Promote patterns. Evolve continuously.**
+
+When to record:
+- **Task completed**: Self-check if you learned something non-obvious
+- **Error occurred**: Immediately log error context, reproduction steps, fix
+- **User corrected you**: Don't argue, log the correct approach right away
+- **Before new complex task**: Review past learnings for relevant context
+
+Where to record (per project configuration):
+- Corrections/knowledge gaps/best practices → project learnings file
+- Command failures/exceptions → project errors file
+- Missing capabilities → project feature requests file
+
+Promotion awareness:
+- If a learning recurs ≥3 times across ≥2 tasks within 30 days → promote to workflow rule

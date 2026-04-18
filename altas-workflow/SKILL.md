@@ -252,6 +252,7 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 - 用户只输入触发词、没有具体任务时：加载 `references/entry/first-response.md` 中的初始化提示并暂停。
 - 任务不明确时：必须先澄清，再做规模评估和模式路由。
 - 已有明确任务时：首轮回复至少包含 `任务复述 / 模式 / 规模 / 是否只读 / 是否需要执行许可 / 参考文档 / 下一步`。
+- 大任务（M/L）开始前，应回顾 `.learnings/` 中相关区域的过往学习（`grep -l "Area**: <当前区域>" .learnings/*.md`）。
 - 首轮响应中的“当前原子步骤清单”是必填项；详细模板与拆解要求见 `references/entry/first-response.md`。
 
 ## 检查点契约
@@ -265,6 +266,7 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 - 遇到异常、不确定性或解决不了的问题时立即输出检查点并暂停。
 - 用户要求查看进度时必须输出检查点。
 - 上下文将满需要 Resume Ready 时必须输出检查点。
+- **Review/Archive 阶段输出检查点时，必须自检是否有可捕获的学习**（非显而易见的方案/错误/用户纠正），如有则记录到 `.learnings/`（详见 `references/self-improvement/SKILL.md`）。
 - `XS` 使用 1 行 summary；`S` 使用短 checkpoint；`M/L` 使用完整检查点模板。
 - 完整模板、暂停规则与 Batch Override Git 约束见 `references/checkpoint-driven/checkpoints.md`。
 
@@ -353,24 +355,123 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 ## 自我进化契约
 
 > **SELF-IMPROVEMENT PRINCIPLE:** 每次任务完成后，自动评估是否产生了可复用的知识。记录 → 总结 → 晋升 → 进化。
+>
+> **TRAE IDE 集成**：已配置 Hook 自动激活（`.claude/settings.json`），每次用户输入和命令执行后自动提醒评估学习机会。
 
 ### 自动检测触发
 
-| 触发信号 | 动作 |
-|----------|------|
-| 用户纠正（"不对"、"应该是"、"你搞错了"、"这个不对"） | 记录到 `.learnings/LEARNINGS.md`，category=`correction` |
-| 命令/操作失败、异常输出 | 记录到 `.learnings/ERRORS.md` |
-| 用户请求不支持的能力（"能不能"、"为什么不能"） | 记录到 `.learnings/FEATURE_REQUESTS.md` |
-| 发现文档过时/知识缺口 | 记录到 `.learnings/LEARNINGS.md`，category=`knowledge_gap` |
-| 发现更优方案 | 记录到 `.learnings/LEARNINGS.md`，category=`best_practice` |
-| 用户明确要求（"记住这个"、"以后都这样"、"保存下来"） | 记录到 `.learnings/LEARNINGS.md`，category=`user_explicit` |
+| 触发信号 | 动作 | 记录到 |
+|----------|------|--------|
+| 用户纠正（"不对"、"应该是"、"你搞错了"、"这个不对"、"错了"、"不是这样"） | 立即记录，不要争辩 | `.learnings/LEARNINGS.md`，category=`correction` |
+| 命令/操作失败、异常输出、超时、构建/测试失败 | 记录错误上下文和解决方案 | `.learnings/ERRORS.md` |
+| 用户请求不支持的能力（"能不能"、"为什么不能"、"可以...吗"） | 记录需求和使用场景 | `.learnings/FEATURE_REQUESTS.md` |
+| 发现文档过时/知识缺口 | 记录正确信息和来源 | `.learnings/LEARNINGS.md`，category=`knowledge_gap` |
+| 发现更优方案 | 记录对比和选择理由 | `.learnings/LEARNINGS.md`，category=`best_practice` |
+| 用户明确要求（"记住这个"、"以后都这样"、"保存下来"、"沉淀一下"） | 立即记录为高优先级 | `.learnings/LEARNINGS.md`，category=`user_explicit` |
+| 用户提供新思路/方案（"我觉得可以这样"、"有个想法"、"换个思路"、"要不试试"） | 记录方案和适用场景 | `.learnings/LEARNINGS.md`，category=`new_insight` |
+| 用户提供替代建议（"或者..."、"也可以..."、"不如..."、"其实可以..."） | 记录替代方案和权衡 | `.learnings/LEARNINGS.md`，category=`alternative` |
+| 用户质疑推理（"你为什么会这么想？"、"你的依据是什么？"） | 反思推理过程，记录假设或知识缺口 | `.learnings/LEARNINGS.md`，category=`correction` 或 `knowledge_gap` |
+| 用户分享经验（"上次我们就这样踩坑了"、"之前遇到过"） | 记录经验教训和避免方法 | `.learnings/LEARNINGS.md`，category=`lesson_learned` |
+
+### TRAE IDE 工作流集成
+
+在 TRAE IDE 中，自我改进机制通过以下方式与工作流深度集成：
+
+#### 1. Hook 自动提醒（已激活 ✅）
+
+- **UserPromptSubmit Hook**: 每次用户输入后，自动显示学习评估提醒
+- **PostToolUse Hook (RunCommand)**: 每次命令执行后，自动检测错误并提示记录
+
+#### 2. 与 TodoWrite 集成
+
+当发现需要记录的学习时，使用 TodoWrite 跟踪：
+
+```markdown
+任务：记录学习 [LRN-YYYYMMDD-XXX]
+状态：in_progress
+优先级：high（如果是 correction/user_explicit）
+内容：记录用户纠正/新思路/错误到 .learnings/
+```
+
+记录完成后标记为 completed。
+
+#### 3. 与检查点流程对齐
+
+| ALTAS 阶段 | 自我改进动作 | 输出位置 |
+|------------|--------------|----------|
+| **首轮响应** | 回顾过往相关学习（`grep -l "Area**: <当前区域>" .learnings/*.md`） | 检查点中说明 |
+| **RESEARCH 结束** | 自检是否有知识缺口或误解 | 如有则记录到 LEARNINGS.md |
+| **PLAN 阶段** | 如果用户纠正了方案方向，立即记录 | LEARNINGS.md (correction) |
+| **EXECUTE 中** | 遇到非预期错误时，记录到 ERRORS.md | ERRORS.md |
+| **REVIEW 阶段**（M/L 必须） | **强制自检**：是否有可捕获的学习？ | 检查点 + .learnings/ |
+| **ARCHIVE 阶段**（L 必须） | 回顾本任务所有学习，评估晋升条件 | 更新 Status 或 Promote |
+
+#### 4. 实际工作流示例
+
+**场景 A：用户在执行过程中纠正**
+
+```
+用户：不对，这里应该用异步方式
+Agent：
+1. 立即停止当前实现
+2. 创建 LRN 条目记录纠正
+3. 使用 TodoWrite 添加记录任务
+4. 调整方案并继续执行
+5. 在检查点中说明调整原因
+```
+
+**场景 B：命令执行失败**
+
+```
+Agent 执行 npm test → 失败
+Hook 自动触发 error-detector.sh → 显示记录提醒
+Agent 判断：
+  - 这是常见问题？→ 记录到 ERRORS.md
+  - 这是环境特定问题？→ 仅记录如果可能重复出现
+  - 这是我犯的错误？→ 记录到 LEARNINGS.md (correction)
+```
+
+**场景 C：用户提供新思路**
+
+```
+用户：我觉得可以用观察者模式来实现这个
+Agent：
+1. 评估方案的可行性
+2. 记录到 LEARNINGS.md (new_insight)
+3. 如果采用，在 Plan 中说明理由
+4. 如果不采用，记录原因以备后续参考
+```
 
 ### 记录时机
 
-1. **任务完成后**：自检是否有非显而易见的答案/变通/模式
-2. **错误发生时**：立即记录错误上下文、复现步骤、解决方案
-3. **用户纠正时**：不要争辩，立即记录正确的做法
-4. **大任务开始前**：回顾 `.learnings/` 中相关区域的过往学习
+1. **任务完成后**（Review/Archive 阶段）：自检是否有非显而易见的答案/变通/模式
+2. **错误发生时**：立即记录错误上下文、复现步骤、解决方案（Hook 会自动提醒）
+3. **用户纠正时**：不要争辩，立即记录正确的做法（这是最高优先级）
+4. **用户新思路时**：即使不立即采用也要记录，可能是未来的最佳方案
+5. **大任务开始前**：回顾 `.learnings/` 中相关区域的过往学习
+6. **任何时候**：当 Hook 提醒触发时，快速评估是否符合记录条件
+
+### 快速记录决策树
+
+```
+检测到信号
+  ├─ 是用户纠正？
+  │   └─ YES → 立即记录到 LEARNINGS.md (correction)，Priority=high
+  │   └─ NO ↓
+  ├─ 是命令错误？
+  │   └─ YES → 判断是否值得记录
+  │       ├─ 非预期/需调查/可能重复 → 记录到 ERRORS.md
+  │       └─ 明显的拼写错误/权限问题 → 可选记录
+  │   └─ NO ↓
+  ├─ 是用户新思路？
+  │   └─ YES → 记录到 LEARNINGS.md (new_insight 或 alternative)
+  │   └─ NO ↓
+  ├─ 是功能请求？
+  │   └─ YES → 记录到 FEATURE_REQUESTS.md
+  │   └─ NO ↓
+  └─ 是我自己发现的改进？
+      └─ YES → 记录到 LEARNINGS.md (best_practice)
+```
 
 ### 晋升规则
 
@@ -387,7 +488,9 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 | 路由/触发词修正 | SKILL.md 路由表或 `references/entry/aliases.md` |
 | 规模评估修正 | SKILL.md 规模评估表 |
 | 铁律/门禁补充 | SKILL.md Hard Rules 或阶段门禁 |
+| 阶段门禁强化 | SKILL.md 阶段门禁 |
 | 工具/平台适配 | SKILL.md 工具映射表 |
+| 别名补充 | `references/entry/aliases.md` |
 | 测试策略强化 | `references/testing/` 对应文件 |
 | 审查规则强化 | `references/special-modes/review.md` |
 | 调试策略强化 | `references/superpowers/systematic-debugging/` |

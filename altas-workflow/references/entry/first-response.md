@@ -14,9 +14,9 @@
 
 当用户只输入触发词或仅表示“进入 ALTAS”而未给出具体目标时，输出初始化提示并暂停：
 
-> **ALTAS Workflow v4.7 已加载**
+> **ALTAS Workflow v4.8 已加载**
 >
-> **COMMITMENT:** I am using ALTAS Workflow v4.7 for this session. I will follow all Iron Rules without exception.
+> **COMMITMENT:** I am using ALTAS Workflow v4.8 for this session. I will follow all Iron Rules without exception.
 >
 > 当前状态：`[IDLE]`
 > 可用触发（主形式）: `>>` / `FAST` | `sdd_bootstrap` | `DEEP` | `DEBUG` | `MULTI` | `CROSS` | `DOC` | `MAP` | `PROJECT MAP` | `ARCHIVE` | `REVIEW` | `REVIEW SPEC` | `REVIEW EXECUTE` | `REFACTOR` | `TEST` | `PERF` | `MIGRATE`
@@ -79,6 +79,12 @@
 
 ### 参考文档
 - [本轮需要先读取的参考文件或暂不需要]
+
+### Brainstorming 决策（M/L 规模时强制）
+
+- **是否需要 brainstorming？**
+  - ✅ 需要：进入 INNOVATE 阶段，先使用 `superpowers:brainstorming`（详见入口 SKILL.md 内联摘要）
+  - ❌ 不需要：说明原因（如：需求已明确、纯执行任务、 XS/S 规模）
 
 ### 当前原子步骤清单 [必填]
 1. **步骤名**

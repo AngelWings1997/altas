@@ -58,6 +58,11 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 - superpowers:writing-plans (for PLAN phase)
 - superpowers:systematic-debugging (for DEBUG mode)
 - superpowers:brainstorming (for L/complex M INNOVATE phase)
+
+  > **What:** Turn ideas into validated designs through Q&A + trade-off discussion
+  > **When:** Before any creative work on M/L tasks — prevents scope creep and assumption drift
+  > **Process:** Explore context → Ask questions (one at a time) → Propose 2-3 approaches → Present design → User approves → Write spec → Invoke writing-plans
+  > **HARD-GATE:** No code until user approves the design
 - superpowers:subagent-driven-development (for L scale with subagent support)
 - prd-analysis:specify-requirements (for PRD analysis and validation)
 
@@ -95,6 +100,7 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 | 8 | **YOU MUST Always Leave Resume Point** | 长任务、中断或上下文紧张时，必须留下恢复锚点。 |
 | 9 | **YOU MUST Read Concurrent, Write Serial** | 读文件允许并发；写文件必须串行，不得并发写入同一文件。 |
 | 10 | **YOU MUST Never Assume on Uncertainty** | 不确定时不假设，必须澄清；解决不了的问题必须暂停并找用户确认，禁止跳过。 |
+| 11 | **YOU MUST Brainstorm Before Innovate** | M/L 规模在 INNOVATE 阶段必须使用 brainstorming；防止需求理解偏差导致返工比快速执行更重要。 |
 
 > **SOCIAL PROOF:** Violating these rules = predictable failure. Every time. No exceptions.
 
@@ -211,9 +217,9 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 |------|----------|----------|----------|
 | **XS** | typo、配置值、日志、小于 10 行 | 跳过，事后 1 行 summary | 直接执行 -> 验证 -> summary |
 | **S** | 1-2 文件、逻辑清晰、影响小 | micro-spec（1-3 句） | micro-spec -> 批准 -> 执行 -> 回写 |
-| **M** | 3-10 文件、模块内、需要计划 | 轻量 Spec 落盘 | Research -> Plan -> Execute(TDD) -> Review |
-| **复杂 M** | M 的变体，方案复杂度高但影响面仍局域 | 轻量 Spec + 可选 Innovate | 与 L 同，INNOVATE 可选 |
-| **L** | 跨模块、架构级、迁移、多项目 | 完整 Spec + Innovate + Archive | Research -> Innovate -> Plan -> Execute(TDD) -> Review -> Archive |
+| **M** | 3-10 文件、模块内、需要计划 | 轻量 Spec 落盘；建议 brainstorming 防止需求跑偏 | Research -> Plan -> Execute(TDD) -> Review |
+| **复杂 M** | M 的变体，方案复杂度高但影响面仍局域 | 轻量 Spec + 建议 Innovate + brainstorming | 与 L 同，**建议 INNOVATE + brainstorming** |
+| **L** | 跨模块、架构级、迁移、多项目 | 完整 Spec + **必须 Innovate + brainstorming** + Archive | Research -> **INNOVATE(brainstorming)** -> Plan -> Execute(TDD) -> Review -> Archive |
 
 ### 判定优先级
 

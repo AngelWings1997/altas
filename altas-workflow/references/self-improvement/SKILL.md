@@ -402,7 +402,7 @@ description: "简洁描述何时以及为什么使用此技能。包含触发条
 }
 ```
 
-详细配置见 `references/hooks-setup.md`。
+详细配置见 `references/self-improvement/references/hooks-setup.md`。
 
 ## 定期回顾
 

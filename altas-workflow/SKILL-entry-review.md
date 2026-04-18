@@ -1,466 +1,751 @@
 # ALTAS Workflow SKILL 评审报告
 
-**评审日期**: 2026-04-18
-**评审版本**: v4.7
-**评审视角**: 作为 SDD + TDD 技能，针对测试开发工程师专项优化（pytest、API 测试支持）
-**评审方法**: 全量文件读取 + 交叉引用一致性检查 + 角色代入场景推演
+**评审日期**: 2026-04-19
+**评审版本**: v4.8
+**评审视角**: 作为通用工作流技能，评估 AI 约束机制的完整性、一致性和有效性
+**评审方法**: 全量核心文件读取 + 特殊模式一致性检查 + AI 约束机制评估 + 场景推演
 
 ---
 
 ## 1. 总体评价
 
-ALTAS Workflow v4.7 自上次评审后**显著进步**。先前识别的 10 项改进中已有 7 项被实现：
+ALTAS Workflow v4.8 在 v4.7 基础上**重大升级**，引入了自我进化机制（Self-Improvement），标志着从"静态工作流"向"动态进化工作流"的转变。作为约束 AI 行为的通用工作流框架，已具备以下核心能力：
 
-| 先前改进项 | 状态 | 备注 |
-|------------|------|------|
-| 测试左移 (Shift-Left) 指导 | ✅ 已实现 | `test.md` 增加"测试左移"完整章节 |
-| 契约测试 (Contract Testing) 支持 | ✅ 已实现 | `contract-testing.md` 已创建 |
-| 可视化测试 | ✅ 已实现 | `visual-testing.md` 14.2 KB |
-| 安全测试 | ✅ 已实现 | `security-testing.md` 16.9 KB |
-| 测试可观测性 | ✅ 已实现 | `test-observability.md` 21.3 KB |
-| 移动端测试 | ✅ 已实现 | `mobile-testing.md` 19.7 KB |
-| PRD 可测试性评审 | ✅ 已实现 | `testability-checklist.md` 10.8 KB |
-| 测试文档可发现性 | ✅ 已实现 | `reference-index.md` 增加"测试工程师快速入口" |
-| JS/TS 测试支持 | ⚪ 不适用 | 项目仅关注 Python 和 Go，不需要 JS/TS |
-| 测试反模式案例库扩展 | ⏳ 部分 | 新增 `test-maintenance.md` 覆盖部分场景 |
+### 1.1 上次（v4.7）评审建议落实情况
 
-**评级**: A（优秀，核心缺口已补齐）
+| 改进项 | 优先级 | 状态 | 备注 |
+|--------|--------|------|------|
+| 修复 SKILL.md 版本号 (v4.6→v4.7) | 🔴 高 | ✅ 已修复 | 当前版本已升级到 v4.8 |
+| 创建 contract-testing.md | 🔴 高 | ✅ 已创建 | Pact CDC 完整支持 |
+| 创建 test-environment.md | 🟡 中 | ✅ 已创建 | Test Containers/Docker Compose/隔离策略 |
+| 更新 reference-index.md 统计数字 | 🟡 中 | ✅ 已更新 | 测试开发文档数已修正为 16+ |
+| test.md 增加 TEST → PERF 联动 | 🟡 中 | ✅ 已实现 | 第 344 行 |
+| TDD SKILL.md 增加 pytest 引导 | 🟡 中 | ⏳ 未确认 | 需验证 |
+| 扩展测试反模式案例库 | 🟢 低 | ⏳ 部分 | test-maintenance.md 有覆盖 |
 
----
-
-## 2. 现有优势（保持）
-
-### 2.1 测试金字塔覆盖完整
-
-| 测试层级 | 参考文档 | 质量 |
-|---------|---------|------|
-| 单元测试 | `pytest-patterns.md` (24.1 KB) | ★★★★★ 完整，含 Fixture、Parametrize、Mock |
-| API 测试 | `api-testing.md` (48.4 KB) | ★★★★★ 非常详细，含 REST/GraphQL/gRPC/WebSocket + 契约自动化工具链 |
-| E2E 测试 | `e2e-testing.md` (13.2 KB) | ★★★★★ Playwright/Cypress 覆盖 |
-| 性能测试 | `performance-testing.md` (10.6 KB) | ★★★★★ pytest-benchmark + locust + k6 |
-| 安全测试 | `security-testing.md` (16.9 KB) | ★★★★☆ SAST/DAST/SCA/密钥检测覆盖 |
-| 视觉测试 | `visual-testing.md` (14.2 KB) | ★★★★☆ Chromatic/Storybook/Playwright |
-| 移动端测试 | `mobile-testing.md` (19.7 KB) | ★★★★☆ Appium/Detox/Maestro |
-| 测试数据 | `test-data-management.md` (19.8 KB) | ★★★★★ Factory Boy + Faker + 隔离策略 |
-| CI/CD 集成 | `ci-cd-integration.md` (33.1 KB) | ★★★★★ GitHub Actions / GitLab CI 模板 |
-| 测试可观测性 | `test-observability.md` (21.3 KB) | ★★★★☆ 结构化日志/OTel/指标 |
-| 测试维护 | `test-maintenance.md` (7.0 KB) | ★★★★☆ Flaky 处理/债务管理/重构策略 |
-
-### 2.2 测试开发工程师专项优化亮点
-
-1. **契约优先 API 测试**: 明确要求先找 OpenAPI/Swagger/GraphQL Schema/Proto，禁止从实现猜接口
-2. **失败归因三分法**: 产品缺陷 / 测试缺陷 / 环境缺陷 的区分机制
-3. **压力场景自检**: `test-task-pressure-scenarios.md` 防止在时间压力下绕过纪律
-4. **测试脚手架模板**: `test-scaffold-templates.md` + `templates/` 目录提供即拿即用的 fixture/factory 模板
-5. **质量度量体系**: `test-quality-metrics.md` (24.3 KB) 提供 12 项可量化指标
-6. **测试左移**: `testability-checklist.md` + `test.md` 中 Shift-Left 章节已就位
-7. **pytest TDD 循环**: `pytest-tdd-cycle.md` 将通用 TDD 铁律翻译为 pytest 惯用法
-8. **测试维护**: `test-maintenance.md` 覆盖 Flaky 处理、债务管理、重构策略
+**评级**: **A+（卓越，新增自我进化机制是亮点）**
 
 ---
 
-## 3. 需要改进的地方
+## 2. v4.8 核心变更评估
 
-### 3.1 🔴 高优先级改进
+### 2.1 🌟 自我进化机制（Self-Improvement）— 重大亮点
 
-#### 3.1.1 缺少契约测试 (Contract Testing) 支持（已修复）
+**位置**: `references/self-improvement/SKILL.md` (923 行)
 
-**现状**: API 测试强调"契约优先"理念（先识别 OpenAPI/Proto），现 `contract-testing.md` 已创建，覆盖 Pact CDC、OpenAPI 验证、变更管理、CI 集成。
+**核心能力**:
+
+| 能力维度 | 实现程度 | 评价 |
+|----------|----------|------|
+| **信号检测** | ★★★★★ | 支持 10+ 种触发信号（用户纠正/错误/功能请求/新思路等）|
+| **记录格式** | ★★★★★ | LRN/ERR/FEAT 三类标准格式，含元数据、Pattern-Key 去重 |
+| **晋升规则** | ★★★★☆ | Recurrence-Count >= 3 + 跨 2 任务 + 30 天窗口期 |
+| **技能提取** | ★★★★★ | 完整的提取流程、质量门槛、模板结构 |
+| **多平台支持** | ★★★★☆ | Claude Code/Trae/Cursor/OpenAI Codex 均有方案 |
+| **Hook 集成** | ★★★★★ | UserPromptSubmit + PostToolUse 自动触发 |
+| **与工作流对齐** | ★★★★★ | REVIEW/ARCHIVE/首轮响应均有强制自检点 |
+
+**创新点**:
+1. **Pattern-Key 去重机制**: 使用 `<domain>.<specific_pattern>` 格式追踪重复模式
+2. **上下文感知检测**: 不仅关键词匹配，还结合对话上下文判断
+3. **快速参考卡片**: TRAE IDE 快速操作指南，30 秒记录模板
+4. **晋升目标明确**: 清晰映射到 SKILL.md/aliases.md/测试文档等具体位置
+
+**潜在风险**:
+- ⚠️ **过度记录**: 可能导致 `.learnings/` 文件膨胀，需定期清理机制
+- ⚠️ **误报**: Hook 可能误触发（如用户说"不对"但非纠正）
+- ⚠️ **晋升门槛**: Recurrence-Count >= 3 在短期项目中可能难以达到
+
+### 2.2 新增测试环境管理文档
+
+**位置**: `references/testing/test-environment.md`
+
+**覆盖内容**:
+- 隔离策略（Level 0-4 五级隔离）
+- Test Containers 支持（PostgreSQL/Redis/Kafka）
+- Docker Compose 集成
+- 本地 vs CI 环境一致性
+
+**价值**: 补齐了上次评审识别的"测试环境管理"缺口。
+
+---
+
+## 3. 通用工作流架构评估
+
+### 3.1 工作流完整性矩阵
+
+| 维度 | 覆盖度 | 质量 | 备注 |
+|------|--------|------|------|
+| **任务路由** | ★★★★★ | 12 种模式（Coding/DEBUG/DOC/MAP/ARCHIVE/REVIEW/REFACTOR/TEST/PERF/MIGRATE/PRD/MULTI）| 完整 |
+| **规模评估** | ★★★★★ | XS/S/M/L/复杂M 五级 | 科学 |
+| **阶段门禁** | ★★★★★ | PRE-RESEARCH → RESEARCH → INNOVATE(可选) → PLAN → EXECUTE → REVIEW → ARCHIVE | 完整 |
+| **铁律约束** | ★★★★★ | 10 条 Hard Rules + 11 条 Self-Improvement | 强力 |
+| **防绕过机制** | ★★★★★ | 8 Red Flags + 10 Rationalization Counter + 10 Common Mistakes | 三层防御 |
+| **检查点系统** | ★★★★★ | 阶段转换/任务完成/异常/进度查看/上下文将满 | 全覆盖 |
+| **特殊模式协议** | ★★★★☆ | 5/7 模式有独立文件（缺 DEBUG/DOC）| 见 3.2 |
+| **参考资料索引** | ★★★★★ | 75+ 文件，4 种索引方式（特殊模式/工作流阶段/来源/规模）| 完善 |
+
+### 3.2 特殊模式一致性检查
+
+**现有独立协议文件**:
+
+| 模式 | 文件存在 | 结构完整 | 协作模式定义 | 门禁逻辑 | 特殊场景 |
+|------|----------|----------|--------------|----------|----------|
+| TEST | ✅ test.md | ✅ | ✅ (4 个) | ✅ (5 个) | ✅ (5 个) |
+| REVIEW | ✅ review.md | ✅ | ✅ (3 个) | ✅ (4 个) | ✅ (3 个) |
+| REFACTOR | ✅ refactor.md | ✅ | ✅ (3 个) | ✅ (4 个) | ✅ (3 个) |
+| PERF | ✅ perf.md | ✅ | ✅ (3 个) | ✅ (4 个) | ✅ (3 个) |
+| MIGRATE | ✅ migrate.md | ✅ | ✅ (3 个) | ✅ (5 个) | ✅ (3 个) |
+| DEBUG | ❌ 无独立文件 | ⚠️ | ⚠️ | ⚠️ | ⚠️ |
+| DOC | ❌ 无独立文件 | ⚠️ | ⚠️ | ⚠️ | ⚠️ |
+
+**问题**: DEBUG 和 DOC 模式缺少 `references/special-modes/` 下的独立协议文件：
+- **DEBUG**: 引用 `references/superpowers/systematic-debugging/SKILL.md`（属于 Superpowers 而非 Special Modes）
+- **DOC**: 引用 `protocols/RIPER-DOC.md`（属于 Protocols 而非 Special Modes）
 
 **影响**:
-- 微服务架构中，服务间契约变更导致集成失败是高频问题
-- 当前"契约优先"仅覆盖"从契约文件读接口定义"，未覆盖"契约变更的双向验证"
-- `api-testing.md` 48.4 KB 却无契约测试章节，与"API 是契约"的核心原则矛盾
+1. Agent 在查找特殊模式协议时，发现只有 5/7 个有统一格式
+2. DEBUG/DOC 的协议结构与其他模式不一致（缺少协作模式/门禁逻辑/特殊场景的标准章节）
+3. reference-index.md 的"按特殊模式索引"部分，DEBUG 和 DOC 的条目格式与其他不同
+
+**建议**: 
+- 创建 `references/special-modes/debug.md`，包装 systematic-debugging 并增加标准章节
+- 创建 `references/special-modes/doc.md`，包装 RIPER-DOC 并增加标准章节
+
+### 3.3 协作模式完整性检查
+
+**各模式定义的"与其他模式协作"**:
+
+| 模式 | 定义的协作 | 缺少的关键协作 |
+|------|-----------|---------------|
+| TEST | → DEBUG, REFACTOR, REVIEW, **PERF** ✅ | - |
+| REVIEW | → REFACTOR, DEBUG, TEST | → PERF（审查发现性能问题） |
+| REFACTOR | → TEST, DEBUG, REVIEW | → PERF（重构后性能验证） |
+| PERF | → DEBUG, REVIEW, **ARCHIVE** ✅ | - |
+| MIGRATE | → DEBUG, REVIEW, ARCHIVE | → TEST（迁移后回归测试） |
+
+**发现的问题**:
+1. **REVIEW 缺少 → PERF**: 代码审查可能发现性能瓶颈，应支持切换到 PERF 模式
+2. **REFACTOR 缺少 → PERF**: 重构后应验证性能是否退化
+3. **MIGRATE 缺少 → TEST**: 数据/版本迁移后必须做回归测试
+
+---
+
+## 4. AI 约束机制深度评估
+
+### 4.1 约束层级架构
+
+ALTAS Workflow 采用**四层约束体系**:
+
+```
+Layer 1: 铁律 (Hard Rules) — 10 条绝对不可违反的核心原则
+    ↓ 违反触发
+Layer 2: Red Flags — 8 个即时停止信号
+    ↓ 忽略触发
+Layer 3: Rationalization Counter — 10 类常见借口的反驳
+    ↓ 使用错误触发
+Layer 4: Common Mistakes — 10 类使用错误的纠正
+```
+
+**评估**: 层级设计合理，形成"预防→检测→纠正"的完整防御链。
+
+### 4.2 约束有效性评分
+
+| 约束类型 | 强度 | 可执行性 | 覆盖度 | 评分 |
+|----------|------|----------|--------|------|
+| **Spec 约束** (#3) | ★★★★★ | ★★★★★ | ★★★☆☆ | A |
+| **许可约束** (#4) | ★★★★★ | ★★★★☆ | ★★★★★ | A- |
+| **证据约束** (#6) | ★★★★★ | ★★★★★ | ★★★★★ | A+ |
+| **根因约束** (#7) | ★★★★★ | ★★★★☆ | ★★★★☆ | A- |
+| **不确定性约束** (#10) | ★★★★★ | ★★★★★ | ★★★★★ | A+ |
+| **并发写入约束** (#9) | ★★★★☆ | ★★★★★ | ★★★☆☆ | B+ |
+| **恢复锚点约束** (#8) | ★★★★☆ | ★★★★☆ | ★★★★☆ | A- |
+
+### 4.3 约束缺口识别
+
+#### 🔴 缺口 1: 缺少"上下文窗口管理"约束
+
+**现状**: 无任何关于上下文窗口（Context Window）使用的指导
+
+**风险**:
+- L 规模任务可能超出 128k 上下文限制
+- Agent 可能加载过多不必要的参考文件导致上下文溢出
+- 长对话后早期关键信息可能丢失
+
+**建议**: 在 SKILL.md 或 exceptions-recovery.md 中增加：
+```markdown
+## 上下文窗口管理
+
+- **最小上下文原则**: 只加载当前阶段必需的参考文件
+- **Resume Ready**: 上下文 >80% 时输出检查点 + 恢复锚点
+- **分层加载**: XS/S 只加载核心；M 加载标准集；L 加载完整集
+- **早释放**: 已完成的阶段参考文件应在检查点中标注"可释放"
+```
+
+#### 🔴 缺口 2: 缺少"过度自动化"约束
+
+**现状**: 铁律强调"先 Spec 后代码"，但未限制自动化工具的滥用
+
+**风险**:
+- Agent 可能过度使用 AI 代码生成，跳过设计思考
+- 可能批量生成大量未经审查的测试用例
+- 可能自动修改多个文件而缺乏逐文件验证
+
+**建议**: 在 discipline-enforcing.md 中增加：
+```markdown
+### 过度自动化 Red Flag
+
+| Red Flag | → **STOP** | 风险 |
+|----------|------------|------|
+| 连续生成 >5 个文件无暂停？ | 输出检查点，等待确认 | 质量失控 |
+| 批量复制粘贴相似代码？ | 重构为模板/函数 | 技术债务 |
+| 自动运行破坏性命令？ | 先 dry-run 再执行 | 数据丢失 |
+```
+
+#### 🟡 缺口 3: 缺少"多轮对话状态漂移"防护
+
+**现状**: 无机制防止长对话中 Agent "忘记"早期承诺或约束
+
+**风险**:
+- 对话后期 Agent 可能违反早期设定的模式/规模
+- 用户可能在第 20 轮才指出 Agent 偏离了原始任务
+- 检查点可能逐渐变得简略或不完整
 
 **建议**:
-1. 创建 `references/testing/contract-testing.md`，覆盖：
-   - Pact 框架使用（Python: pact-python，JS: @pact-foundation/pact）
-   - 消费者测试 vs 提供者验证
-   - Pact Broker 集成
-   - 契约版本管理与兼容性检查
-   - CI 中的契约验证门禁
-2. 在 `api-testing.md` 中增加契约测试章节（可交叉引用 `contract-testing.md`）
-3. 在 `test.md` 的"确认测试框架"步骤中增加契约测试框架检测
-4. 在 `reference-index.md` 测试工程师快速入口中增加"微服务契约测试"行
+- 在每个检查点中强制包含"当前状态摘要"（模式/规模/已完成步骤/下一步）
+- 在 TodoWrite 中持久化任务状态（而非仅依赖对话上下文）
+- 增加"状态漂移检测"：定期对照首轮响应验证是否仍在轨道上
 
-**验证标准**: Agent 在微服务项目中触发 TEST 模式后，能产出 Pact 契约测试
+### 4.4 自我进化机制的约束增强效果
 
-#### 3.1.3 SKILL.md 版本号不一致
+**正面影响**:
+- ✅ 铁律 #11（Log & Promote Learnings）补充了"事后学习"维度
+- ✅ 用户纠正检测机制让约束可以"自愈合"
+- ✅ Pattern-Key 去重让重复性问题能系统性解决
 
-**现状**:
-- SKILL.md 第 3 行 `version: "4.7"`
-- SKILL.md 第 17 行 `Version: 4.7 — 测试工程师专项优化...`
-- SKILL.md 第 249 行初始化提示仍显示 `ALTAS Workflow v4.6`
-- SKILL.md 第 251 行 `COMMITMENT` 仍显示 `ALTAS Workflow v4.6`
+**潜在副作用**:
+- ⚠️ 记录开销：每次任务后都需要自检，可能延长任务时间
+- ⚠️ 噪音风险：低质量的学习条目可能污染 `.learnings/`
+- ⚠️ 循环依赖：如果晋升规则本身有 bug，可能导致错误规则被固化
 
-**影响**: Agent 输出的版本号与实际版本不一致，影响用户信任和调试
+**缓解建议**:
+- 增加"学习条目质量门槛"：不是所有纠正都值得记录
+- 设置 `.learnings/` 大小上限（如单个文件 <1000 行）
+- 定期清理机制：标记为 `wont_fix` 或 `superseded` 的条目归档
 
-**建议**: 将第 249、251 行的 `v4.6` 更新为 `v4.7`，或改为动态引用机制
+---
 
-**验证标准**: SKILL.md 中所有版本号均为 4.7
+## 5. 一致性与质量问题
 
-### 3.2 🟡 中优先级改进
+### 5.1 版本号一致性（v4.8 新发现）
 
-#### 3.2.1 reference-index.md 与实际文件不同步
+| 位置 | 显示版本 | 应为版本 | 状态 |
+|------|----------|----------|------|
+| SKILL.md frontmatter (line 3) | `"4.8"` | 4.8 | ✅ |
+| SKILL.md 标题 (line 17) | 4.8 | 4.8 | ✅ |
+| first-response.md (line 17) | **v4.7** | v4.8 | ❌ |
+| first-response.md (line 19) | **v4.7** | v4.8 | ❌ |
+| SKILL-entry-review.md (line 4) | v4.7 | v4.8 | ❌ （本文件将更新）|
 
-**现状**: `reference-index.md` 的"按来源分类索引"统计部分（第 371 行）写道：
+**问题**: `references/entry/first-response.md` 仍显示 v4.7，Agent 初始化时会输出错误版本号。
+
+**修复方案**:
+```diff
+- > **ALTAS Workflow v4.7 已加载**
++ > **ALTAS Workflow v4.8 已加载**
+
+- > **COMMITMENT:** I am using ALTAS Workflow v4.7 for this session.
++ > **COMMITMENT:** I am using ALTAS Workflow v4.8 for this session.
 ```
-- **来源分布**: SDD-RIPER (14), SDD-RIPER-Opt (6), Superpowers (24+), PRD Analysis (6), 测试开发 (2), 工具脚本 (1+)
-```
 
-但实际测试开发目录下已有 15+ 个文件（包括新增的 `visual-testing.md`、`security-testing.md`、`test-observability.md`、`mobile-testing.md`、`test-maintenance.md`、`test-review-checklist.md`、`test-task-pressure-scenarios.md`、`test-scaffold-templates.md`、`test-quality-metrics.md`、`ci-cd-integration.md`、`test-data-management.md`、`api-testing.md`、`e2e-testing.md`、`performance-testing.md`、`pytest-patterns.md` + `templates/` 目录下 7 个文件），统计标注为"2"严重偏低。
+### 5.2 文档结构一致性
 
-**影响**: 误导 Agent 对测试资源丰富度的认知
+**特殊模式协议标准章节对比**:
 
-**建议**: 更新统计数字，或标注"参考文件持续增加，以目录实际内容为准"
+| 章节 | TEST | REVIEW | REFACTOR | PERF | MIGRATE | 标准? |
+|------|------|--------|---------|------|---------|-------|
+| 触发词 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 何时使用 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 注意事项 | ✅ | ✅ | ✅ | - | - | ⚠️ |
+| 首轮动作 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 流程（分步骤）| ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 输出产物/报告模板 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 门禁逻辑 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 与其他模式协作 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 特殊场景处理 | ✅ (5个) | ✅ (3个) | ✅ (3个) | ✅ (3个) | ✅ (3个) | ✅ |
+| 参考文档 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 
-#### 3.2.2 reference-index.md 缺少新增测试文档的索引
+**结论**: 5 个已有特殊模式的结构高度一致，说明有良好的模板遵循。
 
-**现状**: "按工作流阶段索引 → EXECUTE" 部分（第 74-91 行）只列出了 Python 相关测试参考，缺少：
-- `references/testing/visual-testing.md`
-- `references/testing/security-testing.md`
-- `references/testing/test-observability.md`
-- `references/testing/mobile-testing.md`
-- `references/testing/test-maintenance.md`
-- `references/testing/test-review-checklist.md`
-- `references/testing/test-task-pressure-scenarios.md`
+### 5.3 交叉引用完整性
 
-这些文件虽在"按特殊模式索引 → TEST 模式"中有列出，但未在 EXECUTE 阶段索引中出现。
+**悬空引用检查**（v4.8）:
 
-**影响**: Agent 在标准 Coding 流程（非 TEST 模式）的 EXECUTE 阶段可能不会发现这些参考
+| 引用位置 | 引用路径 | 存在性 | 备注 |
+|----------|----------|--------|------|
+| SKILL.md EXECUTE 阶段 | references/testing/test-environment.md | ✅ | v4.8 新增 |
+| reference-index.md EXECUTE 索引 | references/testing/test-environment.md | ✅ | 已添加 |
+| test.md 参考文档 | references/testing/test-environment.md | ✅ | 已添加 |
+| self-improvement/SKILL.md | references/hooks-setup.md | ⚠️ | 提到但未在 Glob 中发现 |
+| self-improvement/SKILL.md | references/self-improvement/references/examples.md | ⚠️ | 提到但未在 Glob 中发现 |
 
-**建议**: 在 EXECUTE 索引中补充或增加一个"专项测试参考"子节
+**引用缺失**:
+- `references/hooks-setup.md`: self-improvement 文档提到但实际路径可能是其他位置
+- `references/self-improvement/references/examples.md`: 同上
 
-#### 3.2.3 测试文档中 Python 中心主义仍明显（Go 支持已就位）
+---
 
-**现状**:
-- `test-maintenance.md` 的所有示例都是 Python/pytest
-- `test-observability.md` 的示例主要是 Python
-- `test-quality-metrics.md` 的度量采集方式主要面向 pytest
-- SKILL.md EXECUTE 阶段用"Python 项目编写测试时"作为主入口，Go 有独立引用
+## 6. 通用性与偏见评估
 
-**影响**: Go 项目测试体验略次于 Python（但已有 `go-testing.md` 支持）
+### 6.1 语言/框架偏见分析
+
+**现状分布**:
+
+| 语言/框架 | 核心文档数 | 示例代码占比 | 支持程度 |
+|-----------|-----------|-------------|----------|
+| Python / pytest | 15+ | ~70% | ★★★★★ 完整 |
+| Go | 1 (go-testing.md) | ~5% | ★★★☆☆ 基础 |
+| JavaScript/TypeScript | 0 (显式排除) | ~5% (TDD SKILL.md) | ⚪ 不适用 |
+| Java | 0 | 0% | ❌ 无 |
+| Rust | 0 | 0% | ❌ 无 |
+| 通用（伪代码/语言无关）| 5+ | ~20% | ★★★★☆ 良好 |
+
+**偏见评估**:
+- ✅ 项目明确定位为"Python 和 Go"，JS/TS 排除是合理的
+- ⚠️ 但"通用工作流"定位与"Python/Go 专项"存在轻微张力
+- ⚠️ Go 支持相对薄弱（仅 1 个文档 vs Python 15+）
 
 **建议**:
-1. 在测试文档中增加语言标注，如 `<!-- 适用: Python/pytest | Go: 待补充 -->`
-2. 长期目标：将 `go-testing.md` 中的模式扩展到其他测试专题
+1. 在 SKILL.md 或 README 中更明确声明："本工作流针对 Python/Go 项目优化"
+2. 长期考虑增加 `references/testing/java-testing.md` 或 `references/testing/rust-testing.md`
+3. 或提供"语言无关核心" + "语言特定扩展"的架构说明
 
-#### 3.2.4 TDD SKILL.md 与 pytest-tdd-cycle.md 示例语言不一致
+### 6.2 测试 vs 非测试功能平衡
 
-**现状**:
-- `test-driven-development/SKILL.md` 的所有示例使用 TypeScript/Jest 风格
-- `pytest-tdd-cycle.md` 的所有示例使用 Python/pytest 风格
-- 两者都是正确的，但对于同一个 TDD 概念给出了不同语言的示例，可能导致 Agent 在 Python 项目中加载 TDD SKILL.md 时看到 TypeScript 示例
+**文档数量分布**:
 
-**影响**: 不大（Agent 可以通过 `pytest-tdd-cycle.md` 获得正确的 pytest 示例），但降低了首屏体验
+| 类别 | 文档数 | 占比 | 评价 |
+|------|--------|------|------|
+| 测试相关 | 18+ | ~45% | 偏高 |
+| Superpowers（通用）| 24+ | ~30% | 合理 |
+| SDD-RIPER（方法论）| 14 | ~18% | 合理 |
+| PRD 分析 | 7 | ~9% | 合理 |
+| Entry/基础设施 | 8 | ~10% | 合理 |
 
-**建议**: 在 TDD SKILL.md 的顶部增加一句引导：
+**观察**:
+- 测试相关文档占比 45%，反映 v4.7 的"测试工程师专项优化"重点
+- 对于非测试导向的工作流（如纯 DEBUG/REFACTOR/DOC），测试文档可能造成噪音
+- 但 reference-index.md 的按需加载机制缓解了这个问题
+
+**结论**: 当前比例可接受，但建议在未来的版本中适当增加非测试维度的深度（如架构设计、安全加固、DevOps 等）。
+
+---
+
+## 7. 场景推演评估
+
+### 7.1 场景 A: 复杂微服务迁移（L 规模）
+
 ```
-> Python/pytest 项目：先加载 `pytest-tdd-cycle.md` 获取 pytest 惯用法的完整 TDD 循环示例
+用户: "我们需要将单体应用拆分为 10 个微服务，并迁移到 Kubernetes"
+
+期望工作流:
+1. 路由 → MIGRATE 模式 ✅
+2. 规模评估 → L（跨模块、架构级）✅
+3. PRE-RESEARCH → CodeMap + Context Bundle ✅
+4. RESEARCH → 风险评估、依赖分析 ✅
+5. INNOVATE → 2-3 种拆分方案 ✅
+6. PLAN → 原子化 Checklist + 回滚方案 ✅
+7. EXECUTE → TDD（但迁移场景 TDD 是否适用？）⚠️
+8. REVIEW → 三轴评审 ✅
+9. ARCHIVE → 知识沉淀 ✅
 ```
 
-#### 3.2.5 test.md 缺少与 PERF 模式的联动
+**问题**:
+- EXECUTE 阶段默认要求 TDD，但数据迁移场景下 TDD 不完全适用
+- MIGRATE 模式的执行纪律（预演、回滚、灰度）与 TDD 循环如何协调？
+- 缺少"迁移测试策略"的专门指导
 
-**现状**: `test.md` 的"与其他模式协作"列出 TEST → DEBUG / REFACTOR / REVIEW，但缺少 TEST → PERF 联动。
-
-**影响**: 性能测试是 TEST 模式 P4 优先级，但测试完成后若发现性能问题，没有明确的切换路径
-
-**建议**: 增加 `TEST → PERF` 协作行：
-```
-- **TEST → PERF**: 测试覆盖后发现性能不达标，进入 PERF 模式优化
-```
-
-#### 3.2.6 缺少测试环境管理 (Test Environment Management) 专题
-
-**现状**: 测试环境相关内容分散在多处：
-- `testability-checklist.md` 第 4 节"测试环境需求"
-- `ci-cd-integration.md` 中 Docker Compose / Test Containers
-- `test-maintenance.md` 中环境缺陷归因
-- `api-testing.md` 中 TestClient / mock server
-
-但缺少一个统一的"测试环境管理"参考，覆盖：Test Containers、Docker Compose 测试环境、环境隔离策略、本地 vs CI 环境差异处理。
-
-**建议**: 创建 `references/testing/test-environment.md`，或将相关内容整合到 `test-data-management.md` 扩展为"测试基础设施"
-
-### 3.3 🟢 低优先级改进
-
-#### 3.3.1 测试反模式案例库仍可深化
-
-**现状**: `testing-anti-patterns.md` (8.1 KB) 主要聚焦 Mock 相关反模式（5 个），缺少以下测试工程师高频遇到的反模式：
-- "测试金字塔倒置" 案例分析
-- "过度 Mock" 导致的虚假安全感（虽有 Anti-Pattern 1 但缺少真实案例分析）
-- "Flaky Test" 的 10 种常见原因与修复（`test-maintenance.md` 有部分覆盖但视角不同）
-- "测试数据污染" 导致的幽灵失败
-- "测试与实现耦合" 导致重构困难
-
-**建议**: 将 `testing-anti-patterns.md` 扩展或创建 `testing-anti-patterns-extended.md`，补充测试工程师视角的反模式
-
-#### 3.3.2 测试脚手架模板保持 Python/Go 聚焦
-
-**现状**: `references/testing/templates/` 有 Python 相关模板 + 契约矩阵/报告模板：
-- `conftest.py`、`factories.py`、`api_client_fixture.py`、`auth_fixture.py`、`db_rollback_fixture.py`、`api_test_matrix.md`、`test_report.md`、`pytest_config.toml`
-
-**建议**: 如需支持 Go，可补充 Go 测试模板（`test_helpers.go`、`httpmock_fixture.go` 等）
-
-#### 3.3.3 SKILL.md 首轮响应模板可增加测试专用字段
-
-**现状**: 首轮响应固定模板（第 296-329 行）中无测试专用字段。测试工程师使用时需要手动补测试相关信息。
-
-**建议**: 在 `TEST` 模式触发时，首轮模板增加可选字段：
+**建议**: 在 MIGRATE 模式中明确说明 EXECUTE 阶段的变体：
 ```markdown
-### 测试上下文 [TEST 模式必填]
-- **测试框架**: [pytest / Jest / Go test / ...]
-- **契约来源**: [OpenAPI / GraphQL Schema / Proto / 无]
-- **当前覆盖率**: [X% / 未知]
-- **测试痛点**: [无测试 / 覆盖率低 / Flaky / 环境问题]
+### MIGRATE 模式的 EXECUTE 变体
+- 默认使用"验证驱动执行"（Verify-Driven）而非严格 TDD
+- 每步迁移后运行回归测试套件（非单元测试优先）
+- 性能基线对比替代红绿重构循环
 ```
 
-#### 3.3.4 api-testing.md 可增加契约测试章节占位
+### 7.2 场景 B: 紧急线上 Bug 修复（XS-S 规模）
 
-**现状**: `api-testing.md` 48.4 KB 极其详细，但缺少契约测试 (Pact) 章节。
+```
+用户: "线上支付接口报错，紧急修复！"
 
-**建议**: 在 `api-testing.md` 末尾增加占位章节（即使 `contract-testing.md` 尚未创建）：
+期望工作流:
+1. 路由 → DEBUG 模式 ✅
+2. 规模评估 → S（单文件修复）✅
+3. 快速复述 + 微型 spec ✅
+4. 根因定位 → systematic-debugging ✅
+5. 修复 → 直接执行（XS 豁免）✅
+6. 验证 → 证据先行 ✅
+```
+
+**优势**:
+- XS/S 规模的轻量化流程适合紧急场景
+- DEBUG 模式的根因约束防止盲改
+- 铁律 #7（Never Fix Without Root Cause）在紧急场景下尤其重要
+
+**风险**:
+- 时间压力下 Agent 可能试图跳过 DEBUG 直接 Coding
+- 需要依赖 discipline-enforcing.md 的压力场景反驳
+
+**建议**: 增加"紧急模式"（Emergency Mode）的显式支持：
 ```markdown
-## N. 契约测试 (Consumer-Driven Contract Testing)
-
-> 适用场景: 微服务架构，服务间 API 契约需要双向验证
-> 详见 `references/testing/contract-testing.md`（待创建）
+### 紧急模式触发
+当用户表达"紧急"、"线上故障"、"P0"等信号时：
+- 自动进入 DEBUG → FIX → VERIFY 快速通道
+- 规模锁定为 XS/S（禁止升级为 M/L）
+- 修复后强制进入 REVIEW（即使 XS 通常省略）
+- 产出 Post-Mortem 摘要（即使不完整 ARCHIVE）
 ```
 
-这能让测试工程师知道这是已知缺口而非设计遗漏。
+### 7.3 场景 C: 跨项目大规模重构（L + MULTI）
+
+```
+用户: "我们需要将 3 个项目的公共库统一为一个 monorepo"
+
+期望工作流:
+1. 路由 → REFACTOR + MULTI ✅
+2. 规模评估 → L（跨项目、架构级）✅
+3. CodeMap（3 个项目）✅
+4. INNOVATE → monorepo vs multirepo 方案对比 ✅
+5. PLAN → 分阶段迁移计划 ✅
+6. EXECUTE → Subagent 驱动（并行处理多项目）✅
+```
+
+**优势**:
+- MULTI 模式的作用域修饰符设计合理
+- Subagent-driven-development 支持并行执行
+- REFACTOR 模式的坏味道识别 + 小步执行纪律适用
+
+**缺口**:
+- 缺少"跨项目一致性验证"的专门指导
+- 缺少"monorepo 工具链选择"（nx/turborepo/lerna）的决策框架
+- 多项目的测试策略如何协调？
 
 ---
 
-## 4. 交叉引用一致性检查
+## 8. 改进方案汇总
 
-### 4.1 悬空引用（文件不存在但被引用）
+### 8.1 🔴 高优先级（立即行动）
 
-| 引用位置 | 引用路径 | 状态 |
-|----------|----------|------|
-| `test.md:84` | `references/testing/js-ts-testing.md` | ⚪ **不适用**（项目仅关注 Python/Go） |
-| `test.md:428` | `references/prd-analysis/testability-checklist.md` | ✅ 存在 |
-| SKILL.md:483 | `references/testing/pytest-patterns.md` | ✅ 存在 |
-| SKILL.md:484 | `references/testing/api-testing.md` | ✅ 存在 |
-| SKILL.md:485 | `references/testing/e2e-testing.md` | ✅ 存在 |
-| SKILL.md:486 | `references/testing/performance-testing.md` | ✅ 存在 |
-| SKILL.md:487 | Go: `references/testing/go-testing.md` | ✅ 存在 |
-| SKILL.md:488 | `references/testing/contract-testing.md` | ✅ 已创建 |
+#### 改进 1: 修复版本号不一致
 
-### 4.2 引用存在但未在 reference-index.md 索引
+**位置**: `references/entry/first-response.md` 第 17、19 行
 
-| 文件 | 是否被索引 |
-|------|-----------|
-| `references/testing/test-maintenance.md` | ✅ TEST 模式有索引 |
-| `references/testing/test-review-checklist.md` | ✅ TEST 模式有索引 |
-| `references/testing/test-task-pressure-scenarios.md` | ✅ TEST 模式有索引 |
-| `references/superpowers/test-driven-development/pytest-tdd-cycle.md` | ✅ EXECUTE + TEST 有索引 |
-| `references/prd-analysis/testability-checklist.md` | ✅ TEST + PRD 有索引 |
-| `references/testing/visual-testing.md` | ✅ TEST 模式有索引 |
-| `references/testing/security-testing.md` | ✅ TEST 模式有索引 |
-| `references/testing/test-observability.md` | ✅ TEST 模式有索引 |
-| `references/testing/mobile-testing.md` | ✅ TEST 模式有索引 |
+**动作**: v4.7 → v4.8
 
-### 4.3 版本号一致性
-
-| 位置 | 版本号 | 是否一致 |
-|------|--------|---------|
-| SKILL.md frontmatter (line 3) | 4.7 | ✅ |
-| SKILL.md 标题 (line 17) | 4.7 | ✅ |
-| SKILL.md 初始化提示 (line 249) | 4.6 | ❌ |
-| SKILL.md COMMITMENT (line 251) | 4.6 | ❌ |
+**验证**: Agent 初始化时输出正确版本号
 
 ---
 
-## 5. 具体文件改进建议
+#### 改进 2: 补齐特殊模式协议文件
 
-### 5.1 SKILL.md
+**创建文件**:
+1. `references/special-modes/debug.md`
+   - 包装 `references/superpowers/systematic-debugging/SKILL.md`
+   - 增加标准章节：触发词/何时使用/首轮动作/流程/门禁/协作/特殊场景/参考文档
+   - 定义协作模式：→ TEST（添加回归测试）/ → REVIEW（根因复盘）/ → PERF（性能排查）
+   
+2. `references/special-modes/doc.md`
+   - 包装 `protocols/RIPER-DOC.md`
+   - 增加标准章节同上
+   - 定义协作模式：→ REVIEW（文档质量审查）/ → ARCHIVE（文档沉淀）
 
-**改进 1**: 修复版本号不一致
-
-位置：第 249、251 行
-
-```diff
-- > **ALTAS Workflow v4.6 已加载**
-+ > **ALTAS Workflow v4.7 已加载**
-
-- > **COMMITMENT:** I am using ALTAS Workflow v4.6 for this session.
-+ > **COMMITMENT:** I am using ALTAS Workflow v4.7 for this session.
-```
-
-**改进 2**: 扩展非 Python 测试参考
-
-位置：第 487-488 行
-
-```diff
-- **非 Python 项目测试参考**:
--   - Go: `go test` + `testify` / `ginkgo`
-+ **非 Python 项目测试参考**:
-+   - Go: `references/testing/go-testing.md` (testify/ginkgo)
-+   - 契约测试 (微服务): `references/testing/contract-testing.md` (Pact) [已创建]
-```
-
-### 5.2 references/special-modes/test.md
-
-**改进**: 第 84 行已增加 JS/TS 引用标注，由于项目仅关注 Python/Go，无需处理。
-
-### 5.3 reference-index.md
-
-**改进 1**: 更新统计数字
-
-```diff
-- - **参考文件总数**: 56+
-- - **来源分布**: SDD-RIPER (14), SDD-RIPER-Opt (6), Superpowers (24+), PRD Analysis (6), 测试开发 (2), 工具脚本 (1+)
-+ - **参考文件总数**: 70+
-+ - **来源分布**: SDD-RIPER (14), SDD-RIPER-Opt (6), Superpowers (24+), PRD Analysis (7), 测试开发 (15+), 工具脚本 (1+)
-```
-
-**改进 2**: 在 EXECUTE 索引中增加专项测试参考子节
+**验证**: reference-index.md 的"按特殊模式索引"部分，所有 7 个模式格式一致
 
 ---
 
-## 6. 新增文件建议清单（更新版）
+#### 改进 3: 增加上下文窗口管理约束
 
-| 优先级 | 文件路径 | 内容概述 | 上次评审状态 | 本次状态 |
-|--------|----------|----------|-------------|---------|
-| 🔴 高 | `references/testing/contract-testing.md` | Pact 消费者驱动契约测试 | 建议创建 | ✅ **已创建** |
-| 🟡 中 | `references/testing/test-environment.md` | Test Containers/Docker Compose/环境隔离 | 未提及 | 建议创建 |
-| ⚪ 不适用 | `references/testing/js-ts-testing.md` | JS/TS 测试 | 建议创建 | ⚪ 不需要（仅 Python/Go） |
+**位置**: `references/entry/exceptions-recovery.md` 或 SKILL.md 新增章节
 
----
+**内容**:
+- 最小上下文原则
+- Resume Ready 触发条件（>80%）
+- 分层加载策略（按规模）
+- 早释放机制
 
-## 7. 测试工程师专项优化检查表（更新版）
-
-### 场景 1: 全栈项目测试策略
-
-```
-用户: "我们的项目是 Next.js + FastAPI + PostgreSQL，如何设计测试策略？"
-
-当前 SKILL 输出:
-- 后端: pytest + TestClient + 数据库隔离 ✅
-- 前端: ??? ❌ (js-ts-testing.md 不存在，Agent 可能给出不一致的建议)
-
-期望 SKILL 输出:
-- 前端: Jest + React Testing Library + Playwright E2E
-- 后端: pytest + TestClient + 数据库隔离
-- 契约: Pact 验证前后端 API 契约
-- 集成: Docker Compose 全链路测试
-```
-
-### 场景 2: 遗留项目补测试
-
-```
-用户: "这个老项目没有任何测试，如何系统化补测？"
-
-当前 SKILL 输出:
-- 先识别关键路径 ✅
-- 从单元测试开始 ✅
-- 使用 Characterization Test ❌ (未提及)
-- 建立测试数据工厂 ✅
-- 设定覆盖率门禁 ✅
-
-建议补充: Characterization Test (Michael Feathers) 概念，
-用于安全地锁定遗留代码现有行为后再重构
-```
-
-### 场景 3: 微服务集成测试
-
-```
-用户: "我们有 10 个微服务，如何做集成测试？"
-
-当前 SKILL 输出:
-- 契约识别 (OpenAPI/Proto) ✅
-- API 测试矩阵 ✅
-- 失败归因三分法 ✅
-- 契约变更双向验证 ❌ (contract-testing.md 不存在)
-
-期望 SKILL 输出:
-- 契约测试优先 (Pact)
-- 本地: Docker Compose 集成环境
-- CI: 服务容器 (service containers)
-- 测试数据: 共享 Factory + 独立数据库
-- 失败归因: 区分服务问题 vs 契约问题
-```
-
-### 场景 4: 测试工程师在 PRD 阶段介入
-
-```
-用户: "我们要做一个新的支付功能，帮我评审 PRD 的可测试性"
-
-当前 SKILL 输出:
-- 加载 testability-checklist.md ✅
-- 6 维度检查（验收标准/边界条件/异常场景/非功能/测试数据/环境） ✅
-- 产出可测试性评审报告 ✅
-
-改进: 与 PRD 分析模式 (PRD ANALYSIS) 的阶段 0-4 流程缺乏显式对接点
-```
+**验证**: L 规模任务不会因上下文溢出而失败
 
 ---
 
-## 8. 总结与行动建议
+### 8.2 🟡 中优先级（短期行动）
 
-### 8.1 立即行动
+#### 改进 4: 补充协作模式缺口
 
-1. **修复 SKILL.md 版本号**: 第 249、251 行 v4.6 → v4.7
-2. **确认契约测试文档已创建**: `contract-testing.md` 已落盘，无悬空引用
+**位置**: 各特殊模式协议的"与其他模式协作"章节
 
-### 8.2 短期行动
-
-1. **更新 reference-index.md 统计**: 修正测试文档数量和目录结构描述
-
-### 8.3 中期行动
-
-1. **创建测试环境管理文档**: `references/testing/test-environment.md`
-2. **扩展测试反模式**: 补充"测试金字塔倒置"、"测试与实现耦合"等案例
-3. **TDD SKILL.md 顶部增加 pytest 引导**: 指向 `pytest-tdd-cycle.md`
-4. **test.md 增加 TEST → PERF 联动**
+**新增协作**:
+- REVIEW → PERF（审查发现性能问题时）
+- REFACTOR → PERF（重构后性能验证）
+- MIGRATE → TEST（迁移后回归测试）
 
 ---
 
-## 9. 附录: 现有测试文档索引（更新版）
+#### 改进 5: 增加"过度自动化"防绕过
 
-### 核心测试文档 (15 个文件)
-- `references/testing/pytest-patterns.md` (24.1 KB) — pytest 完整模式参考
-- `references/testing/api-testing.md` (48.4 KB) — API 测试（REST/GraphQL/gRPC/WebSocket）
-- `references/testing/e2e-testing.md` (13.2 KB) — E2E 测试（Playwright/Cypress）
-- `references/testing/performance-testing.md` (10.6 KB) — 性能/负载测试
-- `references/testing/test-data-management.md` (19.8 KB) — 测试数据管理
-- `references/testing/ci-cd-integration.md` (33.1 KB) — CI/CD 集成
-- `references/testing/test-quality-metrics.md` (24.3 KB) — 质量度量体系
-- `references/testing/test-scaffold-templates.md` (3.2 KB) — 脚手架模板
-- `references/testing/test-review-checklist.md` (3.0 KB) — 代码审查清单
-- `references/testing/test-task-pressure-scenarios.md` (3.5 KB) — 压力场景自检
-- `references/testing/visual-testing.md` (14.2 KB) — 视觉回归测试 [新增]
-- `references/testing/security-testing.md` (16.9 KB) — 安全测试 [新增]
-- `references/testing/test-observability.md` (21.3 KB) — 测试可观测性 [新增]
-- `references/testing/mobile-testing.md` (19.7 KB) — 移动端测试 [新增]
-- `references/testing/test-maintenance.md` (7.0 KB) — 测试维护 [新增]
+**位置**: `references/entry/discipline-enforcing.md`
 
-### 测试脚手架模板 (8 个文件)
-- `references/testing/templates/conftest.py`
-- `references/testing/templates/factories.py`
-- `references/testing/templates/api_client_fixture.py`
-- `references/testing/templates/auth_fixture.py`
-- `references/testing/templates/db_rollback_fixture.py`
-- `references/testing/templates/api_test_matrix.md`
-- `references/testing/templates/test_report.md`
-- `references/testing/templates/pytest_config.toml` [新增]
+**新增 Red Flags**:
+- 连续生成 >5 个文件无暂停
+- 批量复制粘贴相似代码
+- 自动运行破坏性命令
 
-### TDD 相关文档 (3 个文件)
-- `references/superpowers/test-driven-development/SKILL.md` (11.5 KB) — TDD 铁律
-- `references/superpowers/test-driven-development/pytest-tdd-cycle.md` (7.3 KB) — pytest TDD 循环 [新增]
-- `references/superpowers/test-driven-development/testing-anti-patterns.md` (8.1 KB) — 测试反模式
+---
 
-### PRD 测试相关 (1 个文件)
-- `references/prd-analysis/testability-checklist.md` (10.8 KB) — PRD 可测试性评审 [新增]
+#### 改进 6: 增加"紧急模式"支持
 
-### 专项测试协议 (1 个文件)
-- `references/special-modes/test.md` (17.7 KB) — TEST 模式完整协议
+**位置**: SKILL.md 路由速查表或 aliases.md
 
-### 缺失文件（被引用但不存在）
-- 无（核心文件已补齐，JS/TS 测试不适用）
+**内容**:
+- 紧急信号识别（"紧急"/"线上故障"/"P0"）
+- 快速通道流程（DEBUG → FIX → VERIFY → 强制 REVIEW）
+- 规模锁定机制
+- Post-Mortem 摘要要求
+
+---
+
+#### 改进 7: 修复悬空引用
+
+**位置**: `references/self-improvement/SKILL.md`
+
+**动作**:
+- 确认 `references/hooks-setup.md` 正确路径或移除引用
+- 确认 `references/self-improvement/references/examples.md` 正确路径或移除引用
+
+---
+
+### 8.3 🟢 低优先级（中期行动）
+
+#### 改进 8: 增加状态漂移防护
+
+**位置**: checkpoints.md 或 first-response.md
+
+**内容**:
+- 检查点中强制包含"当前状态摘要"
+- TodoWrite 持久化最佳实践
+- 状态漂移检测机制
+
+---
+
+#### 改进 9: 自我进化机制优化
+
+**位置**: `references/self-improvement/SKILL.md`
+
+**优化项**:
+- 学习条目质量门槛（避免噪音）
+- `.learnings/` 大小上限设置
+- 定期清理/归档机制
+- 晋升规则的冷却期（防止错误规则扩散）
+
+---
+
+#### 改进 10: 增加"迁移测试策略"指导
+
+**位置**: `references/special-modes/migrate.md` 或新建 `references/testing/migration-testing.md`
+
+**内容**:
+- 数据一致性验证
+- API 兼容性测试
+- 性能回归测试
+- 灰度验证策略
+
+---
+
+#### 改进 11: 扩展非测试维度深度
+
+**方向**:
+- 架构设计决策框架（ADR 模板）
+- 安全加固 Checklist（OWASP Top 10）
+- DevOps 实践指南（CI/CD 最佳实践 beyond testing）
+- 技术债务管理（识别/分类/优先级）
+
+---
+
+## 9. 与上次（v4.7）评审对比
+
+| 维度 | v4.7 评分 | v4.8 评分 | 变化 |
+|------|-----------|-----------|------|
+| **测试覆盖完整度** | A | A | 保持 |
+| **AI 约束强度** | A- | A+ | 自我进化机制增强 |
+| **工作流一致性** | B+ | A- | 特殊模式结构统一（仍有 DEBUG/DOC 缺口）|
+| **通用性/偏见** | B+ | B+ | 无显著变化 |
+| **可发现性** | A- | A | reference-index.md 已改善 |
+| **文档质量** | A | A | 保持 |
+| **创新能力** | B | A+ | 自我进化是突破性创新 |
+
+**总体评级提升**: A → **A+**
+
+**核心进步**:
+1. ✅ 自我进化机制让工作流从"静态规则"变为"动态进化系统"
+2. ✅ test-environment.md 补齐了测试基础设施缺口
+3. ✅ 版本号基本一致（仅 first-response.md 残留）
+4. ✅ reference-index.md 统计数字准确
+
+**待改进**:
+1. ⚠️ DEBUG/DOC 模式缺少独立协议文件
+2. ⚠️ 上下文窗口管理约束缺失
+3. ⚠️ 协作模式网络不完全（缺 3 条边）
+4. ⚠️ 紧急场景支持不足
+
+---
+
+## 10. 总结与展望
+
+### 10.1 ALTAS Workflow v4.8 的核心竞争力
+
+1. **四层约束体系**（铁律 → Red Flags → 借口反驳 → 使用错误纠正在业界罕见
+2. **自我进化机制**让工作流能从错误中学习并持续优化（类似机器学习的"在线学习"）
+3. **规模自适应流程**（XS/S/M/L）避免了"一刀切"的僵化
+4. **测试专项深度**（18+ 文档）在 AI 工作流领域领先
+
+### 10.2 作为"通用工作流"的成熟度
+
+**已具备**:
+- ✅ 完整的任务路由（12 种模式）
+- ✅ 科学的规模评估（五级制）
+- ✅ 强力的 AI 行为约束（10+11 条铁律）
+- ✅ 丰富的参考资料（75+ 文件）
+- ✅ 自我进化能力（v4.8 新增）
+
+**待加强**:
+- ⚠️ 上下文资源管理（Context Window Management）
+- ⚠️ 紧急场景快速通道
+- ⚠️ 跨模式协作网络的完备性
+- ⚠️ 非 Python/Go 语言的支持广度
+
+### 10.3 对标业界
+
+| 框架 | 约束强度 | 自我进化 | 测试深度 | 可扩展性 | 评分 |
+|------|----------|----------|----------|----------|------|
+| **ALTAS v4.8** | ★★★★★ | ★★★★★ | ★★★★★ | ★★★★☆ | **A+** |
+| Claude Code内置 | ★★★☆☆ | ☆ | ★★☆☆☆ | ★★★★☆ | B+ |
+| Cursor Rules | ★★★☆☆ | ☆ | ★★☆☆☆ | ★★★☆☆ | B |
+| OpenAI Canvas | ★★☆☆☆ | ☆ | ★☆☆☆☆ | ★★★☆☆ | C+ |
+| GitHub Copilot Instructions | ★★★☆☆ | ☆ | ★★★☆☆ | ★★★☆☆ | B |
+
+**结论**: ALTAS Workflow v4.8 在 AI 工作流约束领域处于**领先地位**，特别是在约束强度、自我进化机制和测试深度三个维度。
+
+---
+
+## 11. 行动计划
+
+### 立即行动（本次评审后 1-2 天）
+
+- [ ] **[P0] 修复 first-response.md 版本号** (v4.7 → v4.8)
+- [ ] **[P0] 创建 debug.md 和 doc.md 特殊模式协议**
+- [ ] **[P1] 增加上下文窗口管理约束**
+
+### 短期行动（1-2 周）
+
+- [ ] **[P1] 补全协作模式网络**（REVIEW/REFACTOR/MIGRATE 各增加 1 条）
+- [ ] **[P1] 增加"过度自动化"防绕过条款**
+- [ ] **[P2] 增加"紧急模式"支持**
+- [ ] **[P2] 修复 self-improvement 悬空引用**
+
+### 中期行动（1-2 月）
+
+- [ ] **[P2] 状态漂移防护机制**
+- [ ] **[P3] 自我进化机制优化**（质量门槛/大小上限/清理机制）
+- [ ] **[P3] 迁移测试策略指导**
+- [ ] **[P3] 扩展非测试维度**（架构/安全/DevOps）
+
+---
+
+## 12. 附录
+
+### 12.1 文件清单（v4.8 完整索引）
+
+#### 核心协议 (1)
+- `SKILL.md` (531 行) — 主入口，v4.8
+
+#### 特殊模式 (5/7 独立文件)
+- `references/special-modes/test.md` (474 行)
+- `references/special-modes/review.md` (136 行)
+- `references/special-modes/refactor.md` (180 行)
+- `references/special-modes/perf.md` (233 行)
+- `references/special-modes/migrate.md` (305 行)
+- ~~`references/special-modes/debug.md`~~ (待创建)
+- ~~`references/special-modes/doc.md`~~ (待创建)
+
+#### 入口参考 (6)
+- `references/entry/aliases.md`
+- `references/entry/first-response.md` (114 行)
+- `references/entry/skill-content-map.md`
+- `references/entry/sources.md`
+- `references/entry/exceptions-recovery.md`
+- `references/entry/discipline-enforcing.md` (125 行)
+
+#### 自我进化 (1+3)
+- `references/self-improvement/SKILL.md` (923 行)
+- `.learnings/LEARNINGS.md`
+- `.learnings/ERRORS.md`
+- `.learnings/FEATURE_REQUESTS.md`
+
+#### 测试专项 (16+1)
+- `references/testing/pytest-patterns.md` (24.1 KB)
+- `references/testing/api-testing.md` (48.4 KB)
+- `references/testing/e2e-testing.md` (13.2 KB)
+- `references/testing/performance-testing.md` (10.6 KB)
+- `references/testing/test-data-management.md` (19.8 KB)
+- `references/testing/ci-cd-integration.md` (33.1 KB)
+- `references/testing/test-quality-metrics.md` (24.3 KB)
+- `references/testing/test-scaffold-templates.md` (3.2 KB)
+- `references/testing/test-review-checklist.md` (3.0 KB)
+- `references/testing/test-task-pressure-scenarios.md` (3.5 KB)
+- `references/testing/visual-testing.md` (14.2 KB)
+- `references/testing/security-testing.md` (16.9 KB)
+- `references/testing/test-observability.md` (21.3 KB)
+- `references/testing/mobile-testing.md` (19.7 KB)
+- `references/testing/test-maintenance.md` (7.0 KB)
+- `references/testing/contract-testing.md`
+- `references/testing/test-environment.md` (新增)
+- `references/testing/go-testing.md`
+- `references/testing/test-strategy-template.md`
+
+#### 其他参考 (~55)
+- Superpowers (24+)
+- SDD-RIPER (14)
+- SDD-RIPER-Opt (6)
+- PRD Analysis (7)
+- Agents (3)
+- Protocols (4)
+- Docs (4)
+- Scripts (8+)
+- Templates (8)
+
+**总计**: 75+ 文件，~2000+ 行核心协议 + ~15000+ 行参考资料
+
+### 12.2 评审方法说明
+
+本次评审采用以下方法：
+
+1. **全量核心文件读取**: 读取了 SKILL.md、reference-index.md、6 个特殊模式协议、discipline-enforcing.md、self-improvement/SKILL.md、first-response.md 等关键文件
+2. **交叉引用一致性检查**: 使用 Grep 工具搜索版本号、文件引用、模式协作等
+3. **场景推演**: 设计了 3 个典型场景（复杂迁移/紧急Bug修复/跨项目重构）验证工作流的实用性
+4. **约束机制评估**: 从强度、可执行性、覆盖度四个维度评分
+5. **对标分析**: 与 Claude Code/Cursor/OpenAI Copilot 等竞品对比
+
+### 12.3 评审者假设
+
+本次评审基于以下假设：
+- 目标用户是**软件工程师**（非数据科学家/产品经理/运维）
+- 主要使用**Python 或 Go**（非 JS/TS/Java/Rust）
+- 运行环境是**Trae IDE / Claude Code**（非纯 API 调用）
+- 关注重点是**工程质量和 AI 约束**（非创意写作/数据分析）
 
 ---
 
 **评审完成**
 
-本报告识别出 1 个高优先级（已修复）、6 个中优先级（含 3 个新发现）、2 个低优先级改进项。先前评审的 10 项改进中 8 项已实现或标记不适用，2 项部分完成。
+本报告识别出 **3 个高优先级**、**4 个中优先级**、**4 个低优先级**改进项。v4.8 版本的自我进化机制是突破性创新，使 ALTAS Workflow 从"静态规则集合"进化为"动态学习系统"。主要短板在于 DEBUG/DOC 模式的结构不一致性和上下文窗口管理的缺失。
+
+**下次评审建议时机**: v4.9 发布后或新增重大功能时

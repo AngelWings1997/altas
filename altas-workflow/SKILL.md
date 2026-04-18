@@ -1,6 +1,6 @@
 ---
 name: altas-workflow
-version: "4.7"
+version: "4.8"
 description: Use when handling repository-grounded engineering tasks requiring structured phased execution with checkpoints and verification gates
 trigger_keywords: ["FAST", "DEEP", "DEBUG", "MULTI", "DOC", "MAP", "PROJECT MAP", "MAP ALL", "ARCHIVE", "REVIEW", "REVIEW SPEC", "REVIEW EXECUTE", "REFACTOR", "TEST", "PERF", "MIGRATE", "CROSS", "PRD", "PRD ANALYSIS", ">>", "sdd_bootstrap", "EXIT ALTAS", "快速", "排查", "日志分析", "多项目", "写文档", "链路梳理", "只看代码", "项目总图", "全局地图", "归档", "沉淀", "代码审查", "审查 PR", "评审规格", "计划评审", "代码评审", "实现复盘", "重构", "写测试", "补测试", "性能优化", "迁移", "版本升级", "跨项目", "验证功能", "需求分析", "评审 PRD", "PRD 质量", "退出协议"]
 dependencies:
@@ -14,7 +14,7 @@ min_context_window: 128k
 
 # ALTAS Workflow
 
-**Version:** 4.7 — 测试工程师专项优化、E2E/性能测试指引、多语言测试支持、测试文档可发现性。
+**Version:** 4.8 — 自我进化机制、用户纠正自动记录、经验晋升到工作流规则。
 > 📋 **版本升级参考**：完整变更日志见 [SDD-RIPER-ONE Agent Changelog](./references/agents/sdd-riper-one/CHANGELOG.md)。从旧版本（3.x / 4.0 / 4.1）升级时，请阅读该日志了解 breaking changes。
 
 ## Quick Navigation
@@ -33,6 +33,7 @@ min_context_window: 128k
 | 异常与恢复 | `references/entry/exceptions-recovery.md` |
 | 防绕过机制 | `references/entry/discipline-enforcing.md` |
 | 流程可视化 | `workflow-diagrams.md` |
+| 自我进化 | `references/self-improvement/SKILL.md` |
 
 ## Persona & Role
 
@@ -348,6 +349,62 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 
 - 遇到问题升级、不确定、需要退出或能力降级时，加载 `references/entry/exceptions-recovery.md`
 - 核心原则：不确定时暂停并找用户确认（遵守铁律#10），禁止擅自决策或跳过
+
+## 自我进化契约
+
+> **SELF-IMPROVEMENT PRINCIPLE:** 每次任务完成后，自动评估是否产生了可复用的知识。记录 → 总结 → 晋升 → 进化。
+
+### 自动检测触发
+
+| 触发信号 | 动作 |
+|----------|------|
+| 用户纠正（"不对"、"应该是"、"你搞错了"、"这个不对"） | 记录到 `.learnings/LEARNINGS.md`，category=`correction` |
+| 命令/操作失败、异常输出 | 记录到 `.learnings/ERRORS.md` |
+| 用户请求不支持的能力（"能不能"、"为什么不能"） | 记录到 `.learnings/FEATURE_REQUESTS.md` |
+| 发现文档过时/知识缺口 | 记录到 `.learnings/LEARNINGS.md`，category=`knowledge_gap` |
+| 发现更优方案 | 记录到 `.learnings/LEARNINGS.md`，category=`best_practice` |
+| 用户明确要求（"记住这个"、"以后都这样"、"保存下来"） | 记录到 `.learnings/LEARNINGS.md`，category=`user_explicit` |
+
+### 记录时机
+
+1. **任务完成后**：自检是否有非显而易见的答案/变通/模式
+2. **错误发生时**：立即记录错误上下文、复现步骤、解决方案
+3. **用户纠正时**：不要争辩，立即记录正确的做法
+4. **大任务开始前**：回顾 `.learnings/` 中相关区域的过往学习
+
+### 晋升规则
+
+当学习条目同时满足以下条件时，晋升到工作流规则文件：
+
+- `Recurrence-Count >= 3`（重复出现 ≥3 次）
+- 跨越 ≥2 个不同任务
+- 在 30 天窗口期内
+
+晋升目标映射：
+
+| 学习类型 | 晋升到 |
+|----------|--------|
+| 路由/触发词修正 | SKILL.md 路由表或 `references/entry/aliases.md` |
+| 规模评估修正 | SKILL.md 规模评估表 |
+| 铁律/门禁补充 | SKILL.md Hard Rules 或阶段门禁 |
+| 工具/平台适配 | SKILL.md 工具映射表 |
+| 测试策略强化 | `references/testing/` 对应文件 |
+| 审查规则强化 | `references/special-modes/review.md` |
+| 调试策略强化 | `references/superpowers/systematic-debugging/` |
+| 通用最佳实践 | 对应 `references/` 子目录 |
+
+### 技能提取
+
+当学习足够通用（跨项目复用、非显而易见、已验证）时，提取为独立 Skill 到 `references/superpowers/` 或新建目录。详细流程见 `references/self-improvement/SKILL.md`。
+
+### 铁律关联
+
+自我进化是铁律的补充：
+
+| # | 铁律 | 含义 |
+|---|------|------|
+| 11 | **YOU MUST Log & Promote Learnings** | 每次任务后自检，发现非显而易见的知识必须记录到 `.learnings/`；满足条件的经验必须晋升到工作流规则。 |
+
 
 ## Usage Guide
 

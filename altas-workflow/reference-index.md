@@ -17,6 +17,17 @@
 
 > 若路径读取失败，先使用全局搜索定位；若文件确实缺失，则按标准模式继续，并明确提醒用户依赖不完整。
 
+### Self-Improvement (自我进化)
+
+| 文件 | 主题 |
+|------|------|
+| `references/self-improvement/SKILL.md` | 自我进化完整机制（触发/记录/晋升/提取） |
+| `.learnings/LEARNINGS.md` | 学习条目日志 |
+| `.learnings/ERRORS.md` | 错误条目日志 |
+| `.learnings/FEATURE_REQUESTS.md` | 功能请求日志 |
+| `scripts/self-improvement-activator.sh` | 自我进化激活钩子 |
+| `scripts/error-detector.sh` | 错误检测钩子 |
+
 ---
 
 ## 流程可视化参考
@@ -36,6 +47,7 @@
 | `references/entry/skill-content-map.md` | 需要核对 `SKILL.md` 精简后，被移出内容的落点映射时 |
 | `references/entry/sources.md` | 需要了解入口整合来源、方法论来源映射或做工作流介绍时 |
 | `references/entry/exceptions-recovery.md` | 遇到问题升级、不确定、需要退出协议或能力降级时 |
+| `references/self-improvement/SKILL.md` | 需要自我进化机制：记录学习、错误、功能请求、经验晋升、技能提取时 |
 
 ---
 
@@ -276,6 +288,15 @@
 | `references/prd-analysis/reference/output-format.md` | specify-requirements | 生成 PRD 状态报告时 |
 | `references/prd-analysis/examples/good-prd.md` | specify-requirements | 参考优质 PRD 示例时 |
 
+### 🆕 SELF-IMPROVEMENT 模式 (v4.8)
+
+| 文件 | 来源 | 调用时机 |
+|------|------|----------|
+| `references/self-improvement/SKILL.md` | Self-Improvement Agent | 需要记录学习、错误、功能请求、经验晋升、技能提取时 |
+| `.learnings/LEARNINGS.md` | Self-Improvement Agent | 回顾已记录的学习条目、纠正、知识缺口、最佳实践时 |
+| `.learnings/ERRORS.md` | Self-Improvement Agent | 回顾已记录的命令失败、异常、意外行为时 |
+| `.learnings/FEATURE_REQUESTS.md` | Self-Improvement Agent | 回顾已记录的用户请求的不支持能力时 |
+
 ---
 
 ## 按来源分类索引
@@ -387,6 +408,6 @@
 
 ## 统计
 
-- **参考文件总数**: 70+
-- **来源分布**: SDD-RIPER (14), SDD-RIPER-Opt (6), Superpowers (24+), PRD Analysis (7), 测试开发 (16+), 工具脚本 (1+)
-- **目录结构**: references/ (7大类: entry/spec-driven-development/checkpoint-driven/superpowers/testing/prd-analysis/agents), protocols/ (4), docs/ (4), scripts/ (3)
+- **参考文件总数**: 75+
+- **来源分布**: SDD-RIPER (14), SDD-RIPER-Opt (6), Superpowers (24+), PRD Analysis (7), 测试开发 (16+), Self-Improvement (6), 工具脚本 (3+)
+- **目录结构**: references/ (8大类: entry/spec-driven-development/checkpoint-driven/superpowers/testing/prd-analysis/agents/self-improvement), protocols/ (4), docs/ (4), scripts/ (3), .learnings/ (3)

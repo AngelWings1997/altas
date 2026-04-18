@@ -1,12 +1,12 @@
 # ALTAS Workflow
 
-> **融合三方优势 | 智能深度适配 | 渐进式披露 | 每步可反馈 | 测试工程师友好**
+> **融合三方优势 | 智能深度适配 | 渐进式披露 | 每步可反馈 | 测试工程师友好 | 自我进化**
 
-**Version:** 4.7 (2026-04-19)
+**Version:** 4.8 (2026-04-19)
 
-ALTAS Workflow 是一套汲取了 SDD-RIPER、SDD-RIPER-Optimized 与 Superpowers 精华的综合性 AI 工作流程规范，并增强了**测试工程专项**、**代码审查技能包**和**PRD 分析工作流**能力。
+ALTAS Workflow 是一套汲取了 SDD-RIPER、SDD-RIPER-Optimized 与 Superpowers 精华的综合性 AI 工作流程规范，并增强了**测试工程专项**、**代码审查技能包**、**PRD 分析工作流**和**自我进化机制**能力。
 
-本规范致力于解决 AI 编程中的**上下文腐烂**、**审查瘫痪**、**代码不信任**、**难以维护**以及**测试覆盖不足**等核心工程痛点。
+本规范致力于解决 AI 编程中的**上下文腐烂**、**审查瘫痪**、**代码不信任**、**难以维护**以及**测试覆盖不足**等核心工程痛点，同时通过自我进化机制实现持续迭代提升。
 
 ---
 
@@ -68,7 +68,18 @@ ALTAS Workflow 是一套汲取了 SDD-RIPER、SDD-RIPER-Optimized 与 Superpower
 Brainstorm → Discover → Document → Review → Validate
 ```
 
-### 7. 快速启动
+### 7. 🆕 自我进化机制 (v4.8)
+
+使用过程中自动记录、总结、晋升经验，使工作流持续进化：
+
+| 能力 | 说明 |
+|------|------|
+| **自动检测** | 用户纠正、命令失败、知识缺口、更优方案自动识别 |
+| **三日志文件** | LEARNINGS（学习）/ ERRORS（错误）/ FEATURE_REQUESTS（功能请求） |
+| **晋升机制** | 重复出现 3 次+、跨 2 任务+、30 天内的经验晋升到工作流规则 |
+| **技能提取** | 通用经验提取为独立 Skill，可跨项目复用 |
+
+### 8. 快速启动
 
 5分钟武装你的AI Agent。详见 [QUICKSTART.md](./QUICKSTART.md)
 
@@ -84,6 +95,7 @@ Brainstorm → Discover → Document → Review → Validate
 6. **Reverse Sync**: Bug先修Spec再修代码
 7. **🆕 Test Coverage First**: 测试覆盖率作为质量门禁
 8. **🆕 Code Quality Standards**: 代码审查作为发布前置条件
+9. **🆕 Log & Promote Learnings**: 每次任务后自检学习，满足条件的经验晋升到工作流规则
 
 ---
 
@@ -97,6 +109,7 @@ Brainstorm → Discover → Document → Review → Validate
 | **🆕 Testing Engineering** | E2E/API/Performance/Security测试方法论、Pytest最佳实践、CI/CD集成、测试脚手架模板 |
 | **🆕 Code Review Skills** | Go/Python静态分析、类型安全检查、并发安全审计、性能优化建议 |
 | **🆕 PRD Analysis** | 结构化需求分析方法论、PRD模板与校验标准、质量度量四维度评估 |
+| **🆕 Self-Improvement** | 自动学习记录、经验晋升、技能提取、持续进化机制 |
 
 ---
 
@@ -106,7 +119,7 @@ Brainstorm → Discover → Document → Review → Validate
 
 | 文件 | 说明 |
 |------|------|
-| [SKILL.md](./SKILL.md) | Bootstrap 入口提示词（供AI读取，负责路由/规模/门禁） - v4.7 |
+| [SKILL.md](./SKILL.md) | Bootstrap 入口提示词（供AI读取，负责路由/规模/门禁） - v4.8 |
 | [QUICKSTART.md](./QUICKSTART.md) | 快速启动命令与典型场景 |
 | [reference-index.md](./reference-index.md) | 参考资料统一索引入口 |
 | [workflow-diagrams.md](./workflow-diagrams.md) | Mermaid 流程图集（可视化参考） |
@@ -116,12 +129,16 @@ Brainstorm → Discover → Document → Review → Validate
 
 ```
 altas-workflow/
-├── SKILL.md                    # 主入口 Skill v4.7
+├── SKILL.md                    # 主入口 Skill v4.8
 ├── QUICKSTART.md               # 快速启动指南
 ├── reference-index.md          # 参考资料总索引
 ├── workflow-diagrams.md        # 流程图集
 ├── SKILL-entry-review.md       # Skill 复核文档
-├── references/                 # 按需加载的参考资料 (95+)
+├── .learnings/                 # 🆕 自我进化日志 (3)
+│   ├── LEARNINGS.md            # 学习/纠正/最佳实践
+│   ├── ERRORS.md               # 命令失败/异常
+│   └── FEATURE_REQUESTS.md     # 用户请求的不支持能力
+├── references/                 # 按需加载的参考资料 (100+)
 │   ├── entry/                  # 入口相关 (5)
 │   ├── spec-driven-development/# SDD-RIPER 完整协议 (7)
 │   ├── checkpoint-driven/      # Checkpoint 轻量模式 (4)
@@ -156,6 +173,8 @@ altas-workflow/
 │   │   ├── test-environment.md          # 测试环境管理
 │   │   ├── ci-cd-integration.md         # CI/CD 集成
 │   │   └── templates/                   # 测试脚手架模板
+│   ├── self-improvement/       # 🆕 自我进化机制
+│   │   └── SKILL.md            # 自我进化完整机制
 │   └── agents/                 # Agent 定义 (22)
 │       ├── sdd-riper-one/      # 标准 RIPER Agent
 │       └── sdd-riper-one-light/# Checkpoint 轻量 Agent
@@ -165,10 +184,12 @@ altas-workflow/
 │   ├── SDD-RIPER-DUAL-COOP.md  # 双模型协作
 │   └── PROTOCOL-SELECTION.md   # 协议选择指南
 ├── docs/                       # 方法论文档 (5)
-└── scripts/                    # 自动化工具 (3)
+└── scripts/                    # 自动化工具 (5)
     ├── archive_builder.py      # Archive 构建器
     ├── scaffold.py             # 项目脚手架
-    └── validate_aliases_sync.py # 别名同步验证
+    ├── validate_aliases_sync.py # 别名同步验证
+    ├── self-improvement-activator.sh # 🆕 自我进化激活钩子
+    └── error-detector.sh       # 🆕 错误检测钩子
 ```
 
 ---
@@ -211,6 +232,15 @@ altas-workflow/
 |------|----------|
 | [references/superpowers/code-review/go-code-review.md](./references/superpowers/code-review/go-code-review.md) | Go 代码审查（静态分析、并发安全、性能审计） |
 | [references/superpowers/code-review/python-code-review.md](./references/superpowers/code-review/python-code-review.md) | Python 代码审查（类型安全、异步模式、错误处理） |
+
+### 🆕 自我进化索引 (v4.8)
+
+| 文件 | 调用时机 |
+|------|----------|
+| [references/self-improvement/SKILL.md](./references/self-improvement/SKILL.md) | 自我进化完整机制（触发/记录/晋升/提取） |
+| [.learnings/LEARNINGS.md](./.learnings/LEARNINGS.md) | 回顾学习/纠正/最佳实践条目 |
+| [.learnings/ERRORS.md](./.learnings/ERRORS.md) | 回顾命令失败/异常条目 |
+| [.learnings/FEATURE_REQUESTS.md](./.learnings/FEATURE_REQUESTS.md) | 回顾功能请求条目 |
 
 ### 入口参考
 
@@ -401,11 +431,27 @@ altas-workflow/
 
 ## 统计
 
-- **参考文件总数**: 95+
-- **来源分布**: SDD-RIPER (14), SDD-RIPER-Opt (6), Superpowers (50+), PRD Analysis (6), Testing Engineering (18+), Code Review (6), 工具脚本 (3)
-- **目录结构**: references/ (9大类), protocols/ (4), docs/ (5), scripts/ (3)
-- **🆕 技能包**: 6 个独立技能包 (API Testing, Go Review, Python Review, Pytest, Requirements Spec, Implementation Verify)
-- **版本**: v4.7 (2026-04-18)
+- **参考文件总数**: 100+
+- **来源分布**: SDD-RIPER (14), SDD-RIPER-Opt (6), Superpowers (50+), PRD Analysis (6), Testing Engineering (18+), Code Review (6), Self-Improvement (6), 工具脚本 (5)
+- **目录结构**: references/ (10大类), protocols/ (4), docs/ (5), scripts/ (5), .learnings/ (3)
+- **🆕 技能包**: 7 个独立技能包 (API Testing, Go Review, Python Review, Pytest, Requirements Spec, Implementation Verify, Self-Improvement)
+- **版本**: v4.8 (2026-04-19)
+
+---
+
+## v4.8 核心变更
+
+### 🔄 自我进化机制 (Self-Improvement System)
+
+自动记录、总结、晋升经验，使工作流持续进化：
+
+- ✅ **自动检测触发**: 用户纠正、命令失败、知识缺口、更优方案自动识别
+- ✅ **三日志文件**: LEARNINGS.md / ERRORS.md / FEATURE_REQUESTS.md
+- ✅ **标准化格式**: LRN-/ERR-/FEAT- ID 系统，包含优先级/区域/元数据
+- ✅ **晋升规则**: 重复 ≥3 次 + 跨 ≥2 任务 + 30 天内 → 晋升到工作流规则
+- ✅ **技能提取**: 通用经验提取为独立 Skill，可跨项目复用
+- ✅ **铁律 #11**: Log & Promote Learnings — 任务后自检，经验必须晋升
+- ✅ **钩子脚本**: self-improvement-activator.sh / error-detector.sh
 
 ---
 
@@ -450,7 +496,7 @@ altas-workflow/
 
 ---
 
-*Powered by the integration of SDD-RIPER, SDD-RIPER-Optimized (Checkpoint-Driven), Superpowers, and enhanced with Testing Engineering, Code Review & PRD Analysis capabilities.*
+*Powered by the integration of SDD-RIPER, SDD-RIPER-Optimized (Checkpoint-Driven), Superpowers, and enhanced with Testing Engineering, Code Review, PRD Analysis & Self-Improvement capabilities.*
 
-**最后更新**: 2026-04-18
-**当前版本**: v4.7
+**最后更新**: 2026-04-19
+**当前版本**: v4.8

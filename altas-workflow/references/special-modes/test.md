@@ -81,7 +81,8 @@
 
 - **Python/pytest 项目**: 加载 `references/testing/pytest-patterns.md`
 - **Python API 项目**: 额外加载 `references/testing/api-testing.md`
-- **其他语言**: 按项目实际框架编写
+- **JavaScript/TypeScript 项目**: 加载 `references/testing/js-ts-testing.md`（Jest/Vitest/RTL/Playwright）
+- **其他语言**: 按项目实际框架编写，遵循对应语言的测试最佳实践
 
 ### 4) 基于契约生成测试矩阵（API 项目默认动作）
 
@@ -409,13 +410,61 @@ expect(result).toEqual(expected);
 
 ---
 
+## 测试左移 (Shift-Left Testing)
+
+测试开发工程师应在软件开发生命周期的早期阶段介入，而非仅在编码完成后补测。
+
+### 介入时机与活动
+
+| 阶段 | 测试活动 | 产出物 |
+|------|----------|--------|
+| **PRD 评审** | 可测试性评审、验收标准完善 | 可测试性评审报告 |
+| **设计评审** | 架构可测试性评估、测试钩子设计 | 测试策略建议 |
+| **编码阶段** | TDD 配对、代码审查 | 测试代码、审查意见 |
+| **测试阶段** | 补测、覆盖率提升、质量报告 | 测试报告 |
+
+### PRD 可测试性评审
+
+在 PRD 阶段介入，加载 `references/prd-analysis/testability-checklist.md` 进行评审：
+
+- [ ] **验收标准**: 每个需求是否有明确的 Given-When-Then 验收标准
+- [ ] **边界条件**: 数值范围、字符串长度、时间边界是否定义
+- [ ] **异常场景**: 无效输入、依赖故障、并发冲突的处理方式
+- [ ] **性能指标**: 响应时间、吞吐量、并发用户数是否量化
+- [ ] **测试数据**: 需要哪些测试数据、如何准备、如何清理
+- [ ] **环境依赖**: 外部服务依赖、Mock 策略、Docker Compose 需求
+
+**评审输出**: 可测试性评审报告，包含问题列表、风险评级、改进建议
+
+### 设计阶段测试策略
+
+- **测试钩子设计**: 提议测试专用的 API、时间控制机制、数据注入接口
+- **依赖注入**: 确保关键依赖可注入，便于 Mock
+- **可观测性**: 日志、指标、追踪的设计，便于测试调试
+
+---
+
 ## 参考文档
 
+### 测试核心模式
 - pytest 核心模式：`references/testing/pytest-patterns.md`
+- JS/TS 测试模式：`references/testing/js-ts-testing.md`
 - API 测试模式：`references/testing/api-testing.md`
+- E2E 测试模式：`references/testing/e2e-testing.md`
+- 性能测试模式：`references/testing/performance-testing.md`
+
+### 测试基础设施
 - 测试脚手架模板：`references/testing/test-scaffold-templates.md`
+- 测试数据管理：`references/testing/test-data-management.md`
+- CI/CD 集成：`references/testing/ci-cd-integration.md`
 - 测试质量度量：`references/testing/test-quality-metrics.md`
+
+### 测试左移与评审
+- PRD 可测试性评审：`references/prd-analysis/testability-checklist.md`
 - 测试任务压力场景：`references/testing/test-task-pressure-scenarios.md`
+
+### TDD 与最佳实践
 - TDD 执行协议：`references/superpowers/test-driven-development/SKILL.md`
+- pytest TDD 循环：`references/superpowers/test-driven-development/pytest-tdd-cycle.md`
 - 测试反模式：`references/superpowers/test-driven-development/testing-anti-patterns.md`
 - 系统化 Debug：`references/superpowers/systematic-debugging/SKILL.md`

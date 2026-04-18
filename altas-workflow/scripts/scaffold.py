@@ -70,18 +70,33 @@ def auth_headers():
 '''
 
 DB_CONFTEST_PY = '''\
+import os
 import pytest
 from sqlalchemy.orm import sessionmaker
 
-# TODO: 将 `your_project.database` 替换为实际项目的数据库模块路径
-# 例如: `from app.db import engine` 或 `from myapp.database import engine`
-DATABASE_MODULE = "your_project.database"
+# 从环境变量获取数据库模块路径，默认为 "your_project.database"
+# 使用方式: DATABASE_MODULE=app.db pytest
+# 或修改默认值为你的实际项目路径，如: "app.database" 或 "myapp.db"
+DATABASE_MODULE = os.getenv("DATABASE_MODULE", "your_project.database")
 
 @pytest.fixture(scope="function")
 def db_session():
     import importlib
-    db_module = importlib.import_module(DATABASE_MODULE)
-    engine = db_module.engine
+    try:
+        db_module = importlib.import_module(DATABASE_MODULE)
+        engine = db_module.engine
+    except ImportError as e:
+        raise ImportError(
+            f"无法导入数据库模块 '{DATABASE_MODULE}'。"
+            f"请设置环境变量 DATABASE_MODULE 或修改 conftest.py 中的默认值。"
+            f"例如: DATABASE_MODULE=app.db pytest"
+        ) from e
+    except AttributeError as e:
+        raise AttributeError(
+            f"数据库模块 '{DATABASE_MODULE}' 中没有 'engine' 属性。"
+            f"请确保模块中导出了 SQLAlchemy engine 实例。"
+        ) from e
+    
     connection = engine.connect()
     transaction = connection.begin()
     session = sessionmaker(bind=connection)()

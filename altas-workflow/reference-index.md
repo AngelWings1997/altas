@@ -126,6 +126,26 @@
 
 ---
 
+## 测试工程师快速入口
+
+| 我要做 | 先加载 | 再加载 | 可选 |
+|--------|--------|--------|------|
+| **起测试骨架** | `references/testing/test-scaffold-templates.md` | `references/testing/pytest-patterns.md` | `references/testing/templates/conftest.py` |
+| **写 API 测试** | `references/testing/api-testing.md` | `references/testing/pytest-patterns.md` | `references/testing/test-data-management.md` |
+| **写 E2E 测试** | `references/testing/e2e-testing.md` | `references/testing/pytest-patterns.md` | `references/testing/api-testing.md` |
+| **写性能测试** | `references/testing/performance-testing.md` | `references/testing/pytest-patterns.md` | `references/testing/ci-cd-integration.md` |
+| **写安全测试** | `references/testing/security-testing.md` | `references/testing/api-testing.md` §11 | `references/testing/ci-cd-integration.md` |
+| **写视觉测试** | `references/testing/visual-testing.md` | `references/testing/e2e-testing.md` | `references/testing/pytest-patterns.md` |
+| **移动端测试** | `references/testing/mobile-testing.md` | `references/testing/e2e-testing.md` | `references/testing/api-testing.md` |
+| **测试可观测性** | `references/testing/test-observability.md` | `references/testing/test-quality-metrics.md` | `references/superpowers/systematic-debugging/SKILL.md` |
+| **补测试覆盖率** | `references/special-modes/test.md` | `references/testing/pytest-patterns.md` | `references/testing/test-task-pressure-scenarios.md` |
+| **PRD 可测试性评审** | `references/prd-analysis/testability-checklist.md` | `references/prd-analysis/SKILL.md` | `references/special-modes/test.md` |
+| **优化 CI 测试** | `references/testing/ci-cd-integration.md` | `references/testing/test-quality-metrics.md` | `references/testing/test-maintenance.md` |
+| **维护测试套件** | `references/testing/test-maintenance.md` | `references/testing/test-review-checklist.md` | `references/testing/test-quality-metrics.md` |
+| **TDD 开发新功能** | `references/superpowers/test-driven-development/SKILL.md` | `references/testing/pytest-patterns.md` | `references/superpowers/test-driven-development/pytest-tdd-cycle.md` |
+
+---
+
 ## 按特殊模式索引
 
 ### DEBUG 模式
@@ -172,10 +192,15 @@
 | 文件 | 来源 | 调用时机 |
 |------|------|----------|
 | `references/special-modes/test.md` | Special Modes | 进入 TEST 模式时 |
+| `references/prd-analysis/testability-checklist.md` | PRD Analysis | PRD 阶段进行可测试性评审时 |
 | `references/testing/pytest-patterns.md` | Advanced Testing Skills | Python 项目编写测试时 |
 | `references/testing/api-testing.md` | Advanced Testing Skills | Python API 项目编写测试时 |
 | `references/testing/e2e-testing.md` | Advanced Testing Skills | Python E2E 测试时 |
 | `references/testing/performance-testing.md` | Advanced Testing Skills | Python 性能/负载测试时 |
+| `references/testing/visual-testing.md` | Advanced Testing Skills | 视觉回归测试（Chromatic/Playwright）时 |
+| `references/testing/security-testing.md` | Advanced Testing Skills | 安全测试（SAST/DAST/SCA）时 |
+| `references/testing/test-observability.md` | Advanced Testing Skills | 测试可观测性（日志/追踪/指标）时 |
+| `references/testing/mobile-testing.md` | Advanced Testing Skills | 移动端测试（iOS/Android）时 |
 | `references/testing/test-scaffold-templates.md` | Advanced Testing Skills | 需要快速生成 pytest/API 测试骨架时 |
 | `references/testing/test-quality-metrics.md` | Advanced Testing Skills | 需要输出 coverage/pass rate/flaky risk/slow tests/mock ratio 等质量度量时 |
 | `references/testing/test-task-pressure-scenarios.md` | Advanced Testing Skills | 需要验证 TEST 模式纪律执行力或做压力回归时 |
@@ -185,6 +210,7 @@
 | `references/testing/test-data-management.md` | Advanced Testing Skills | 需要测试数据管理（factory/fixture/seed/清理）时 |
 | `references/superpowers/test-driven-development/SKILL.md` | Superpowers | TDD 最佳实践 |
 | `references/superpowers/test-driven-development/testing-anti-patterns.md` | Superpowers | 测试反模式 |
+| `references/superpowers/test-driven-development/pytest-tdd-cycle.md` | Superpowers | pytest TDD 完整循环 |
 
 #### 按测试任务导航
 
@@ -194,10 +220,15 @@
 | 写 API 测试 | `api-testing.md` | `pytest-patterns.md` | `test-data-management.md` |
 | 写 E2E 测试 | `e2e-testing.md` | `pytest-patterns.md` | `api-testing.md` |
 | 写性能测试 | `performance-testing.md` | `pytest-patterns.md` | `ci-cd-integration.md` |
+| 写视觉测试 | `visual-testing.md` | `e2e-testing.md` | `pytest-patterns.md` |
+| 写安全测试 | `security-testing.md` | `api-testing.md` §11 | `ci-cd-integration.md` |
+| 移动端测试 | `mobile-testing.md` | `e2e-testing.md` | `api-testing.md` |
+| 测试可观测性 | `test-observability.md` | `test-quality-metrics.md` | `systematic-debugging/SKILL.md` |
+| PRD 可测试性评审 | `testability-checklist.md` | `prd-analysis/SKILL.md` | `test.md` |
 | 优化 CI 测试 | `ci-cd-integration.md` | `test-quality-metrics.md` | `test-maintenance.md` |
 | 维护测试套件 | `test-maintenance.md` | `test-review-checklist.md` | `test-quality-metrics.md` |
 | 补测试覆盖率 | `pytest-patterns.md` | `test-task-pressure-scenarios.md` | `test-data-management.md` |
-| 安全合规测试 | `api-testing.md` §11 | `ci-cd-integration.md` | `test-review-checklist.md` |
+| 安全合规测试 | `api-testing.md` §11 | `security-testing.md` | `ci-cd-integration.md` |
 
 ### PERF 模式 (新增)
 

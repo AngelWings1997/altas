@@ -81,7 +81,8 @@
 
 - **Python/pytest 项目**: 加载 `references/testing/pytest-patterns.md`
 - **Python API 项目**: 额外加载 `references/testing/api-testing.md`
-- **JavaScript/TypeScript 项目**: 加载 `references/testing/js-ts-testing.md`（Jest/Vitest/RTL/Playwright）
+- **Go 项目**: 加载 `references/testing/go-testing.md`（testify / ginkgo / httptest）
+- **微服务项目**: 额外加载 `references/testing/contract-testing.md`（Pact 消费者驱动契约测试）
 - **其他语言**: 按项目实际框架编写，遵循对应语言的测试最佳实践
 
 ### 4) 基于契约生成测试矩阵（API 项目默认动作）
@@ -340,6 +341,7 @@ describe('<函数名>', () => {
 - **TEST → DEBUG**: 测试失败且原因不明，进入 DEBUG 模式排查
 - **TEST → REFACTOR**: 测试覆盖后发现有重构机会，进入 REFACTOR 模式
 - **TEST → REVIEW**: 测试完成后，进入 REVIEW 模式审查测试质量
+- **TEST → PERF**: 测试覆盖后发现性能不达标，进入 PERF 模式优化
 
 ---
 
@@ -448,14 +450,16 @@ expect(result).toEqual(expected);
 
 ### 测试核心模式
 - pytest 核心模式：`references/testing/pytest-patterns.md`
-- JS/TS 测试模式：`references/testing/js-ts-testing.md`
+- Go 测试模式：`references/testing/go-testing.md`
 - API 测试模式：`references/testing/api-testing.md`
+- 契约测试模式：`references/testing/contract-testing.md`
 - E2E 测试模式：`references/testing/e2e-testing.md`
 - 性能测试模式：`references/testing/performance-testing.md`
 
 ### 测试基础设施
 - 测试脚手架模板：`references/testing/test-scaffold-templates.md`
 - 测试数据管理：`references/testing/test-data-management.md`
+- 测试环境管理：`references/testing/test-environment.md`
 - CI/CD 集成：`references/testing/ci-cd-integration.md`
 - 测试质量度量：`references/testing/test-quality-metrics.md`
 

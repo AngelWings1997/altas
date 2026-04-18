@@ -246,9 +246,9 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 
 输出初始化提示并暂停：
 
-> **ALTAS Workflow v4.6 已加载**
+> **ALTAS Workflow v4.7 已加载**
 >
-> **COMMITMENT:** I am using ALTAS Workflow v4.6 for this session. I will follow all Iron Rules without exception.
+> **COMMITMENT:** I am using ALTAS Workflow v4.7 for this session. I will follow all Iron Rules without exception.
 >
 > 当前状态：`[IDLE]`
 > 可用触发（主形式）: `>>` / `FAST` | `sdd_bootstrap` | `DEEP` | `DEBUG` | `MULTI` | `CROSS` | `DOC` | `MAP` | `PROJECT MAP` | `ARCHIVE` | `REVIEW` | `REVIEW SPEC` | `REVIEW EXECUTE` | `REFACTOR` | `TEST` | `PERF` | `MIGRATE`
@@ -485,7 +485,8 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 - **Python E2E 测试时**额外加载 `references/testing/e2e-testing.md`
 - **Python 性能测试时**额外加载 `references/testing/performance-testing.md`
 - **非 Python 项目测试参考**:
-  - Go: `go test` + `testify` / `ginkgo`
+  - Go: `references/testing/go-testing.md`（testify / ginkgo / httptest / gomock）
+- **微服务项目**额外加载 `references/testing/contract-testing.md`（Pact 消费者驱动契约测试）
 - **API 测试默认采用契约优先**：先识别 `OpenAPI / Swagger / GraphQL Schema / Proto` 等契约文件，再展开测试设计，禁止先从实现细节反推接口行为
 - **API 契约识别后的默认动作**：
   - 识别契约来源文件与协议类型（REST / GraphQL / gRPC）

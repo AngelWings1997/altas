@@ -5,6 +5,9 @@ description: Use when implementing any feature or bugfix, before writing impleme
 
 # Test-Driven Development (TDD)
 
+> **Python/pytest 项目**：先加载 `pytest-tdd-cycle.md` 获取 pytest 惯用法的完整 TDD 循环示例
+> **Go 项目**：先加载 `references/testing/go-testing.md` 获取 Go 惯用法的 TDD 循环示例
+
 ## Overview
 
 Write the test first. Watch it fail. Write minimal code to pass.

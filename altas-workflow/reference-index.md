@@ -86,14 +86,22 @@
 | `references/testing/test-data-management.md` | Advanced Testing Skills | 复杂测试数据场景（批量数据、关联对象、并发） |
 | `references/testing/ci-cd-integration.md` | Advanced Testing Skills | CI/CD 集成需求或性能敏感功能 |
 | `references/testing/test-quality-metrics.md` | Advanced Testing Skills | 质量门禁/度量报告需求 |
+| `references/testing/contract-testing.md` | Advanced Testing Skills | 微服务项目契约测试（Pact CDC） |
+| `references/testing/visual-testing.md` | Advanced Testing Skills | 视觉回归测试（Chromatic/Playwright） |
+| `references/testing/security-testing.md` | Advanced Testing Skills | 安全测试（SAST/DAST/SCA） |
+| `references/testing/test-observability.md` | Advanced Testing Skills | 测试可观测性（日志/追踪/指标） |
+| `references/testing/mobile-testing.md` | Advanced Testing Skills | 移动端测试（iOS/Android） |
+| `references/testing/test-maintenance.md` | Advanced Testing Skills | 测试维护（Flaky 处理/重构/债务管理） |
+| `references/testing/test-environment.md` | Advanced Testing Skills | 测试环境管理（Test Containers/Docker Compose/隔离） |
+| `references/testing/go-testing.md` | Advanced Testing Skills | Go 项目测试（testify/ginkgo） |
 | `protocols/PROTOCOL-SELECTION.md` | ALTAS | 需要切换协议时 |
 | `references/superpowers/requesting-code-review/spec-quality-metrics.md` | ALTAS | REVIEW SPEC 阶段质量评估时 |
 
 #### 非 Python 项目测试参考
 
-| 语言 | 测试框架 | 推荐库 | 运行命令 |
-|------|---------|--------|----------|
-| Go | `testing` 内置 | `testify`, `ginkgo`, `gomock` | `go test ./...` |
+| 语言 | 测试参考文档 | 测试框架 | 运行命令 |
+|------|-------------|---------|----------|
+| Go | `references/testing/go-testing.md` | `testing` 内置 + `testify` / `ginkgo` | `go test ./...` |
 
 ### REVIEW / 审查
 
@@ -132,6 +140,8 @@
 |--------|--------|--------|------|
 | **起测试骨架** | `references/testing/test-scaffold-templates.md` | `references/testing/pytest-patterns.md` | `references/testing/templates/conftest.py` |
 | **写 API 测试** | `references/testing/api-testing.md` | `references/testing/pytest-patterns.md` | `references/testing/test-data-management.md` |
+| **写契约测试** | `references/testing/contract-testing.md` | `references/testing/api-testing.md` | `references/testing/ci-cd-integration.md` |
+| **写 Go 测试** | `references/testing/go-testing.md` | `references/testing/api-testing.md` | `references/testing/contract-testing.md` |
 | **写 E2E 测试** | `references/testing/e2e-testing.md` | `references/testing/pytest-patterns.md` | `references/testing/api-testing.md` |
 | **写性能测试** | `references/testing/performance-testing.md` | `references/testing/pytest-patterns.md` | `references/testing/ci-cd-integration.md` |
 | **写安全测试** | `references/testing/security-testing.md` | `references/testing/api-testing.md` §11 | `references/testing/ci-cd-integration.md` |
@@ -141,6 +151,7 @@
 | **补测试覆盖率** | `references/special-modes/test.md` | `references/testing/pytest-patterns.md` | `references/testing/test-task-pressure-scenarios.md` |
 | **PRD 可测试性评审** | `references/prd-analysis/testability-checklist.md` | `references/prd-analysis/SKILL.md` | `references/special-modes/test.md` |
 | **优化 CI 测试** | `references/testing/ci-cd-integration.md` | `references/testing/test-quality-metrics.md` | `references/testing/test-maintenance.md` |
+| **搭建测试环境** | `references/testing/test-environment.md` | `references/testing/ci-cd-integration.md` | `references/testing/test-data-management.md` |
 | **维护测试套件** | `references/testing/test-maintenance.md` | `references/testing/test-review-checklist.md` | `references/testing/test-quality-metrics.md` |
 | **TDD 开发新功能** | `references/superpowers/test-driven-development/SKILL.md` | `references/testing/pytest-patterns.md` | `references/superpowers/test-driven-development/pytest-tdd-cycle.md` |
 
@@ -208,6 +219,7 @@
 | `references/testing/test-maintenance.md` | Advanced Testing Skills | 需要测试维护、Flaky 处理、重构策略、债务管理时 |
 | `references/testing/test-review-checklist.md` | Advanced Testing Skills | 需要测试代码审查清单时 |
 | `references/testing/test-data-management.md` | Advanced Testing Skills | 需要测试数据管理（factory/fixture/seed/清理）时 |
+| `references/testing/contract-testing.md` | Advanced Testing Skills | 微服务项目契约测试（Pact CDC）时 |
 | `references/superpowers/test-driven-development/SKILL.md` | Superpowers | TDD 最佳实践 |
 | `references/superpowers/test-driven-development/testing-anti-patterns.md` | Superpowers | 测试反模式 |
 | `references/superpowers/test-driven-development/pytest-tdd-cycle.md` | Superpowers | pytest TDD 完整循环 |
@@ -218,6 +230,8 @@
 |------|--------|--------|------|
 | 起测试环境 | `test-scaffold-templates.md` | `pytest-patterns.md` | `api-testing.md` |
 | 写 API 测试 | `api-testing.md` | `pytest-patterns.md` | `test-data-management.md` |
+| 写契约测试 | `contract-testing.md` | `api-testing.md` | `ci-cd-integration.md` |
+| 写 Go 测试 | `go-testing.md` | `api-testing.md` | `contract-testing.md` |
 | 写 E2E 测试 | `e2e-testing.md` | `pytest-patterns.md` | `api-testing.md` |
 | 写性能测试 | `performance-testing.md` | `pytest-patterns.md` | `ci-cd-integration.md` |
 | 写视觉测试 | `visual-testing.md` | `e2e-testing.md` | `pytest-patterns.md` |
@@ -226,6 +240,7 @@
 | 测试可观测性 | `test-observability.md` | `test-quality-metrics.md` | `systematic-debugging/SKILL.md` |
 | PRD 可测试性评审 | `testability-checklist.md` | `prd-analysis/SKILL.md` | `test.md` |
 | 优化 CI 测试 | `ci-cd-integration.md` | `test-quality-metrics.md` | `test-maintenance.md` |
+| 搭建测试环境 | `test-environment.md` | `ci-cd-integration.md` | `test-data-management.md` |
 | 维护测试套件 | `test-maintenance.md` | `test-review-checklist.md` | `test-quality-metrics.md` |
 | 补测试覆盖率 | `pytest-patterns.md` | `test-task-pressure-scenarios.md` | `test-data-management.md` |
 | 安全合规测试 | `api-testing.md` §11 | `security-testing.md` | `ci-cd-integration.md` |
@@ -367,6 +382,6 @@
 
 ## 统计
 
-- **参考文件总数**: 56+
-- **来源分布**: SDD-RIPER (14), SDD-RIPER-Opt (6), Superpowers (24+), PRD Analysis (6), 测试开发 (2), 工具脚本 (1+)
-- **目录结构**: references/ (4大类: entry/spec-driven-development/checkpoint-driven/superpowers/prd-analysis), protocols/ (3), docs/ (4), skills/ (2), scripts/ (1)
+- **参考文件总数**: 70+
+- **来源分布**: SDD-RIPER (14), SDD-RIPER-Opt (6), Superpowers (24+), PRD Analysis (7), 测试开发 (16+), 工具脚本 (1+)
+- **目录结构**: references/ (5大类: entry/spec-driven-development/checkpoint-driven/superpowers/testing/prd-analysis), protocols/ (3), docs/ (4), skills/ (2), scripts/ (1)

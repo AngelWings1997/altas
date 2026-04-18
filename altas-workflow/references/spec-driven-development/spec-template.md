@@ -109,6 +109,9 @@
   - Flaky Tolerance: `<如 0 known flaky in changed scope>`
   - Time Budget: `<如 unit < 2 min / full suite < 10 min>`
 - **Deferred / Out of Scope Tests**: `<本轮明确不做但需记录的测试项；无则写 None>`
+- **Test Debt Register** (Optional):
+  - `<DEBT-1>`: `<描述>` | Priority: `<P0/P1/P2>` | ETA: `<sprint/版本>` | Owner: `<谁负责>`
+  - `<DEBT-2>`: `<描述>` | Priority: `<P0/P1/P2>` | ETA: `<sprint/版本>` | Owner: `<谁负责>`
 
 ### 4.6 Spec Review Notes (Optional Advisory, Pre-Execute)
 - Spec Review Matrix:
@@ -154,6 +157,7 @@
 | Spec Quality & Requirement Completion | Goal/In-Scope/Acceptance 是否完整清晰；需求是否达成 | PASS/FAIL/PARTIAL | `spec section + test/log/人工验收` |
 | Spec-Code Fidelity | 文件、签名、checklist、行为是否与 Plan 一致 | PASS/FAIL/PARTIAL | `diff + code refs + execute log` |
 | Code Intrinsic Quality | 正确性、鲁棒性、可维护性、测试、关键风险 | PASS/FAIL/PARTIAL | `test/lint/review evidence` |
+| Test Strategy Compliance | P0 测试是否全部编写；Traceability 条目是否都有对应测试；Quality Gates 是否达标 | PASS/FAIL/PARTIAL | `test file list + coverage report` |
 - Overall Verdict: PASS/FAIL
 - Blocking Issues: ...
 - Regression risk: Low/Medium/High

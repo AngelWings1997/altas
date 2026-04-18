@@ -1,0 +1,72 @@
+# pytest Configuration Template
+
+> **使用方式**: 将以下配置复制到项目的 `pyproject.toml` 中，或通过 `python scripts/scaffold.py --type test` 自动生成。
+
+```toml
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v --tb=short --strict-markers"
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks integration tests",
+    "e2e: marks end-to-end tests",
+    "flaky: known flaky tests (reruns enabled)",
+]
+norecursedirs = ["*.egg", ".git", "venv", "__pycache__"]
+filterwarnings = ["error", "ignore::DeprecationWarning"]
+log_cli = true
+log_cli_level = "WARNING"
+```
+
+## 配置项说明
+
+| 配置项 | 值 | 说明 |
+|--------|---|------|
+| `testpaths` | `["tests"]` | 测试发现根目录 |
+| `addopts` | `"-v --tb=short --strict-markers"` | 默认选项：详细输出、短回溯、严格标记 |
+| `markers` | slow/integration/e2e/flaky | 注册自定义标记，未注册标记会报错 |
+| `norecursedirs` | egg/git/venv/cache | 排除目录 |
+| `filterwarnings` | `["error", "ignore::DeprecationWarning"]` | 警告转错误（DeprecationWarning 除外） |
+| `log_cli` | `true` | 启用实时日志输出 |
+| `log_cli_level` | `"WARNING"` | 实时日志级别 |
+
+## 可选扩展
+
+### 并行执行（pytest-xdist）
+
+```toml
+[tool.pytest.ini_options]
+addopts = "-v --tb=short --strict-markers -n auto"
+```
+
+### 超时控制（pytest-timeout）
+
+```toml
+[tool.pytest.ini_options]
+addopts = "-v --tb=short --strict-markers --timeout=30"
+```
+
+### 覆盖率集成（pytest-cov）
+
+```toml
+[tool.pytest.ini_options]
+addopts = "-v --tb=short --strict-markers --cov=src --cov-report=term-missing"
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["tests/*"]
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true
+```
+
+### Flaky 测试重试（pytest-rerunfailures）
+
+```toml
+[tool.pytest.ini_options]
+addopts = "-v --tb=short --strict-markers --reruns 2 --reruns-delay 1"
+markers = [
+    "flaky: known flaky tests (reruns enabled)",
+]
+```

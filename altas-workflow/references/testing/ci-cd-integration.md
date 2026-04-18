@@ -1138,6 +1138,105 @@ pytest --cov=src --cov-report=html  # HTML 覆盖率报告
 
 ---
 
-**版本**: 1.0.0
+## 回归测试选择策略（Regression Test Selection）
+
+> 全量测试太慢时，如何选择应该运行的测试子集？
+
+### 测试分层策略
+
+| 触发场景 | 测试范围 | 预期耗时 | 命令 |
+|----------|----------|----------|------|
+| PR / Push | unit + affected integration | < 5min | `pytest tests/unit -n auto && pytest tests/integration -k "affected"` |
+| Main 分支合并 | unit + integration + API | < 15min | `pytest tests/unit tests/integration tests/api -n auto` |
+| Release / 部署前 | 全量 + e2e + 性能 | < 30min | `pytest -n auto --cov=src` |
+| 热修复 | unit + smoke | < 2min | `pytest tests/unit -m "not slow" -n auto` |
+
+### 基于变更文件的测试选择
+
+```bash
+# 1. 获取变更文件列表
+CHANGED_FILES=$(git diff --name-only origin/main...HEAD)
+
+# 2. 根据变更文件选择测试
+# - src/services/order.py → tests/unit/test_order.py + tests/api/test_orders.py
+# - src/models/ → tests/unit/test_models.py + tests/integration/
+# - src/database.py → tests/integration/ (数据库相关)
+
+# 3. 使用 pytest-picked 自动选择
+pip install pytest-picked
+pytest --picked
+
+# 4. 使用 pytest-testmon 基于依赖分析
+pip install pytest-testmon
+pytest --testmon
+```
+
+### pytest-testmon 集成
+
+```yaml
+# GitHub Actions - testmon 集成
+- name: Run affected tests
+  run: |
+    pip install pytest-testmon
+    pytest --testmon
+  env:
+    # 缓存 testmon 数据以跨运行保持
+    TESTMON_DATAFILE: .testmondata
+
+- name: Cache testmon data
+  uses: actions/cache@v3
+  with:
+    path: .testmondata
+    key: testmon-${{ runner.os }}-${{ hashFiles('**/*.py') }}
+```
+
+### 变更影响分析模板
+
+```markdown
+## 变更影响分析
+
+### 变更文件
+- `src/services/order.py` (修改)
+- `src/models/order.py` (修改)
+
+### 受影响模块
+- 订单创建流程
+- 订单状态机
+
+### 应跑测试
+- [x] `tests/unit/test_order.py` (直接对应)
+- [x] `tests/api/test_orders.py` (API 层验证)
+- [x] `tests/integration/test_order_workflow.py` (工作流验证)
+- [ ] `tests/unit/test_payment.py` (间接影响，可选)
+- [ ] `tests/e2e/test_checkout.py` (端到端，Release 时跑)
+```
+
+### Marker 驱动的测试分片
+
+```toml
+# pyproject.toml - 配置 marker 分片
+[tool.pytest.ini_options]
+markers = [
+    "slow: marks tests as slow",
+    "integration: marks integration tests",
+    "e2e: marks end-to-end tests",
+    "smoke: critical path tests (must pass)",
+]
+```
+
+```bash
+# PR: 只跑 unit + smoke
+pytest -m "not integration and not e2e and not slow" -n auto
+
+# Main: unit + integration，排除 e2e
+pytest -m "not e2e" -n auto
+
+# Release: 全量
+pytest -n auto
+```
+
+---
+
+**版本**: 1.1.0
 **兼容**: GitHub Actions v4+, GitLab CI 15.0+, pytest 7.0+
 **核心依赖**: `pytest-xdist`, `pytest-timeout`, `pytest-rerunfailures`, `pytest-cov`, `codecov`

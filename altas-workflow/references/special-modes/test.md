@@ -72,6 +72,10 @@
   - endpoint / query / rpc 范围
   - 契约版本或来源说明
 - 若缺少可用契约且行为无法从现有文档明确得出，**必须暂停**并提示用户补充契约，而不是猜测返回结构、状态码或字段语义
+- **可选：使用自动化工具从契约生成测试骨架**（详见 `references/testing/api-testing.md` "契约到测试自动化工具链"章节）：
+  - `schemathesis run openapi.yaml` — 从 OpenAPI 自动生成属性测试
+  - `datamodel-code-generator openapi.yaml` — 生成 Pydantic 模型用于断言
+  - `prism mock openapi.yaml` — 启动 mock server 用于依赖模拟
 
 ### 3) 确认测试框架
 

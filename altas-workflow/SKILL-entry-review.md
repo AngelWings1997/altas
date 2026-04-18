@@ -640,3 +640,508 @@
 - ✅ 已解决：25 项（A-L, N, P, Q, G, X, AD-AL）
 - ❌ 未解决：9 项（H, I, J, O, R, T, U, V, Y, Z, AB）
 - ⚠️ 部分解决：7 项（M, S, W, AA, AC）
+
+---
+
+## 深度 SDD + TDD 测试工程师专项复核（2026-04-18）
+
+> **复核视角**：以"测试开发工程师"为核心用户，评估 ALTAS Workflow 作为 SDD + TDD 技能在 pytest / API 测试场景下的实际可用性、工作流连贯性与纪律执行力。
+>
+> **复核方法**：逐一审读 `SKILL.md`、`references/superpowers/test-driven-development/SKILL.md`、`references/testing/` 全部 7 个文件、`references/special-modes/test.md`、`scripts/scaffold.py`、`references/spec-driven-development/spec-template.md`，从"测试工程师拿到这个 Skill 后能否高效完成日常工作"的角度识别差距。
+>
+> **与上一轮"面向测试工程师的优先补强项"的关系**：上一轮（P0-1 ~ P2-7）侧重"测试知识资产的前置化"（Test Strategy 结构化、契约驱动、脚手架模板等），本轮侧重"SDD + TDD 工作流的连贯性"与"测试工程师日常痛点的覆盖度"。
+
+---
+
+### 现有优势确认
+
+在识别差距前，先确认当前版本已具备的 SDD + TDD 优势（避免重复建议）：
+
+| 维度 | 已有能力 | 位置 |
+|------|----------|------|
+| TDD 铁律 | "No Spec, No Code" 与 "No production code without a failing test" 双重约束 | SKILL.md + TDD SKILL.md |
+| Test Strategy 强制结构化 | §4.4 固定最小结构 + TEST 模式统一字段 | spec-template.md + test.md |
+| 契约驱动 API 测试 | 默认输入源优先级 + 缺契约时暂停 | api-testing.md + test.md |
+| 失败归因三分法 | 产品/测试/环境缺陷分类 + 归因顺序 | test.md §8 |
+| pytest 知识库 | fixtures/parametrize/mock/async/coverage 全覆盖 | pytest-patterns.md (740行) |
+| API 测试知识库 | REST/GraphQL/gRPC/WebSocket 全覆盖 | api-testing.md (1153行) |
+| 测试脚手架模板 | conftest/factories/api_client/auth/db_rollback/matrix/report | test-scaffold-templates.md + templates/ |
+| 质量度量体系 | 12 指标 3 层级 + 评分卡 + 门禁 | test-quality-metrics.md |
+| CI/CD 集成 | GitHub Actions + GitLab CI 完整模板 | ci-cd-integration.md |
+| 测试数据管理 | Factory Boy + Faker + 隔离策略 + 并发安全 | test-data-management.md |
+| 压力场景验证 | 5 个测试专项压力场景 + 判定标准 | test-task-pressure-scenarios.md |
+| Spec-Aware TDD | Plan 定义 WHAT，TDD 定义 HOW to verify | TDD SKILL.md §Spec-Aware TDD |
+
+---
+
+### 新发现改进项
+
+#### TE-H1. TDD SKILL.md 完全是 TypeScript/Jest 示例，缺少 pytest 版 TDD 循环指南
+
+- **优先级：高**
+- **问题描述**：
+  - `references/superpowers/test-driven-development/SKILL.md` 的所有代码示例均为 TypeScript + Jest
+  - RED 阶段示例：`test('retries failed operations 3 times', async () => { ... })` + `expect(result).toBe('success')`
+  - GREEN 阶段示例：`async function retryOperation<T>(fn: () => Promise<T>): Promise<T> { ... }`
+  - Verify RED/GREEN 命令：`npm test path/to/test.test.ts`
+  - Bug Fix 示例：`test('rejects empty email', async () => { ... })` + `expect(result.error).toBe('Email required')`
+  - 对一个"特别优化给测试开发工程师、支持 pytest"的技能，TDD 核心循环只有 Jest 版本是一个显著缺口
+  - 测试工程师在 RED 阶段需要知道：如何用 `pytest.raises` 写预期失败的测试、如何用 `@pytest.mark.xfail` 标记预期失败
+  - 测试工程师在 GREEN 阶段需要知道：pytest 下"最简实现"的惯用写法
+  - 测试工程师在 REFACTOR 阶段需要知道：如何用 fixture 重构测试数据、如何用 parametrize 消除重复
+- **建议改进**：
+  - 在 `references/superpowers/test-driven-development/` 下新增 `pytest-tdd-cycle.md`，提供完整的 pytest 版 RED-GREEN-REFACTOR 示例：
+    - RED：`def test_retries_failed_operations():` + `pytest.raises` + 断言
+    - Verify RED：`pytest tests/test_retry.py -v` + 确认失败消息
+    - GREEN：最简实现（纯 Python，非 TypeScript）
+    - Verify GREEN：`pytest tests/test_retry.py -v` + 确认通过
+    - REFACTOR：提取 fixture + parametrize 消除重复
+    - Bug Fix 示例：`def test_rejects_empty_email():` + `with pytest.raises(ValidationError, match="Email required")`
+  - 或在 TDD SKILL.md 的 Spec-Aware TDD 章节后新增 "Pytest TDD Cycle" 子章节
+- **预期收益**：
+  - 测试工程师无需"翻译" Jest 示例到 pytest
+  - RED-GREEN-REFACTOR 循环与 pytest 惯用法直接对齐
+- **建议位置**：`references/superpowers/test-driven-development/pytest-tdd-cycle.md` 或 TDD SKILL.md 末尾
+
+#### TE-H2. Spec §4.4 Test Strategy → 第一个 RED 测试的衔接缺失
+
+- **优先级：高**
+- **问题描述**：
+  - 当前工作流：PLAN 阶段产出 §4.4 Test Strategy → EXECUTE 阶段进入 TDD 循环
+  - 但"如何从 Test Strategy 派生出第一个 RED 测试"这个关键衔接是隐式的
+  - TDD SKILL.md 的 Spec-Aware TDD 章节仅 8 行（351-359），只说了"If the Plan already specifies exact signatures and contracts, your RED test should verify that those contracts are currently unfulfilled"
+  - 对测试工程师而言，这是最关键的"从设计到执行"的转换点，需要更具体的指导：
+    - 如何从 P0 优先级选择第一个测试？
+    - 如何从 Requirement / Contract Traceability 映射到具体的 `test_` 函数？
+    - 如何从 Mock/Stub/Fake Strategy 决定第一个测试的依赖隔离方式？
+    - 如何从 Test Data Strategy 决定第一个测试的数据准备方式？
+- **建议改进**：
+  - 在 TDD SKILL.md 的 Spec-Aware TDD 章节扩展"First RED Test from Test Strategy"子章节：
+    ```markdown
+    ### First RED Test from Test Strategy
+
+    When entering EXECUTE(TDD) from a Spec with §4.4 Test Strategy:
+
+    1. **Pick the first test from P0 items** — start with the highest-risk, most critical path
+    2. **Map Contract Traceability to test name** — `<REQ/API-1>` becomes `test_<requirement_description>`
+    3. **Apply Mock Strategy** — if §4.4 says "isolate external API", use fixture + mock in first test
+    4. **Apply Test Data Strategy** — if §4.4 says "factory + rollback", set up factory in conftest first
+    5. **Write the RED test** — assert the contract is currently unfulfilled
+    6. **Verify RED** — run `pytest <test_file> -v`, confirm it fails for the right reason
+    ```
+  - 提供一个完整的 pytest 示例：从 §4.4 的 P0 条目 → 第一个 `test_` 函数 → Verify RED
+- **预期收益**：
+  - 消除"知道要测什么但不知道从哪开始写"的卡点
+  - 让 Test Strategy 真正成为可执行的测试起点
+- **建议位置**：TDD SKILL.md Spec-Aware TDD 章节（第 351-359 行后）
+
+#### TE-H3. scaffold.py 只生成 Spec 骨架，不生成测试基础设施
+
+- **优先级：高**
+- **问题描述**：
+  - `scripts/scaffold.py` 当前只生成 `mydocs/` 目录结构（specs/codemap/context/archive）+ Spec 模板文件
+  - 对测试工程师而言，首次接入一个项目时，最需要的是 `tests/` 目录结构 + pytest 配置 + conftest.py + factories.py
+  - 虽然已有 `references/testing/templates/` 下的模板文件，但 scaffold.py 不支持生成这些
+  - 这导致测试工程师需要手动复制模板或从零搭建测试基础设施
+- **建议改进**：
+  - 为 scaffold.py 增加 `--type test` 或 `--scaffold test` 选项：
+    ```
+    python scripts/scaffold.py --type test
+    ```
+  - 生成以下结构：
+    ```
+    tests/
+    ├── conftest.py          # 从 templates/conftest.py 复制
+    ├── factories.py         # 从 templates/factories.py 复制
+    ├── unit/
+    │   └── __init__.py
+    ├── integration/
+    │   ├── __init__.py
+    │   └── conftest.py      # 从 templates/db_rollback_fixture.py 复制
+    └── api/
+        ├── __init__.py
+        └── conftest.py      # 从 templates/api_client_fixture.py + auth_fixture.py 合并
+    pytest.ini                # 或在 pyproject.toml 中追加 [tool.pytest.ini_options]
+    ```
+  - 同时支持 `--type all` 生成 Spec + Test 双重骨架
+- **预期收益**：
+  - 测试工程师一键起测试工程，无需手动拼装
+  - 与 Spec 骨架生成对等，体现"测试工程师优先"
+- **建议位置**：`scripts/scaffold.py`
+
+#### TE-M1. 缺少 pytest 配置最佳实践模板
+
+- **优先级：中**
+- **问题描述**：
+  - `pytest-patterns.md` 提到了 `pytest.ini` 配置（第 484-492 行），但只是覆盖率相关的 3 行配置
+  - `ci-cd-integration.md` 提到了 `pyproject.toml [tool.pytest.ini_options]`（第 390-397 行），但只是 xdist 相关配置
+  - 缺少一份完整的 pytest 配置最佳实践模板，涵盖：
+    - markers 注册（slow/integration/e2e/flaky 等）
+    - addopts 默认选项（--tb=short, -q, --strict-markers 等）
+    - testpaths 配置
+    - norecursedirs 排除
+    - filterwarnings 配置
+    - log_cli 配置
+    - xdist 并行配置
+    - timeout 配置
+    - coverage 集成配置
+  - 测试工程师新接入项目时，pytest 配置是最先需要确定的基础设施之一
+- **建议改进**：
+  - 在 `references/testing/templates/` 下新增 `pytest_config.toml` 模板：
+    ```toml
+    [tool.pytest.ini_options]
+    testpaths = ["tests"]
+    addopts = "-v --tb=short --strict-markers"
+    markers = [
+        "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+        "integration: marks integration tests",
+        "e2e: marks end-to-end tests",
+        "flaky: known flaky tests (reruns enabled)",
+    ]
+    norecursedirs = ["*.egg", ".git", "venv", "__pycache__"]
+    filterwarnings = ["error", "ignore::DeprecationWarning"]
+    log_cli = true
+    log_cli_level = "WARNING"
+    ```
+  - 在 `test-scaffold-templates.md` 的模板清单中增加该模板
+- **预期收益**：
+  - 测试工程师不再需要从零拼凑 pytest 配置
+  - 统一团队 pytest 配置风格
+- **建议位置**：`references/testing/templates/pytest_config.toml`
+
+#### TE-M2. pytest-patterns.md 缺少工作流上下文映射
+
+- **优先级：中**
+- **问题描述**：
+  - `pytest-patterns.md` 是一个优秀的参考手册（740 行），覆盖了 fixture/parametrize/mock/async/coverage 等核心模式
+  - 但它是一个"知识库"而非"工作流指南"——没有告诉测试工程师在 ALTAS 工作流的哪个阶段该用哪个模式
+  - 例如：
+    - PLAN 阶段设计 Test Strategy 时，应该同时设计 fixture 策略（scope/依赖链/工厂模式）
+    - EXECUTE RED 阶段，应该用 `pytest.raises` 或 `@pytest.mark.xfail` 写预期失败的测试
+    - EXECUTE GREEN 阶段，应该用最简断言（`assert`），不追求 parametrize
+    - EXECUTE REFACTOR 阶段，才应该提取 fixture、引入 parametrize 消除重复
+    - TEST 模式补测时，应该优先用 parametrize 覆盖边界条件
+  - 当前文档没有这种"阶段 → 模式"的映射
+- **建议改进**：
+  - 在 `pytest-patterns.md` 开头新增"Workflow Context"章节：
+    ```markdown
+    ## Workflow Context: When to Use Each Pattern
+
+    | ALTAS Phase | pytest Patterns to Use | Why |
+    |-------------|----------------------|-----|
+    | PLAN (Test Strategy) | fixture scope 设计、目录结构规划 | 先设计后编码 |
+    | EXECUTE (RED) | `pytest.raises`、`@pytest.mark.xfail`、纯 `assert` | 写预期失败的测试 |
+    | EXECUTE (GREEN) | 最简断言、单一用例 | 最小实现通过测试 |
+    | EXECUTE (REFACTOR) | fixture 提取、`@pytest.mark.parametrize` 消除重复 | 测试代码重构 |
+    | TEST (补测) | `@pytest.mark.parametrize` 边界覆盖、Hypothesis 属性测试 | 系统化补测 |
+    | REVIEW | `--cov`、`--durations`、`--tb=short` | 质量验证 |
+    ```
+- **预期收益**：
+  - 测试工程师知道"什么时候该用什么模式"，而不是"有 740 行模式但不知道先用哪个"
+- **建议位置**：`references/testing/pytest-patterns.md` 开头（核心原则后）
+
+#### TE-M3. Test Strategy → 测试代码可追溯性验证缺失
+
+- **优先级：中**
+- **问题描述**：
+  - §4.4 Test Strategy 有"Requirement / Contract Traceability"字段，要求列出 `<REQ/API-1> -> <对应测试类型与用例>`
+  - 但 REVIEW 阶段没有验证机制来确认：
+    - 计划的 P0 测试是否全部编写？
+    - Requirement / Contract Traceability 中列出的每个条目是否都有对应测试？
+    - Quality Gates 是否达标？
+  - 这导致 Test Strategy 可能成为"写了但没人检查"的文档
+- **建议改进**：
+  - 在 REVIEW 阶段的"Spec-Code Fidelity"轴中增加 Test Strategy 合规性检查：
+    ```markdown
+    | Axis | Key Checks | Verdict | Evidence |
+    |------|-----------|---------|----------|
+    | Test Strategy Compliance | P0 测试是否全部编写；Traceability 条目是否都有对应测试；Quality Gates 是否达标 | PASS/FAIL/PARTIAL | `test file list + coverage report` |
+    ```
+  - 在 spec-template.md 的 §6 Review Verdict 中增加此轴
+- **预期收益**：
+  - Test Strategy 从"建议性文档"升级为"可验证的契约"
+  - 防止测试计划与实际测试之间的漂移
+- **建议位置**：`references/spec-driven-development/spec-template.md` §6 Review Verdict
+
+#### TE-M4. 缺少测试维护指南
+
+- **优先级：中**
+- **问题描述**：
+  - 当前所有测试参考文档都聚焦于"如何写测试"，但没有指导"如何维护测试"
+  - 测试工程师日常痛点：
+    - 什么时候应该删除测试？（被测功能已移除、测试重复、测试无价值）
+    - 什么时候应该更新测试？（需求变更、接口变更、重构后行为不变）
+    - 如何处理 flaky 测试？（标记、隔离、修复优先级）
+    - 如何处理测试债务？（Deferred Tests 追踪、技术债务登记）
+    - 测试代码的重构时机和策略？
+  - §4.4 Test Strategy 有"Deferred / Out of Scope Tests"字段，但没有后续追踪机制
+- **建议改进**：
+  - 新增 `references/testing/test-maintenance.md`，至少包含：
+    - 测试生命周期管理（创建 → 维护 → 退役）
+    - 测试删除决策树（功能移除 / 测试重复 / 测试无价值 → 删除；需求变更 → 更新）
+    - Flaky 测试处理流程（检测 → 标记 → 隔离 → 修复 → 验证）
+    - 测试债务追踪机制（与 §4.4 Deferred Tests 字段联动）
+    - 测试代码重构策略（fixture 提取、parametrize 合并、测试类重组）
+  - 在 Spec 模板的 §4.4 增加"Test Debt Register"可选字段
+- **预期收益**：
+  - 测试工程师有明确的"测试不是写完就不管了"的维护指南
+  - 降低测试套件随时间腐化的风险
+- **建议位置**：`references/testing/test-maintenance.md`（新文件）
+
+#### TE-M5. 缺少回归测试选择策略
+
+- **优先级：中**
+- **问题描述**：
+  - `ci-cd-integration.md` 提供了完整的 CI/CD 模板，但缺少"针对给定变更，应该运行哪些测试"的策略
+  - 测试工程师在 CI 优化时经常面临：
+    - 全量测试太慢（>10min），如何选择子集？
+    - 修改了 `src/services/order.py`，应该跑哪些测试？
+    - 如何基于变更文件自动选择相关测试？
+    - 如何区分 PR 级测试 vs Main 分支级测试 vs Release 级测试？
+  - 当前只有按测试层级（unit/integration/e2e）和按 marker（slow/integration）的粗粒度分片
+- **建议改进**：
+  - 在 `ci-cd-integration.md` 新增"Regression Test Selection"章节：
+    - 基于变更文件的测试选择策略（`pytest --co -q` + 文件依赖分析）
+    - 测试分层策略（PR: unit + affected integration; Main: full; Release: full + e2e + perf）
+    - pytest-testmon 或 pytest-picked 等工具的集成指引
+    - 变更影响分析模板（变更文件 → 受影响模块 → 应跑测试）
+- **预期收益**：
+  - CI 反馈速度提升（只跑相关测试）
+  - 测试工程师有明确的"测什么"策略，而非"全量跑"
+- **建议位置**：`references/testing/ci-cd-integration.md` 新增章节
+
+#### TE-M6. 缺少 API 测试环境搭建指南
+
+- **优先级：中**
+- **问题描述**：
+  - `api-testing.md` 提供了全面的 API 测试模式（REST/GraphQL/gRPC/WebSocket），但缺少"如何搭建 API 测试环境"的指导
+  - 测试工程师在开始 API 测试前需要：
+    - 如何用 TestClient（FastAPI/Starlette）做进程内测试？
+    - 如何用 Docker Compose 启动依赖服务（数据库、Redis、消息队列）？
+    - 如何用 mock server（Prism/WireMock）模拟外部 API？
+    - 如何用 testcontainers-python 做轻量级集成测试？
+    - httpx vs requests vs TestClient 的选型建议？
+  - `ci-cd-integration.md` 有 Docker Compose 测试环境模板，但偏 CI 场景，不覆盖本地开发场景
+- **建议改进**：
+  - 在 `api-testing.md` 的 Test Client 设置章节后新增"API Test Environment Setup"章节：
+    - 进程内测试：FastAPI TestClient / Flask test client
+    - 容器化测试：testcontainers-python / Docker Compose
+    - Mock Server：Prism（OpenAPI mock）/ WireMock
+    - HTTP Client 选型：httpx（异步支持）/ requests（同步）/ TestClient（进程内）
+    - 本地 vs CI 环境差异处理
+- **预期收益**：
+  - 测试工程师不再需要自己摸索 API 测试环境搭建
+  - 统一团队 API 测试环境策略
+- **建议位置**：`references/testing/api-testing.md` Test Client 设置章节后
+
+#### TE-L1. 缺少 BDD / pytest-bdd 桥接
+
+- **优先级：低**
+- **问题描述**：
+  - 许多测试工程师使用 BDD（Given/When/Then）风格编写测试
+  - ALTAS Spec 的 §1 Requirements 和 §4.4 Test Strategy 天然适合 BDD 映射：
+    - In-Scope → Feature 文件
+    - Acceptance Criteria → Scenario
+    - P0/P1/P2 → Scenario 优先级
+  - 但当前没有任何 pytest-bdd 集成指引
+- **建议改进**：
+  - 在 `pytest-patterns.md` 或独立文件中新增 BDD 桥接章节：
+    - Spec §1 Requirements → `.feature` 文件映射
+    - Spec §4.4 Test Strategy → `@pytest.mark` + `scenario()` 映射
+    - pytest-bdd 基本用法示例
+- **预期收益**：
+  - 覆盖使用 BDD 风格的测试工程师
+  - Spec 与 BDD 测试的无缝衔接
+- **建议位置**：`references/testing/pytest-patterns.md` 末尾或新文件
+
+#### TE-L2. 缺少测试代码审查清单
+
+- **优先级：低**
+- **问题描述**：
+  - 当前有 `testing-anti-patterns.md`（测试反模式），但缺少正向的"测试代码审查清单"
+  - 测试工程师在 Code Review 时需要快速检查测试质量，而非逐条对照反模式
+  - 应包含：
+    - 测试命名是否描述行为（`test_user_login_with_invalid_credentials`）
+    - AAA 模式是否清晰
+    - 断言是否充分（2-4 个/测试）
+    - Fixture 作用域是否合理
+    - Mock 是否必要（mock ratio < 30%）
+    - 测试是否独立（无执行顺序依赖）
+    - 边界条件是否覆盖
+    - 异常路径是否覆盖
+- **建议改进**：
+  - 新增 `references/testing/test-review-checklist.md`
+  - 或在 `pytest-patterns.md` 的最佳实践章节扩展
+- **预期收益**：
+  - 测试工程师有标准化的测试代码审查工具
+  - 提升团队测试代码质量一致性
+- **建议位置**：`references/testing/test-review-checklist.md` 或 `pytest-patterns.md`
+
+#### TE-L3. 缺少 Test Debt 追踪机制
+
+- **优先级：低**
+- **问题描述**：
+  - §4.4 Test Strategy 有"Deferred / Out of Scope Tests"字段，记录本轮不做的测试
+  - 但没有后续追踪机制：这些 Deferred Tests 什么时候补？谁负责？优先级如何？
+  - 也没有 flaky 测试的追踪机制（标记了 `@pytest.mark.flaky` 但没有登记到 Spec）
+  - 测试债务会随时间累积，最终导致测试套件不可信
+- **建议改进**：
+  - 在 Spec 模板的 §4.4 增加"Test Debt Register"可选字段：
+    ```markdown
+    - **Test Debt Register** (Optional):
+      - `<DEBT-1>`: <描述> | Priority: <P0/P1/P2> | ETA: <sprint/版本> | Owner: <谁负责>
+      - `<DEBT-2>`: <描述> | Priority: <P0/P1/P2> | ETA: <sprint/版本> | Owner: <谁负责>
+    ```
+  - 在 REVIEW 阶段检查 Test Debt Register 是否有未关闭项
+- **预期收益**：
+  - 测试债务可视化、可追踪、可治理
+  - 防止 Deferred Tests 永远被 Deferred
+- **建议位置**：`references/spec-driven-development/spec-template.md` §4.4
+
+#### TE-L4. 缺少 REST Client 选型指南
+
+- **优先级：低**
+- **问题描述**：
+  - `api-testing.md` 的 Test Client 设置只展示了 FastAPI TestClient
+  - 但 Python API 测试有多种 HTTP Client 选择：
+    - `httpx`：支持异步、HTTP/2、最现代
+    - `requests`：同步、最成熟、生态最丰富
+    - `TestClient`（FastAPI/Starlette）：进程内测试、无需启动服务器
+    - `aiohttp`：异步、适合异步 API 测试
+  - 不同选择影响测试架构、性能和可维护性
+- **建议改进**：
+  - 在 `api-testing.md` 新增"HTTP Client 选型"章节：
+    | Client | 同步/异步 | 适用场景 | 优点 | 缺点 |
+    |--------|----------|----------|------|------|
+    | TestClient | 同步 | FastAPI 进程内测试 | 最快、无需启动服务器 | 仅限 FastAPI/Starlette |
+    | httpx | 同步+异步 | 通用 API 测试 | 现代、支持 HTTP/2 | 需要启动服务器 |
+    | requests | 同步 | 简单 API 测试 | 最成熟 | 不支持异步 |
+- **预期收益**：
+  - 测试工程师有明确的选型依据
+- **建议位置**：`references/testing/api-testing.md` Test Client 设置章节
+
+#### TE-L5. conftest.py 模板可进一步丰富
+
+- **优先级：低**
+- **问题描述**：
+  - 当前 `references/testing/templates/conftest.py` 仅 48 行，包含基础 marker 注册和简单 fixture
+  - 可增加更多常见模式：
+    - 环境变量管理 fixture（`monkeypatch` + `.env.test`）
+    - 日志捕获 fixture（`caplog` 配置）
+    - 测试数据目录 fixture（`tmp_path` + 数据文件复制）
+    - API base URL fixture（支持环境变量覆盖）
+    - 随机种子固定 fixture（确保 Faker/Hypothesis 可重复）
+- **建议改进**：
+  - 扩展 `conftest.py` 模板，增加上述常见模式（作为注释/可选部分）
+  - 保持向后兼容，不破坏现有用户
+- **预期收益**：
+  - 测试工程师起步时获得更完整的 conftest 骨架
+- **建议位置**：`references/testing/templates/conftest.py`
+
+#### TE-L6. 缺少契约到测试的自动化工具链指引
+
+- **优先级：低**
+- **问题描述**：
+  - 当前强调"契约驱动"（先找 OpenAPI/Swagger/GraphQL Schema/Proto），但只停留在"手动读取契约 → 手动生成测试矩阵 → 手动编写测试"
+  - 业界已有多种工具可从契约自动生成测试骨架：
+    - `schemathesis`：从 OpenAPI Schema 自动生成属性测试
+    - `openapi-generator`：从 OpenAPI 生成 client SDK + 测试骨架
+    - `datamodel-code-generator`：从 OpenAPI 生成 Pydantic 模型
+    - `prism`：从 OpenAPI 启动 mock server
+  - 缺少这些工具的集成指引
+- **建议改进**：
+  - 在 `api-testing.md` 新增"Contract-to-Test Automation"章节：
+    - `schemathesis run openapi.yaml` 自动属性测试
+    - `openapi-generator-cli generate` 生成 client + 测试骨架
+    - `datamodel-code-generator openapi.yaml` 生成模型
+    - `prism mock openapi.yaml` 启动 mock server
+  - 在 TEST 模式的"识别契约来源"步骤后，增加"可选：使用自动化工具从契约生成测试骨架"
+- **预期收益**：
+  - 从"手动读契约写测试"升级为"工具辅助从契约生成测试"
+  - 大幅提升 API 测试编写效率
+- **建议位置**：`references/testing/api-testing.md` 新增章节 + `references/special-modes/test.md` 步骤 2 后
+
+---
+
+### 改进项优先级总览
+
+| ID | 问题 | 优先级 | 类别 | 建议位置 |
+|----|------|--------|------|----------|
+| TE-H1 | TDD SKILL.md 只有 Jest 示例，缺 pytest 版 TDD 循环 | **高** | SDD+TDD 连贯性 | TDD SKILL.md 或新文件 |
+| TE-H2 | Spec Test Strategy → 第一个 RED 测试衔接缺失 | **高** | SDD+TDD 连贯性 | TDD SKILL.md Spec-Aware TDD |
+| TE-H3 | scaffold.py 不生成测试基础设施 | **高** | 工具链完整性 | scripts/scaffold.py |
+| TE-M1 | 缺少 pytest 配置最佳实践模板 | **中** | 工具链完整性 | templates/pytest_config.toml |
+| TE-M2 | pytest-patterns.md 缺少工作流上下文映射 | **中** | SDD+TDD 连贯性 | pytest-patterns.md 开头 |
+| TE-M3 | Test Strategy → 测试代码可追溯性验证缺失 | **中** | 纪律执行力 | spec-template.md §6 |
+| TE-M4 | 缺少测试维护指南 | **中** | 测试工程师痛点 | test-maintenance.md（新） |
+| TE-M5 | 缺少回归测试选择策略 | **中** | CI/CD 效率 | ci-cd-integration.md |
+| TE-M6 | 缺少 API 测试环境搭建指南 | **中** | 测试工程师痛点 | api-testing.md |
+| TE-L1 | 缺少 BDD / pytest-bdd 桥接 | 低 | 覆盖面 | pytest-patterns.md 或新文件 |
+| TE-L2 | 缺少测试代码审查清单 | 低 | 质量保障 | test-review-checklist.md 或 pytest-patterns.md |
+| TE-L3 | 缺少 Test Debt 追踪机制 | 低 | 纪律执行力 | spec-template.md §4.4 |
+| TE-L4 | 缺少 REST Client 选型指南 | 低 | 测试工程师痛点 | api-testing.md |
+| TE-L5 | conftest.py 模板可进一步丰富 | 低 | 工具链完整性 | templates/conftest.py |
+| TE-L6 | 缺少契约到测试的自动化工具链指引 | 低 | 效率提升 | api-testing.md + test.md |
+
+---
+
+### 本轮复核总结
+
+**核心发现**：ALTAS Workflow 的测试知识资产已经非常丰富（pytest-patterns 740行、api-testing 1153行、test-data-management 768行、ci-cd-integration 1143行、test-quality-metrics 899行），但存在三个结构性差距：
+
+1. **SDD → TDD 工作流连贯性断裂**（TE-H1, TE-H2, TE-M2）：测试工程师知道"要测什么"（Test Strategy），但不知道"从哪开始写第一个测试"（First RED Test），且 TDD 循环示例全是 Jest 而非 pytest。这导致 Test Strategy 与实际测试编写之间存在"最后一公里"的鸿沟。
+
+2. **工具链不完整**（TE-H3, TE-M1, TE-L5, TE-L6）：scaffold.py 只生成 Spec 骨架不生成测试骨架、缺少 pytest 配置模板、conftest.py 模板偏简单、缺少契约到测试的自动化工具链。测试工程师需要手动拼装这些基础设施。
+
+3. **测试全生命周期覆盖不足**（TE-M3, TE-M4, TE-M5, TE-L3）：当前聚焦于"写测试"阶段，缺少"维护测试"（测试维护指南）、"验证测试"（Test Strategy 合规性检查）、"选择测试"（回归测试选择策略）和"追踪测试债务"（Test Debt Register）的指导。
+
+**演进建议**：
+- **短期**（v4.8）：解决 TE-H1 + TE-H2 + TE-H3，补齐 SDD→TDD 连贯性和工具链
+- **中期**（v5.0）：解决 TE-M1 ~ TE-M6，完善测试工程师日常痛点覆盖
+- **长期**（v5.x）：解决 TE-L1 ~ TE-L6，扩展覆盖面和效率提升
+
+---
+
+*本轮深度复核完成时间：2026-04-18*
+*复核视角：SDD + TDD 测试工程师专项*
+*复核范围：SKILL.md + TDD SKILL.md + testing/ 全部 7 个文件 + test.md + scaffold.py + spec-template.md*
+
+---
+
+### 实现状态更新（2026-04-18 实施）
+
+所有 15 项改进已全部实施：
+
+| ID | 问题 | 优先级 | 状态 | 实施内容 |
+|----|------|--------|------|----------|
+| TE-H1 | TDD SKILL.md 只有 Jest 示例 | **高** | **✅ 已实现** | 新增 `references/superpowers/test-driven-development/pytest-tdd-cycle.md`（完整 pytest 版 RED-GREEN-REFACTOR 指南 + Bug Fix 示例 + Spec-Aware TDD 示例） |
+| TE-H2 | Spec → 第一个 RED 测试衔接缺失 | **高** | **✅ 已实现** | 扩展 TDD SKILL.md Spec-Aware TDD 章节，新增 "First RED Test from Test Strategy" 子章节（6 步流程 + pytest 示例） |
+| TE-H3 | scaffold.py 不生成测试基础设施 | **高** | **✅ 已实现** | scaffold.py 增加 `--type spec\|test\|all` 选项，生成 tests/ 目录 + conftest.py + factories.py + pytest 配置 |
+| TE-M1 | 缺少 pytest 配置模板 | **中** | **✅ 已实现** | 新增 `references/testing/templates/pytest_config.toml` + scaffold.py 内嵌 PYTEST_CONFIG_TOML |
+| TE-M2 | pytest-patterns.md 缺少工作流映射 | **中** | **✅ 已实现** | pytest-patterns.md 开头新增 "Workflow Context" 章节（ALTAS 阶段 → pytest 模式映射表） |
+| TE-M3 | Test Strategy 合规性验证缺失 | **中** | **✅ 已实现** | spec-template.md §6 Review Verdict 增加 "Test Strategy Compliance" 检查轴 |
+| TE-M4 | 缺少测试维护指南 | **中** | **✅ 已实现** | 新增 `references/testing/test-maintenance.md`（生命周期 + 删除决策树 + Flaky 处理 + 重构策略 + 债务管理） |
+| TE-M5 | 缺少回归测试选择策略 | **中** | **✅ 已实现** | ci-cd-integration.md 新增 "回归测试选择策略" 章节（分层策略 + pytest-testmon + 变更影响分析模板 + Marker 分片） |
+| TE-M6 | 缺少 API 测试环境搭建指南 | **中** | **✅ 已实现** | api-testing.md 新增 "API 测试环境搭建" 章节（HTTP Client 选型 + TestClient + httpx + Prism + testcontainers + Docker Compose + 本地/CI 差异） |
+| TE-L1 | 缺少 BDD/pytest-bdd 桥接 | 低 | **✅ 已实现** | pytest-patterns.md 末尾新增 "BDD / pytest-bdd 桥接" 章节（Feature 文件映射 + pytest-bdd 代码 + Spec→BDD 映射规则） |
+| TE-L2 | 缺少测试代码审查清单 | 低 | **✅ 已实现** | 新增 `references/testing/test-review-checklist.md`（8 类审查项 + 快速判定规则） |
+| TE-L3 | 缺少 Test Debt 追踪 | 低 | **✅ 已实现** | spec-template.md §4.4 新增 "Test Debt Register" 可选字段 |
+| TE-L4 | 缺少 REST Client 选型 | 低 | **✅ 已实现** | api-testing.md "API 测试环境搭建" 章节包含 HTTP Client 选型对比表 |
+| TE-L5 | conftest.py 模板偏简单 | 低 | **✅ 已实现** | conftest.py 模板扩展：新增 e2e/flaky marker + 随机种子固定 + env_vars fixture + tmp_data_dir fixture |
+| TE-L6 | 缺少契约到测试自动化工具链 | 低 | **✅ 已实现** | api-testing.md 新增 "契约到测试自动化工具链" 章节（schemathesis + openapi-generator + datamodel-code-generator + Prism）+ test.md 步骤 2 增加自动化工具提示 |
+
+**新增文件：**
+- `references/superpowers/test-driven-development/pytest-tdd-cycle.md`
+- `references/testing/templates/pytest_config.toml`
+- `references/testing/test-maintenance.md`
+- `references/testing/test-review-checklist.md`
+
+**修改文件：**
+- `references/superpowers/test-driven-development/SKILL.md`（Spec-Aware TDD 扩展）
+- `scripts/scaffold.py`（增加 --type test/all）
+- `references/testing/pytest-patterns.md`（Workflow Context + BDD 桥接）
+- `references/testing/api-testing.md`（环境搭建 + 契约自动化）
+- `references/testing/ci-cd-integration.md`（回归测试选择策略）
+- `references/testing/templates/conftest.py`（丰富 fixture）
+- `references/spec-driven-development/spec-template.md`（Test Strategy Compliance + Test Debt Register）
+- `references/special-modes/test.md`（契约自动化工具提示）

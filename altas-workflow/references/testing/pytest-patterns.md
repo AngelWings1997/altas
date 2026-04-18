@@ -2,7 +2,20 @@
 
 > **来源**: 整合自 `.agents/skills/pytest-patterns` 核心内容
 > **调用时机**: TEST 模式下需要编写 Python 测试时加载
-> **配合使用**: `references/testing/api-testing.md`（API 测试场景）
+> **配合使用**: `references/testing/api-testing.md`（API 测试场景）、`references/superpowers/test-driven-development/pytest-tdd-cycle.md`（TDD 循环）
+
+---
+
+## Workflow Context: 何时使用哪种模式
+
+| ALTAS 阶段 | 推荐使用的 pytest 模式 | 原因 |
+|------------|----------------------|------|
+| PLAN（Test Strategy） | fixture scope 设计、目录结构规划、marker 注册 | 先设计后编码 |
+| EXECUTE（RED） | `pytest.raises`、`@pytest.mark.xfail`、纯 `assert` | 写预期失败的测试 |
+| EXECUTE（GREEN） | 最简断言、单一用例、不追求 parametrize | 最小实现通过测试 |
+| EXECUTE（REFACTOR） | fixture 提取、`@pytest.mark.parametrize` 消除重复 | 测试代码重构 |
+| TEST（补测） | `@pytest.mark.parametrize` 边界覆盖、Hypothesis 属性测试 | 系统化补测 |
+| REVIEW | `--cov`、`--durations`、`--tb=short` | 质量验证 |
 
 ---
 
@@ -736,5 +749,81 @@ def test_user_validation(user):
     assert user.age >= 18
 ```
 
-**版本**: 1.1.0
+**版本**: 1.2.0
 **兼容**: pytest 7.0+, Python 3.8+
+
+---
+
+## BDD / pytest-bdd 桥接
+
+> 当团队使用 Given/When/Then 风格编写测试时，可通过 pytest-bdd 将 Spec §1 Requirements 映射为 `.feature` 文件。
+
+### Spec → Feature 文件映射
+
+```gherkin
+# features/create_order.feature
+Feature: Create Order
+  As a customer
+  I want to create an order
+  So that I can purchase products
+
+  Scenario: Successfully create order
+    Given a valid product with ID 1
+    And I am authenticated as user "alice"
+    When I POST /api/orders with {"product_id": 1, "quantity": 2}
+    Then the response status code is 201
+    And the response contains "order_id"
+
+  Scenario: Reject empty product ID
+    Given I am authenticated as user "alice"
+    When I POST /api/orders with {"product_id": null, "quantity": 2}
+    Then the response status code is 422
+```
+
+### pytest-bdd 测试代码
+
+```python
+# tests/api/test_create_order_bdd.py
+import pytest
+from pytest_bdd import scenarios, given, when, then
+
+scenarios("features/create_order.feature")
+
+@given("a valid product with ID 1")
+def valid_product(db_session):
+    product = ProductFactory(id=1, name="Widget", price=9.99)
+    db_session.add(product)
+    db_session.commit()
+    return product
+
+@given('I am authenticated as user "alice"')
+def auth_as_alice(client):
+    response = client.post("/auth/login", json={"username": "alice", "password": "test"})
+    return {"Authorization": f"Bearer {response.json()['token']}"}
+
+@when('I POST /api/orders with {"product_id": 1, "quantity": 2}')
+def create_order(client, auth_as_alice):
+    client.response = client.post(
+        "/api/orders",
+        json={"product_id": 1, "quantity": 2},
+        headers=auth_as_alice,
+    )
+
+@then("the response status code is 201")
+def check_201(client):
+    assert client.response.status_code == 201
+
+@then('the response contains "order_id"')
+def check_order_id(client):
+    assert "order_id" in client.response.json()
+```
+
+### Spec §4.4 → BDD 映射规则
+
+| Spec 字段 | BDD 映射 |
+|-----------|----------|
+| §1.2 In-Scope | Feature 文件列表 |
+| §1.4 Acceptance Criteria | Scenario |
+| §4.4 P0/P1/P2 | Scenario tag `@P0`/`@P1`/`@P2` |
+| §4.4 Mock Strategy | `@given` 中的 mock/stub 设置 |
+| §4.4 Test Data Strategy | `@given` 中的 factory/fixture |

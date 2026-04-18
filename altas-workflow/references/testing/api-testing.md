@@ -94,6 +94,156 @@ def api_base_url():
 
 ---
 
+## API 测试环境搭建
+
+### HTTP Client 选型
+
+| Client | 同步/异步 | 适用场景 | 优点 | 缺点 |
+|--------|----------|----------|------|------|
+| `TestClient`（FastAPI） | 同步 | FastAPI 进程内测试 | 最快、无需启动服务器 | 仅限 FastAPI/Starlette |
+| `httpx` | 同步+异步 | 通用 API 测试 | 现代、支持 HTTP/2、API 与 requests 兼容 | 需要启动服务器 |
+| `requests` | 同步 | 简单 API 测试 | 最成熟、生态最丰富 | 不支持异步、无类型提示 |
+| `aiohttp` | 异步 | 异步 API 测试 | 原生异步 | API 较底层 |
+
+**推荐**：FastAPI 项目用 `TestClient`；其他项目用 `httpx`。
+
+### 进程内测试（TestClient）
+
+```python
+import pytest
+from fastapi.testclient import TestClient
+from main import app
+
+@pytest.fixture
+def client():
+    return TestClient(app)
+
+def test_create_order(client):
+    response = client.post("/api/orders", json={"product_id": 1})
+    assert response.status_code == 201
+```
+
+### 外部服务测试（httpx + 真实服务器）
+
+```python
+import pytest
+import httpx
+
+@pytest.fixture(scope="module")
+def base_url():
+    return "http://localhost:8000"
+
+def test_health_check(base_url):
+    response = httpx.get(f"{base_url}/health")
+    assert response.status_code == 200
+```
+
+### Mock Server（Prism - OpenAPI Mock）
+
+```bash
+# 安装 Prism
+npm install -g @stoplight/prism-cli
+
+# 从 OpenAPI spec 启动 mock server
+prism mock openapi.yaml --port 4010
+
+# 在测试中使用 mock server
+```
+
+```python
+import pytest
+import httpx
+
+@pytest.fixture(scope="session")
+def mock_api():
+    return "http://localhost:4010"
+
+def test_against_mock(mock_api):
+    response = httpx.get(f"{mock_api}/api/users")
+    assert response.status_code == 200
+```
+
+### 容器化测试（testcontainers-python）
+
+```python
+import pytest
+from testcontainers.postgres import PostgresContainer
+from testcontainers.redis import RedisContainer
+
+@pytest.fixture(scope="session")
+def postgres():
+    with PostgresContainer("postgres:15") as pg:
+        yield pg.get_connection_url()
+
+@pytest.fixture(scope="session")
+def redis():
+    with RedisContainer("redis:7") as rc:
+        yield rc.get_connection_url()
+```
+
+### Docker Compose 测试环境
+
+```yaml
+# docker-compose.test.yml
+version: "3.8"
+services:
+  api:
+    build: .
+    environment:
+      - DATABASE_URL=postgresql://test:test@db:5432/testdb
+      - REDIS_URL=redis://redis:6379
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: testdb
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U test"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  redis:
+    image: redis:7
+```
+
+```bash
+# 启动测试环境
+docker compose -f docker-compose.test.yml up -d --wait
+
+# 运行 API 测试
+pytest tests/api/ -v
+
+# 清理
+docker compose -f docker-compose.test.yml down -v
+```
+
+### 本地 vs CI 环境差异处理
+
+```python
+import os
+import pytest
+
+@pytest.fixture(scope="session")
+def api_base_url():
+    if os.getenv("CI"):
+        return "http://api:8000"  # Docker Compose 内部网络
+    return "http://localhost:8000"  # 本地开发
+
+@pytest.fixture(scope="session")
+def db_url():
+    if os.getenv("CI"):
+        return "postgresql://test:test@db:5432/testdb"
+    return os.getenv("DATABASE_URL", "postgresql://localhost:5432/testdb")
+```
+
+---
+
 ## 1. 输入验证测试
 
 ### 必填字段验证
@@ -518,6 +668,98 @@ pip install pytest-httpx pytest-factoryboy hypothesis jsonschema
 | `jsonschema` | Schema 验证 |
 | `graphql-client` | GraphQL 测试 |
 | `grpcio-tools` | gRPC 测试 |
+
+---
+
+## 契约到测试自动化工具链
+
+> 从 OpenAPI/GraphQL Schema/Proto 自动生成测试骨架，减少手动编写。
+
+### schemathesis — 从 OpenAPI 自动生成属性测试
+
+```bash
+pip install schemathesis
+
+# 从 OpenAPI spec 自动生成并运行属性测试
+schemathesis run openapi.yaml --base-url http://localhost:8000
+
+# 只测试特定端点
+schemathesis run openapi.yaml --endpoint /api/orders --method POST
+
+# 生成 pytest 测试文件
+schemathesis run openapi.yaml --hypothesis-max-examples=100
+```
+
+```python
+# 也可在 pytest 中使用
+import schemathesis
+from hypothesis import settings
+
+schema = schemathesis.from_path("openapi.yaml")
+
+@schema.parametrize()
+@settings(max_examples=50)
+def test_api_compliance(case):
+    response = case.call()
+    case.validate_response(response)
+```
+
+### openapi-generator — 从 OpenAPI 生成 Client SDK + 测试骨架
+
+```bash
+# 安装
+npm install -g @openapitools/openapi-generator-cli
+
+# 生成 Python client
+openapi-generator-cli generate \
+  -i openapi.yaml \
+  -g python \
+  -o generated-client/
+
+# 生成的 client 包含测试骨架
+# generated-client/test/
+```
+
+### datamodel-code-generator — 从 OpenAPI 生成 Pydantic 模型
+
+```bash
+pip install datamodel-code-generator
+
+# 从 OpenAPI 生成 Pydantic 模型（用于测试断言）
+datamodel-code-generator openapi.yaml --output models.py
+```
+
+```python
+# 在测试中使用生成的模型进行响应验证
+from generated_models import OrderResponse
+
+def test_create_order_schema(client):
+    response = client.post("/api/orders", json={"product_id": 1})
+    order = OrderResponse(**response.json())
+    assert order.id is not None
+```
+
+### Prism — 从 OpenAPI 启动 Mock Server
+
+```bash
+npm install -g @stoplight/prism-cli
+
+# 启动 mock server（用于前端/集成测试）
+prism mock openapi.yaml --port 4010
+
+# 验证 API 实现是否符合 spec
+prism verify openapi.yaml --base-url http://localhost:8000
+```
+
+### 工具链集成建议
+
+| 场景 | 工具 | 用途 |
+|------|------|------|
+| 自动属性测试 | schemathesis | 从 OpenAPI 自动生成数百个测试用例 |
+| Client SDK 生成 | openapi-generator | 生成类型安全的 API client |
+| 模型生成 | datamodel-code-generator | 生成 Pydantic 模型用于断言 |
+| Mock Server | Prism | 前端/集成测试的依赖模拟 |
+| 契约验证 | Prism verify | 验证实现是否符合 spec |
 
 ---
 

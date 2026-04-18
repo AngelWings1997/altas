@@ -358,6 +358,33 @@ When working under a Spec-Driven Development workflow (e.g., ALTAS Workflow):
 - If your test reveals that the Plan's design is flawed, STOP and update the Spec first (Reverse Sync rule).
 - The "delete existing code" rule applies when you wrote implementation code BEFORE any test. If the Plan told you what to build and you wrote it before testing, you still must delete and rebuild from tests.
 
+### First RED Test from Test Strategy
+
+When entering EXECUTE(TDD) from a Spec with §4.4 Test Strategy:
+
+1. **Pick the first test from P0 items** — start with the highest-risk, most critical path
+2. **Map Contract Traceability to test name** — `<REQ/API-1>` becomes `test_<requirement_description>`
+3. **Apply Mock Strategy** — if §4.4 says "isolate external API", use fixture + mock in first test
+4. **Apply Test Data Strategy** — if §4.4 says "factory + rollback", set up factory in conftest first
+5. **Write the RED test** — assert the contract is currently unfulfilled
+6. **Verify RED** — run test, confirm it fails for the right reason (feature missing, not typo)
+
+**Example (pytest):**
+
+§4.4 says: P0 = `POST /api/orders` must return 201; Mock = isolate payment gateway; Data = factory + rollback
+
+```python
+def test_create_order_returns_201(client):
+    response = client.post("/api/orders", json={
+        "product_id": 1, "quantity": 2,
+    })
+    assert response.status_code == 201
+```
+
+Verify: `pytest tests/api/test_orders.py -v` → FAIL (endpoint not yet implemented)
+
+**For pytest-specific TDD cycle details**, load `pytest-tdd-cycle.md`.
+
 ## Debugging Integration
 
 Bug found? Write failing test reproducing it. Follow TDD cycle. Test proves fix and prevents regression.

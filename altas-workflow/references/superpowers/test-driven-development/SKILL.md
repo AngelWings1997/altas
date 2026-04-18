@@ -355,6 +355,14 @@ Can't check all boxes? You skipped TDD. Start over.
 
 When working under a Spec-Driven Development workflow (e.g., ALTAS Workflow):
 
+- **TDD Adaptation Rules by Plan Precision**
+
+| Plan 精度 | TDD RED 策略 | 说明 |
+|-----------|-------------|------|
+| **签名级**（Plan 已定义精确签名、参数、返回类型） | 写测试验证 Plan 定义的行为会失败 | 不猜实现，用测试确认 Plan 中声明的接口当前不存在或行为不符 |
+| **行为级**（Plan 描述了预期行为但未精确定义签名） | 完整 RED-GREEN-REFACTOR | 先写测试定义行为，再实现，符合标准 TDD |
+| **探索级**（Plan 仅标注方向，细节待确定） | 完整 TDD + 设计探索 | 测试驱动接口设计，允许迭代签名 |
+
 - **The Spec's Plan section defines WHAT, TDD defines HOW to verify it.**
 - If the Plan already specifies exact signatures and contracts, your RED test should verify that those contracts are currently unfulfilled — not guess at implementation.
 - If the Plan only describes behavior at a high level, follow the standard TDD cycle to design and verify the interface.

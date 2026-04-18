@@ -63,6 +63,8 @@ WHEN code review is complete:
    - List of unimplemented requirements
    - Recommended actions
 
+### Coverage Thresholds And Actions
+
 5. ACT on results
    - 100% coverage → Proceed to merge/archive
    - >80% coverage → Note gaps, user decides

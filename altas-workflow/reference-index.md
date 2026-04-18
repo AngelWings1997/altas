@@ -32,6 +32,8 @@
 | 文件 | 调用时机 |
 |------|----------|
 | `references/entry/aliases.md` | 需要确认入口触发词、别名，或查看 `MULTI` 模式控制词时 |
+| `references/entry/first-response.md` | 需要初始化提示、首轮响应模板、澄清规则或原子化拆解要求时 |
+| `references/entry/skill-content-map.md` | 需要核对 `SKILL.md` 精简后，被移出内容的落点映射时 |
 | `references/entry/sources.md` | 需要了解入口整合来源、方法论来源映射或做工作流介绍时 |
 | `references/entry/exceptions-recovery.md` | 遇到问题升级、不确定、需要退出协议或能力降级时 |
 
@@ -69,6 +71,7 @@
 |------|------|----------|
 | `references/superpowers/writing-plans/SKILL.md` | Superpowers | 写Plan拆解任务时 |
 | `references/superpowers/writing-plans/plan-document-reviewer-prompt.md` | Superpowers | Plan文档审查时 |
+| `references/testing/test-strategy-template.md` | ALTAS | 需要统一输出 `Test Strategy` 结构时 |
 
 ### EXECUTE / 代码实现
 
@@ -107,6 +110,7 @@
 
 | 文件 | 来源 | 调用时机 |
 |------|------|----------|
+| `references/checkpoint-driven/checkpoints.md` | ALTAS | 需要完整检查点模板、暂停规则或 Batch Override 约束时 |
 | `references/checkpoint-driven/modules.md` | SDD-RIPER-Opt | 进入Review时 (含Deep/Debug/Review/Multi模块) |
 | `references/superpowers/verification-before-completion/SKILL.md` | Superpowers | 完成前验证时 |
 | `references/superpowers/requesting-code-review/SKILL.md` | Superpowers | 请求代码审查时 |
@@ -203,6 +207,7 @@
 | 文件 | 来源 | 调用时机 |
 |------|------|----------|
 | `references/special-modes/test.md` | Special Modes | 进入 TEST 模式时 |
+| `references/testing/test-strategy-template.md` | ALTAS | 需要统一 `Test Strategy` 字段结构时 |
 | `references/prd-analysis/testability-checklist.md` | PRD Analysis | PRD 阶段进行可测试性评审时 |
 | `references/testing/pytest-patterns.md` | Advanced Testing Skills | Python 项目编写测试时 |
 | `references/testing/api-testing.md` | Advanced Testing Skills | Python API 项目编写测试时 |

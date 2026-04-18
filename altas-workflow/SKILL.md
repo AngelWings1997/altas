@@ -22,7 +22,11 @@ min_context_window: 128k
 | 我要找 | 去这里 |
 |--------|--------|
 | 触发词/别名 | `references/entry/aliases.md` |
+| 首轮响应模板 | `references/entry/first-response.md` |
+| 删减内容落点对照 | `references/entry/skill-content-map.md` |
 | 完整参考索引 | `reference-index.md` |
+| 检查点与批量执行 | `references/checkpoint-driven/checkpoints.md` |
+| 测试策略模板 | `references/testing/test-strategy-template.md` |
 | 特殊模式协议 | `references/special-modes/` (DEBUG/REVIEW/REFACTOR/TEST/PERF/MIGRATE) |
 | PRD 分析 | `references/prd-analysis/` (SKILL.md/template.md/validation.md) |
 | 平台工具映射 | `references/superpowers/using-superpowers/SKILL.md` |
@@ -242,193 +246,26 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 
 ## 首轮响应契约
 
-### 只有触发词，没有任务
+入口层只保留最小要求：
 
-输出初始化提示并暂停：
-
-> **ALTAS Workflow v4.7 已加载**
->
-> **COMMITMENT:** I am using ALTAS Workflow v4.7 for this session. I will follow all Iron Rules without exception.
->
-> 当前状态：`[IDLE]`
-> 可用触发（主形式）: `>>` / `FAST` | `sdd_bootstrap` | `DEEP` | `DEBUG` | `MULTI` | `CROSS` | `DOC` | `MAP` | `PROJECT MAP` | `ARCHIVE` | `REVIEW` | `REVIEW SPEC` | `REVIEW EXECUTE` | `REFACTOR` | `TEST` | `PERF` | `MIGRATE`
-> 常用中文触发词: `快速` | `排查` | `写文档` | `链路梳理` / `只看代码` | `项目总图` / `全局地图` | `代码审查` / `审查 PR` | `重构` | `写测试` / `补测试` | `性能优化` | `迁移` / `版本升级` | `跨项目` | `验证功能`
-> 退出指令: `EXIT ALTAS`
->
-> 请描述任务，我将先给出：任务复述 / 模式 / 规模 / 是否只读 / 是否需要执行许可 / 下一步。
->
-> `MULTI` 进入后可继续使用：`SWITCH <project_id>` | `REGISTRY` | `SCOPE LOCAL`
-> 完整别名字典: `references/entry/aliases.md`
-
-### 任务不明确
-
-如果用户任务存在以下模糊信号，**必须先澄清再进入后续流程**（遵守铁律#10）：
-
-| 模糊信号 | 示例 | 处理方式 |
-|----------|------|----------|
-| 缺少明确目标 | "看看这个文件" | 询问：具体要做什么？分析/修改/审查？ |
-| 范围不清 | "优化一下代码" | 询问：优化哪部分？性能/可读性/结构？ |
-| 需求矛盾 | "快速且彻底地重构" | 询问：优先级是速度还是彻底性？ |
-| 关键信息缺失 | "修复 bug" | 询问：什么 bug？如何复现？预期行为？ |
-
-**处理流程：**
-1. 识别模糊点
-2. 输出澄清问题列表
-3. 暂停等待用户确认
-4. 收到确认后再进行规模评估和模式路由
-
-### 已有明确任务
-
-首轮回复默认包含：
-
-- `任务复述`
-- `模式`
-- `规模`
-- `是否只读`
-- `是否需要执行许可`
-- `参考文档`
-- `下一步`
-
-> **⚠️ 原子化拆解强制要求**：首轮响应中的"当前原子步骤清单"是**必填项**，不论规模均须输出。详细的持续拆解要求见下方"从接收任务到 PLAN 的拆解要求"章节。
-
-### 首轮响应固定模板
-
-```markdown
-### 任务复述
-- [用 1-3 句复述用户目标、范围、限制条件]
-
-### 路由判断
-- **主路由**：[`Coding` / `DEBUG` / `DOC` / `MAP` / `ARCHIVE` / `REVIEW` / `REFACTOR` / `TEST` / `PERF` / `MIGRATE` / `MULTI`]
-- **作用域修饰**：[`无` / `MULTI` / `CROSS`]
-- **是否只读**：[`是` / `否`]
-- **是否需要执行许可**：[`是` / `否`，并说明依据]
-
-### 规模依据
-- **规模**：[`XS` / `S` / `M` / `L`]
-- **判断依据**：[影响面 / 文件数 / 模块跨度 / 风险点]
-
-### 参考文档
-- [本轮需要先读取的参考文件或暂不需要]
-
-### 当前原子步骤清单 [必填]
-1. **步骤名**
-   - **目标**：[本步具体产出]
-   - **前置条件**：[依赖的文件、上下文、权限、用户确认]
-   - **操作步骤**：[读取什么 / 检查什么 / 执行什么]
-   - **预期结果**：[证据、结论、文件变化、判定标准]
-2. **步骤名**
-   - **目标**：...
-   - **前置条件**：...
-   - **操作步骤**：...
-   - **预期结果**：...
-
-> **规模适配**：XS 可精简为 1-2 个步骤但四字段结构不变；S 至少覆盖核心步骤；M/L 须完整拆解。
-
-### 阻塞与确认点
-- [若存在未知项、冲突或阻塞，逐条列出；若无，则写 `当前无阻塞`]
-```
-
-### 从接收任务到 PLAN 的拆解要求
-
-- 从用户首次给出任务开始，到正式进入 `PLAN` 之前，必须持续输出**原子化拆解**
-- 首轮回复中的 `下一步` 不得写成"先看看"、"先分析一下"这类笼统描述，必须拆成可执行的小步骤
-- 若任务规模为 `M/L`，在进入正式 `PLAN` 前，至少要给出一版"预备拆解"，覆盖从当前状态到形成可执行 Plan 之间的关键动作
-- 每个拆解项都必须明确：
-  - **目标**：该步要产出什么
-  - **前置条件**：需要哪些文件、上下文、权限、用户确认
-  - **操作步骤**：具体读取什么、检查什么、执行什么
-  - **预期结果**：完成后会得到什么证据、结论或文件变化
-- 若任一步骤存在未知项、依赖缺失、方案分歧或无法验证，必须暂停并找用户确认，禁止带着不确定性继续下钻
+- 用户只输入触发词、没有具体任务时：加载 `references/entry/first-response.md` 中的初始化提示并暂停。
+- 任务不明确时：必须先澄清，再做规模评估和模式路由。
+- 已有明确任务时：首轮回复至少包含 `任务复述 / 模式 / 规模 / 是否只读 / 是否需要执行许可 / 参考文档 / 下一步`。
+- 首轮响应中的“当前原子步骤清单”是必填项；详细模板与拆解要求见 `references/entry/first-response.md`。
 
 ## 检查点契约
 
 > **SOCIAL PROOF:** Checkpoints without TodoWrite tracking = steps get skipped. Every time. Unverified completion = bugs discovered later. Always.
 
-### 触发时机
+入口层只保留最小门禁：
 
-| 场景 | 是否必须输出 |
-|------|--------------|
-| 阶段转换时（Research → Plan → Execute → Review） | 必须 |
-| M/L 规模每完成一个 Plan 中的任务项 | 必须 |
-| 遇到异常、不确定性或解决不了的问题 | 立即输出（遵守铁律#10） |
-| 用户要求查看进度 | 必须 |
-| 上下文将满需要 Resume Ready | 必须（遵守铁律#8） |
-
-### 输出要求
-
-| 规模 | 输出要求 |
-|------|----------|
-| **XS** | 1 行 summary：做了什么 + 如何验证 |
-| **S** | 短 checkpoint：当前理解 / 核心目标 / 下一步 |
-| **M/L** | 完整检查点，逐步推进 |
-
-### 完整检查点模板（M/L）
-
-```markdown
-### 进度 [Phase ▸ Step]
-[已完成] ▸ **[当前]** ▸ [下一步] ▸ [后续...]
-
-### 当前成果
-- 刚完成了什么
-
-### 预期产出
-- 下一步将产出什么
-
-### 下一步操作
-- **[继续/Approved/直接执行]**: 同意，进入下一步
-- **[修改]** + 意见: 调整当前成果
-- **[升级为X]** / **[降级为X]**: 调整规模
-- **[加载参考: XXX]**: 查看某参考文档
-```
-
-### 检查点强制暂停规则
-
-- **M/L 规模执行中**：每个 Checklist 项完成后 **必须** 输出检查点 + `[WAITING FOR COMMAND]`，除非用户已触发 Batch Override（`全部` / `all` / `execute all` / `继续完成所有` / `一次性完成`）
-- **Batch Override 中的暂停**：即使处于批量执行模式，遇到以下情况也必须立即暂停：
-  - 测试失败且原因不明
-  - 发现 Spec 中未覆盖的场景
-  - 文件冲突或编辑失败
-  - 不确定下一步的正确实现方式
-- **违反此规则视为违反铁律#4（无批准不执行）和铁律#6（证据驱动）**
-
-### Batch Override Git 回滚强制约束
-
-> **CORE PRINCIPLE**: Batch Override without Git checkpoint = flying without a parachute. Never.
-
-**进入 Batch Override 前，必须完成以下 Git 检查点创建（按顺序执行，不可跳过）：**
-
-| 步骤 | 操作 | 验证标准 |
-|------|------|----------|
-| **1. Git 状态检查** | `git status` 确认工作区干净或已有改动已提交 | 工作区 clean 或用户确认保留未提交改动 |
-| **2. 创建检查点分支** | `git checkout -b checkpoint/batch-YYYYMMDD-HHmmss` | 分支创建成功，当前 HEAD 指向新分支 |
-| **3. 记录回滚元数据** | 在 Spec §5 Execute Log 写入 `Batch Execution Record` | 包含 checkpoint branch 名、回滚命令、batch_start_item |
-| **4. 运行基线测试** | 执行 Spec §4.4 定义的测试命令，确认基线通过 | 所有测试 PASS，或用户确认已知失败后可继续 |
-
-**缺少任一步骤 = 禁止进入 Batch Override。** 如果项目不是 Git 仓库，必须明确告知用户自动回滚不可用，并获得显式确认后才可继续。
-
-**Batch Override 失败时的回滚选项（必须提供给用户）：**
-
-```
-┌──────────────────────────────────────────────────────────────────┐
-│  ⚠️  Batch Override 失败 (Item M)                                 │
-│                                                                  │
-│  检查点分支: checkpoint/batch-YYYYMMDD-HHmmss                    │
-│  已完成项: N → M-1                                               │
-│                                                                  │
-│  请选择回滚策略：                                                 │
-│  (a) 修复当前失败，从 M+1 继续                                    │
-│  (b) 回滚到检查点: git reset --hard <checkpoint_branch>          │
-│  (c) 部分回滚到 Item K: 回滚后重新执行 N+1 → K                    │
-│  (d) 完全放弃，回到 PLAN 重新规划                                  │
-│                                                                  │
-│  等待用户指令...                                                  │
-└──────────────────────────────────────────────────────────────────┘
-```
-
-**回滚命令执行后必须：**
-1. 删除检查点分支（`git branch -D <checkpoint_branch>`）
-2. 切回原始分支（如适用）
-3. 更新 Spec §5 Execute Log 中的 `batch_status` 为 `rolled_back` 或 `completed`
+- 阶段转换时（Research -> Plan -> Execute -> Review）必须输出检查点。
+- `M/L` 规模每完成一个 Plan 中的任务项必须输出检查点。
+- 遇到异常、不确定性或解决不了的问题时立即输出检查点并暂停。
+- 用户要求查看进度时必须输出检查点。
+- 上下文将满需要 Resume Ready 时必须输出检查点。
+- `XS` 使用 1 行 summary；`S` 使用短 checkpoint；`M/L` 使用完整检查点模板。
+- 完整模板、暂停规则与 Batch Override Git 约束见 `references/checkpoint-driven/checkpoints.md`。
 
 ## 阶段门禁摘要
 
@@ -452,83 +289,35 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 
 ### PLAN
 
-- 拆分**原子级 Checklist**，每个任务项必须是单一动作（2-5分钟可完成）
-- 每个任务项必须明确：
-  - **目标**：做什么（具体产出物）
-  - **前置条件**：依赖什么（文件、状态、用户确认）
-  - **操作步骤**：具体怎么做（命令、代码、工具调用）
-  - **预期结果**：如何验证完成（输出、返回值、文件变化）
-- 禁止出现"TBD"、"TODO"、"后续补充"、"类似 Task X"等模糊描述
-- 必须包含 `§4.4 Test Strategy`，且**不得**只写成一句泛化描述（如"补充必要测试"）
-- `§4.4 Test Strategy` 必须按固定字段顺序输出；不适用项显式写 `N/A`，不得省略整个小节
-- `§4.4 Test Strategy` 的**固定最小结构**：
-  - **Test Framework**：使用什么测试框架
-  - **Run Command**：本地/CI 如何执行
-  - **Test Levels**：`unit / component / integration / e2e` 各自覆盖范围；不适用项也要显式写 `N/A`
-  - **Risk & Priority Matrix**：至少列出 `P0 / P1 / P2` 场景
-  - **Requirement / Contract Traceability**：需求、接口契约或 Spec 行为如何映射到测试
-  - **Mock / Stub / Fake Strategy**：哪些依赖用真实实现，哪些必须隔离
-  - **Test Data Strategy**：数据来源、隔离方式、清理方式
-  - **Quality Gates**：覆盖率、通过率、flaky 容忍度、时间预算等门禁
-- `TEST` 模式与 `M/L` 的 `PLAN` 阶段应使用**同一套字段名与顺序**的 `Test Strategy` 结构，避免“补测试”和“做功能”两套标准
+- 拆分原子级 Checklist，每个任务项必须是单一动作（2-5 分钟可完成）
+- 每个任务项必须明确 `目标 / 前置条件 / 操作步骤 / 预期结果`
+- 禁止出现 `TBD`、`TODO`、`后续补充`、`类似 Task X` 等模糊描述
+- 必须包含结构化 `Test Strategy`，不得只写成一句泛化描述
+- `TEST` 模式与 `M/L` 的 `PLAN` 阶段使用同一套 `Test Strategy` 字段结构
 - 未获批不进入 Execute（遵守铁律#4）
-- **必读**：进入 PLAN 前读取 `references/superpowers/writing-plans/SKILL.md`（含计划质量标准与原子任务结构要求）
+- **必读**：进入 PLAN 前读取 `references/superpowers/writing-plans/SKILL.md`
+- `Test Strategy` 固定字段模板见 `references/testing/test-strategy-template.md`
 
 ### EXECUTE
 
 - `XS`: 直接执行
 - `S`: micro-spec 后执行
-- `M/L`: TDD 执行（见下方 TDD 适配规则）
+- `M/L`: TDD 执行
 - 读取 `references/superpowers/test-driven-development/SKILL.md`；`L` 可追加 `references/superpowers/subagent-driven-development/SKILL.md`
-- **Python 项目编写测试时**加载 `references/testing/pytest-patterns.md`
-- **Python API 项目编写测试时**额外加载 `references/testing/api-testing.md`
-- **Python E2E 测试时**额外加载 `references/testing/e2e-testing.md`
-- **Python 性能测试时**额外加载 `references/testing/performance-testing.md`
-- **非 Python 项目测试参考**:
-  - Go: `references/testing/go-testing.md`（testify / ginkgo / httptest / gomock）
-- **微服务项目**额外加载 `references/testing/contract-testing.md`（Pact 消费者驱动契约测试）
-- **Python 安全测试时**额外加载 `references/testing/security-testing.md`
-- **Python 视觉测试时**额外加载 `references/testing/visual-testing.md`
-- **Python 移动端测试时**额外加载 `references/testing/mobile-testing.md`
-- **测试可观测性需求**加载 `references/testing/test-observability.md`
-- **测试维护/Flaky 处理**加载 `references/testing/test-maintenance.md`
-- **测试环境搭建**加载 `references/testing/test-environment.md`
-- **API 测试默认采用契约优先**：先识别 `OpenAPI / Swagger / GraphQL Schema / Proto` 等契约文件，再展开测试设计，禁止先从实现细节反推接口行为
-- **API 契约识别后的默认动作**：
-  - 识别契约来源文件与协议类型（REST / GraphQL / gRPC）
-  - 基于契约生成接口测试矩阵
-  - 按契约覆盖 `happy path / validation / auth / idempotency / error path / schema` 等核心场景
-- **缺少契约时**：若接口行为无法从现有 Spec/文档明确得出，必须暂停并提示用户补充契约文件或确认接口文档，禁止直接猜测 API 行为
-- **复杂测试数据场景**（批量数据、关联对象、并发）加载 `references/testing/test-data-management.md`
-- **CI/CD 集成需求**或**性能敏感功能**加载 `references/testing/ci-cd-integration.md`
-- **质量门禁/度量报告需求**加载 `references/testing/test-quality-metrics.md`
-- **`TEST` 模式出现失败时**：先做失败归因（`产品缺陷 / 测试缺陷 / 环境缺陷`）；若归因不明，建议切换到 `DEBUG`
-- **GraphQL API 项目**参考 `references/testing/api-testing.md` 第 8 节
-- **gRPC 服务项目**参考 `references/testing/api-testing.md` 第 9 节
-- **WebSocket 实时通信项目**参考 `references/testing/api-testing.md` 第 10 节
-
-#### TDD 适配规则（M/L Execute）
-
-| Plan 精度 | TDD RED 策略 | 说明 |
-|-----------|-------------|------|
-| **签名级**（Plan 已定义精确签名、参数、返回类型） | 写测试验证 Plan 定义的行为会失败 | 不"猜"实现，用测试确认 Plan 中声明的接口当前不存在或行为不符 |
-| **行为级**（Plan 描述了预期行为但未精确定义签名） | 完整 RED-GREEN-REFACTOR | 先写测试定义行为，再实现，符合标准 TDD |
-| **探索级**（Plan 仅标注方向，细节待确定） | 完整 TDD + 设计探索 | 测试驱动接口设计，允许迭代签名 |
-
-**核心原则**:
-- Plan 已精确到签名级时，RED 阶段的目标是"验证 Plan 定义的行为当前未被满足"，而非从零猜测实现
-- 仍然禁止先写实现代码再补测试——即使 Plan 已定义签名，也必须先让测试失败
-- 如果 Plan 中的签名在实际测试中被证明不合理，必须先更新 Spec 再调整实现（铁律#5）
+- Python / Go / 契约 / E2E / 性能 / 安全 / 视觉 / 移动端 / 可观测性 / 环境 / 维护 / 数据策略等专项测试加载规则，统一从 `reference-index.md` 的 `EXECUTE / 代码实现` 与 `TEST 模式` 索引进入
+- API 项目的契约优先、接口测试矩阵、GraphQL / gRPC / WebSocket 细则见 `references/testing/api-testing.md`
+- `TEST` 模式的测试流程、失败归因与测试骨架见 `references/special-modes/test.md`
+- 缺少契约且接口行为无法由现有 Spec 或文档明确得出时，必须暂停并提示用户补充契约文件
+- TDD 适配规则与 pytest 专项循环见：
+  - `references/superpowers/test-driven-development/SKILL.md`
+  - `references/superpowers/test-driven-development/pytest-tdd-cycle.md`
 
 ### REVIEW
 
 - `M/L` 必须做三轴评审：需求达成、Spec-Code 一致、代码质量
-- **轴 1**: 需求达成 → 对照 spec.md/requirements.md 中的 FR-XXX 需求
-- **轴 2**: Spec-Code 一致性 → **使用 `implementation-verify` 自动化验证**
-  - 运行 `bash references/superpowers/implementation-verify/scripts/verify.sh`
-  - 检查 FR 覆盖率、任务完成率、合约实现率
-  - 100% 覆盖 → 通过；>80% → 标注缺口；<80% → 打回 Execute
-- **轴 3**: 代码质量 → `go-code-review` / `python-code-review`
+- **轴 1**：需求达成，对照 `spec.md` / `requirements.md` 中的需求条目
+- **轴 2**：Spec-Code 一致性，使用 `implementation-verify` 自动化验证；覆盖率阈值与动作见 `references/superpowers/implementation-verify/SKILL.md`
+- **轴 3**：代码质量，使用 `go-code-review` / `python-code-review`
 - 轴 1 或轴 2 FAIL，回到 Research/Plan
 - 轴 3 FAIL，回到 Execute 修复代码问题
 - 读取 `references/checkpoint-driven/modules.md`
@@ -543,17 +332,11 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 ### PRD 分析
 
 - 适用所有需要 PRD 文档分析、验证、提升质量的场景
-- **阶段 0: Brainstorm** — 探询用户想法，明确问题、用户、约束、成功标准、范围边界
-- **阶段 1: Discover** — 识别已知与模板需求差距，并行启动市场分析、用户调研、需求澄清
-- **阶段 2: Document** — 更新 PRD 对应章节，替换 `[NEEDS CLARIFICATION]` 标记
-- **阶段 3: Review** — 呈现所有发现（含冲突信息），用户选择：批准/澄清/重新发现
-- **阶段 4: Validate** — 运行验证清单，多角度最终验证
-- **核心原则**：
-  - 只关注 WHAT（构建什么）和 WHY（为什么重要），不涉及 HOW（技术实现）
-  - 严格执行 MECE 原则（互斥且穷尽）验证用户画像、旅程、功能、验收标准
-  - 每个章节完成后需用户确认才能继续
-  - 输出位置：`.start/specs/[NNN]-[name]/requirements.md`
-- **必读**：`references/prd-analysis/SKILL.md`（完整工作流）、`template.md`（模板结构）、`validation.md`（验证清单）
+- 五阶段工作流与 WHAT / WHY 原则见 `references/prd-analysis/SKILL.md`
+- MECE 检查细则见 `references/prd-analysis/template.md`
+- 模板见 `references/prd-analysis/template.md`
+- 验证清单见 `references/prd-analysis/validation.md`
+- 输出位置：`.start/specs/[NNN]-[name]/requirements.md`
 
 > 完整索引与按需加载路径见 `reference-index.md`。
 >
@@ -575,6 +358,7 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 - **何时加载**：出现使用错误或开始 rationalize 时按需加载
 
 本文件是入口，不是完整手册。需要细节时，进入 `reference-index.md` 和 `references/` 按需加载。
+若需核对入口删减内容的落点，查看 `references/entry/skill-content-map.md`。
 
 ## The Bottom Line
 

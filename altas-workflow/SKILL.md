@@ -263,18 +263,17 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 
 ## 检查点契约
 
-> **SOCIAL PROOF:** Checkpoints without TodoWrite tracking = steps get skipped. Every time. Unverified completion = bugs discovered later. Always.
+> **完整模板、暂停规则与 Batch Override 约束**见 `references/checkpoint-driven/checkpoints.md`。
 
-入口层只保留最小门禁：
+入口层最小门禁：
 
-- 阶段转换时（Research -> Plan -> Execute -> Review）必须输出检查点。
-- `M/L` 规模每完成一个 Plan 中的任务项必须输出检查点。
-- 遇到异常、不确定性或解决不了的问题时立即输出检查点并暂停。
-- 用户要求查看进度时必须输出检查点。
-- 上下文将满需要 Resume Ready 时必须输出检查点。
-- **Review/Archive 阶段输出检查点时，必须自检是否有可捕获的学习**（非显而易见的方案/错误/用户纠正），如有则记录到 `.learnings/`（详见 `references/self-improvement/SKILL.md`）。
-- `XS` 使用 1 行 summary；`S` 使用短 checkpoint；`M/L` 使用完整检查点模板。
-- 完整模板、暂停规则与 Batch Override Git 约束见 `references/checkpoint-driven/checkpoints.md`。
+- 阶段转换时（Research -> Plan -> Execute -> Review）必须输出检查点
+- `M/L` 规模每完成一个 Plan 中的任务项必须输出检查点
+- 遇到异常、不确定性或解决不了的问题时立即输出检查点并暂停
+- 用户要求查看进度时必须输出检查点
+- 上下文将满需要 Resume Ready 时必须输出检查点
+- **Review/Archive 阶段输出检查点时，必须自检是否有可捕获的学习**（非显而易见的方案/错误/用户纠正），如有则记录到 `.learnings/`（详见 `references/self-improvement/SKILL.md`）
+- `XS` 使用 1 行 summary；`S` 使用短 checkpoint；`M/L` 使用完整检查点模板（见上述文件）
 
 ## 阶段门禁摘要
 
@@ -364,20 +363,20 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 >
 > **TRAE IDE 集成**：已配置 Hook 自动激活（`.claude/settings.json`），每次用户输入和命令执行后自动提醒评估学习机会。
 
-### 自动检测触发
+### 自动检测触发（快速参考）
 
 | 触发信号 | 动作 | 记录到 |
 |----------|------|--------|
-| 用户纠正（"不对"、"应该是"、"你搞错了"、"这个不对"、"错了"、"不是这样"） | 立即记录，不要争辩 | `.learnings/LEARNINGS.md`，category=`correction` |
+| 用户纠正（"不对"、"应该是"、"你搞错了"...） | 立即记录，不要争辩 | `.learnings/LEARNINGS.md`, category=`correction` |
 | 命令/操作失败、异常输出、超时、构建/测试失败 | 记录错误上下文和解决方案 | `.learnings/ERRORS.md` |
-| 用户请求不支持的能力（"能不能"、"为什么不能"、"可以...吗"） | 记录需求和使用场景 | `.learnings/FEATURE_REQUESTS.md` |
-| 发现文档过时/知识缺口 | 记录正确信息和来源 | `.learnings/LEARNINGS.md`，category=`knowledge_gap` |
-| 发现更优方案 | 记录对比和选择理由 | `.learnings/LEARNINGS.md`，category=`best_practice` |
-| 用户明确要求（"记住这个"、"以后都这样"、"保存下来"、"沉淀一下"） | 立即记录为高优先级 | `.learnings/LEARNINGS.md`，category=`user_explicit` |
-| 用户提供新思路/方案（"我觉得可以这样"、"有个想法"、"换个思路"、"要不试试"） | 记录方案和适用场景 | `.learnings/LEARNINGS.md`，category=`new_insight` |
-| 用户提供替代建议（"或者..."、"也可以..."、"不如..."、"其实可以..."） | 记录替代方案和权衡 | `.learnings/LEARNINGS.md`，category=`alternative` |
-| 用户质疑推理（"你为什么会这么想？"、"你的依据是什么？"） | 反思推理过程，记录假设或知识缺口 | `.learnings/LEARNINGS.md`，category=`correction` 或 `knowledge_gap` |
-| 用户分享经验（"上次我们就这样踩坑了"、"之前遇到过"） | 记录经验教训和避免方法 | `.learnings/LEARNINGS.md`，category=`lesson_learned` |
+| 用户请求不支持的能力（"能不能"、"为什么不能"...） | 记录需求和使用场景 | `.learnings/FEATURE_REQUESTS.md` |
+| 发现文档过时/知识缺口 | 记录正确信息和来源 | `.learnings/LEARNINGS.md`, category=`knowledge_gap` |
+| 发现更优方案 | 记录对比和选择理由 | `.learnings/LEARNINGS.md`, category=`best_practice` |
+| 用户明确要求（"记住这个"、"以后都这样"...） | 立即记录为高优先级 | `.learnings/LEARNINGS.md`, category=`user_explicit` |
+| 用户提供新思路/方案 | 记录方案和适用场景 | `.learnings/LEARNINGS.md`, category=`new_insight` |
+| 用户提供替代建议 | 记录替代方案和权衡 | `.learnings/LEARNINGS.md`, category=`alternative` |
+| 用户质疑推理 | 反思推理过程，记录假设或知识缺口 | `.learnings/LEARNINGS.md`, category=`correction` 或 `knowledge_gap` |
+| 用户分享经验 | 记录经验教训和避免方法 | `.learnings/LEARNINGS.md`, category=`lesson_learned` |
 
 ### TRAE IDE 工作流集成
 
@@ -482,12 +481,9 @@ Agent：
 ### 晋升规则
 
 当学习条目同时满足以下条件时，晋升到工作流规则文件：
-
 - `Recurrence-Count >= 3`（重复出现 ≥3 次）
 - 跨越 ≥2 个不同任务
 - 在 30 天窗口期内
-
-晋升目标映射：
 
 | 学习类型 | 晋升到 |
 |----------|--------|
@@ -502,9 +498,11 @@ Agent：
 | 调试策略强化 | `references/superpowers/systematic-debugging/` |
 | 通用最佳实践 | 对应 `references/` 子目录 |
 
+完整晋升流程（晋升格式、晋升后更新、Pattern-Key去重）见 `references/self-improvement/SKILL.md > ## 晋升规则`。
+
 ### 技能提取
 
-当学习足够通用（跨项目复用、非显而易见、已验证）时，提取为独立 Skill 到 `references/superpowers/` 或新建目录。详细流程见 `references/self-improvement/SKILL.md`。
+当学习足够通用（跨项目复用、非显而易见、已验证）时，提取为独立 Skill 到 `references/superpowers/` 或新建目录。详细流程见 `references/self-improvement/SKILL.md > ## 技能提取`。
 
 ### 铁律关联
 

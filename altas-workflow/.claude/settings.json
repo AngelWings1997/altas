@@ -1,1 +1,26 @@
-{"hooks": {"UserPromptSubmit": [{"matcher": "", "hooks": [{"type": "command", "command": "./scripts/self-improvement-activator.sh"}]}], "PostToolUse": [{"matcher": "RunCommand", "hooks": [{"type": "command", "command": "./scripts/error-detector.sh"}]}]}}
+{
+    "hooks": {
+        "UserPromptSubmit": [
+            {
+                "matcher": "",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "./scripts/self-improvement-activator.sh"
+                    }
+                ]
+            }
+        ],
+        "PostToolUse": [
+            {
+                "matcher": "RunCommand",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "./scripts/error-detector.sh"
+                    }
+                ]
+            }
+        ]
+    }
+}

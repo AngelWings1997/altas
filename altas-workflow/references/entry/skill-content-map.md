@@ -36,6 +36,12 @@
 | `REVIEW > review pipeline 细节` | 直接引用现有文档 | `references/superpowers/receiving-code-review/SKILL.md` > `## Complete Review Pipeline`、`## Implementation Verification (PRD Coverage Check)`；`references/checkpoint-driven/modules.md` > `## Review` |
 | `PRD 分析 > Brainstorm / Discover / Document / Review / Validate` | 直接引用现有文档 | `references/prd-analysis/SKILL.md` > `## Workflow` 下的 `### 0. Brainstorm` 至 `### 4. Validate` |
 | `PRD 分析 > WHAT / WHY / MECE 原则` | 直接引用现有文档 | `references/prd-analysis/SKILL.md` > `## PRD Focus Areas`、`## MECE Principle`；`references/prd-analysis/template.md` 中各 `### MECE Check:*`；`references/prd-analysis/validation.md` |
+| `自我进化契约 > TRAE IDE 工作流集成（Hook配置、TodoWrite示例、检查点对齐表）` | 精简为要点+引用 | `references/self-improvement/SKILL.md` > `## TRAE IDE 快速操作指南` |
+| `自我进化契约 > 实际工作流示例（场景A/B/C：用户纠正、命令失败、新思路）` | 移除（外部文件有更完整示例） | `references/self-improvement/SKILL.md` > `## ALTAS 特定示例` |
+| `自我进化契约 > 记录时机（6条规则列表）` | 移除（与触发机制重复） | `references/self-improvement/SKILL.md` > `## 触发机制 > ### 主动触发（Agent 自检 — 检查点契约强制）` |
+| `自我进化契约 > 快速记录决策树（21行树形图）` | 移除（可从Checklist和最佳实践推断） | `references/self-improvement/SKILL.md` > `## TRAE IDE 快速操作指南 > ### 常见场景 Checklist` |
+| `检查点契约 > SOCIAL PROOF说明` | 移除（非核心路由信息） | 无需落点（原则性说明） |
+| `自我进化契约 > 晋升规则完整流程（晋升格式、晋升后更新、Pattern-Key去重）` | 保留核心条件+映射表，详细流程引用 | `references/self-improvement/SKILL.md` > `## 晋升规则` |
 
 ## 当前约束
 

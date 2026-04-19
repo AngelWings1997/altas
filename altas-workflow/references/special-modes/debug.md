@@ -185,3 +185,6 @@
 
 ### 压力场景自检
 - **压力下纪律**: `references/testing/test-task-pressure-scenarios.md`（防止时间压力下跳过根因调查）
+- **压力测试场景 1**: `references/superpowers/systematic-debugging/test-pressure-1.md`
+- **压力测试场景 2**: `references/superpowers/systematic-debugging/test-pressure-2.md`
+- **压力测试场景 3**: `references/superpowers/systematic-debugging/test-pressure-3.md`

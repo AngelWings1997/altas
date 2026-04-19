@@ -139,7 +139,7 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 | 执行命令 | `Bash` / `RunCommand` | `Bash` | 平台内置终端 |
 | 任务跟踪 | `TodoWrite` | `TodoWrite` | 文本 Checklist |
 
-若上表未覆盖，读取 `references/superpowers/using-superpowers/SKILL.md` 及其 `references/copilot-tools.md`（Copilot CLI）/ `references/codex-tools.md`（Codex）获取完整映射。
+若上表未覆盖，读取 `references/superpowers/using-superpowers/SKILL.md` 及其 `references/superpowers/using-superpowers/references/copilot-tools.md`（Copilot CLI）/ `references/superpowers/using-superpowers/references/codex-tools.md`（Codex）获取完整映射。
 
 ### 只读纪律
 

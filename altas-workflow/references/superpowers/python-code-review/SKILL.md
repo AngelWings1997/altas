@@ -9,11 +9,11 @@ description: Reviews Python code for type safety, async patterns, error handling
 
 | Issue Type | Reference |
 |------------|-----------|
-| Indentation, line length, whitespace, naming | [references/pep8-style.md](references/pep8-style.md) |
-| Missing/wrong type hints, Any usage | [references/type-safety.md](references/type-safety.md) |
-| Blocking calls in async, missing await | [references/async-patterns.md](references/async-patterns.md) |
-| Bare except, missing context, logging | [references/error-handling.md](references/error-handling.md) |
-| Mutable defaults, print statements | [references/common-mistakes.md](references/common-mistakes.md) |
+| Indentation, line length, whitespace, naming | [PEP8 Style](./references/pep8-style.md) |
+| Missing/wrong type hints, Any usage | [Type Safety](./references/type-safety.md) |
+| Blocking calls in async, missing await | [Async Patterns](./references/async-patterns.md) |
+| Bare except, missing context, logging | [Error Handling](./references/error-handling.md) |
+| Mutable defaults, print statements | [Common Mistakes](./references/common-mistakes.md) |
 
 ## Review Checklist
 

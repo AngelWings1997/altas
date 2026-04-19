@@ -230,8 +230,8 @@ altas-workflow/
 
 | 文件 | 调用时机 |
 |------|----------|
-| [references/superpowers/code-review/go-code-review.md](./references/superpowers/code-review/go-code-review.md) | Go 代码审查（静态分析、并发安全、性能审计） |
-| [references/superpowers/code-review/python-code-review.md](./references/superpowers/code-review/python-code-review.md) | Python 代码审查（类型安全、异步模式、错误处理） |
+| [references/superpowers/go-code-review/SKILL.md](./references/superpowers/go-code-review/SKILL.md) | Go 代码审查（静态分析、并发安全、性能审计） |
+| [references/superpowers/python-code-review/SKILL.md](./references/superpowers/python-code-review/SKILL.md) | Python 代码审查（类型安全、异步模式、错误处理） |
 
 ### 🆕 自我进化索引 (v4.8)
 

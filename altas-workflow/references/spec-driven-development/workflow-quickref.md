@@ -2,7 +2,7 @@
 
 总纲：`Pre-Research -> RIPER`，全程按 SDD 维护 Spec。
 
-> 入口触发词、别名与 `MULTI` 模式控制词统一维护在 `../entry/aliases.md`。本文件只保留主形式速查。
+> 入口触发词、别名与 `MULTI` 模式控制词统一维护在 `references/entry/aliases.md`。本文件只保留主形式速查。
 
 ## 启动顺序（按复杂度）
 
@@ -102,7 +102,7 @@
 
 ## 常用触发词（主形式）
 
-完整别名见 `../entry/aliases.md`。以下仅列主形式：
+完整别名见 `references/entry/aliases.md`。以下仅列主形式：
 
 - `create_codemap: scope=<范围>`（`mode` 可选，默认 `feature`）
 - `create_codemap: mode=project, scope=<项目>`

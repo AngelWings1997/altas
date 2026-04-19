@@ -249,22 +249,22 @@
 
 | 任务 | 先加载 | 再加载 | 可选 |
 |------|--------|--------|------|
-| 起测试环境 | `test-scaffold-templates.md` | `pytest-patterns.md` | `api-testing.md` |
-| 写 API 测试 | `api-testing.md` | `pytest-patterns.md` | `test-data-management.md` |
-| 写契约测试 | `contract-testing.md` | `api-testing.md` | `ci-cd-integration.md` |
-| 写 Go 测试 | `go-testing.md` | `api-testing.md` | `contract-testing.md` |
-| 写 E2E 测试 | `e2e-testing.md` | `pytest-patterns.md` | `api-testing.md` |
-| 写性能测试 | `performance-testing.md` | `pytest-patterns.md` | `ci-cd-integration.md` |
-| 写视觉测试 | `visual-testing.md` | `e2e-testing.md` | `pytest-patterns.md` |
-| 写安全测试 | `security-testing.md` | `api-testing.md` §11 | `ci-cd-integration.md` |
-| 移动端测试 | `mobile-testing.md` | `e2e-testing.md` | `api-testing.md` |
-| 测试可观测性 | `test-observability.md` | `test-quality-metrics.md` | `systematic-debugging/SKILL.md` |
-| PRD 可测试性评审 | `testability-checklist.md` | `prd-analysis/SKILL.md` | `test.md` |
-| 优化 CI 测试 | `ci-cd-integration.md` | `test-quality-metrics.md` | `test-maintenance.md` |
-| 搭建测试环境 | `test-environment.md` | `ci-cd-integration.md` | `test-data-management.md` |
-| 维护测试套件 | `test-maintenance.md` | `test-review-checklist.md` | `test-quality-metrics.md` |
-| 补测试覆盖率 | `pytest-patterns.md` | `test-task-pressure-scenarios.md` | `test-data-management.md` |
-| 安全合规测试 | `api-testing.md` §11 | `security-testing.md` | `ci-cd-integration.md` |
+| 起测试环境 | `references/testing/test-scaffold-templates.md` | `references/testing/pytest-patterns.md` | `references/testing/api-testing.md` |
+| 写 API 测试 | `references/testing/api-testing.md` | `references/testing/pytest-patterns.md` | `references/testing/test-data-management.md` |
+| 写契约测试 | `references/testing/contract-testing.md` | `references/testing/api-testing.md` | `references/testing/ci-cd-integration.md` |
+| 写 Go 测试 | `references/testing/go-testing.md` | `references/testing/api-testing.md` | `references/testing/contract-testing.md` |
+| 写 E2E 测试 | `references/testing/e2e-testing.md` | `references/testing/pytest-patterns.md` | `references/testing/api-testing.md` |
+| 写性能测试 | `references/testing/performance-testing.md` | `references/testing/pytest-patterns.md` | `references/testing/ci-cd-integration.md` |
+| 写视觉测试 | `references/testing/visual-testing.md` | `references/testing/e2e-testing.md` | `references/testing/pytest-patterns.md` |
+| 写安全测试 | `references/testing/security-testing.md` | `references/testing/api-testing.md` §11 | `references/testing/ci-cd-integration.md` |
+| 移动端测试 | `references/testing/mobile-testing.md` | `references/testing/e2e-testing.md` | `references/testing/api-testing.md` |
+| 测试可观测性 | `references/testing/test-observability.md` | `references/testing/test-quality-metrics.md` | `references/superpowers/systematic-debugging/SKILL.md` |
+| PRD 可测试性评审 | `references/prd-analysis/testability-checklist.md` | `references/prd-analysis/SKILL.md` | `references/special-modes/test.md` |
+| 优化 CI 测试 | `references/testing/ci-cd-integration.md` | `references/testing/test-quality-metrics.md` | `references/testing/test-maintenance.md` |
+| 搭建测试环境 | `references/testing/test-environment.md` | `references/testing/ci-cd-integration.md` | `references/testing/test-data-management.md` |
+| 维护测试套件 | `references/testing/test-maintenance.md` | `references/testing/test-review-checklist.md` | `references/testing/test-quality-metrics.md` |
+| 补测试覆盖率 | `references/testing/pytest-patterns.md` | `references/testing/test-task-pressure-scenarios.md` | `references/testing/test-data-management.md` |
+| 安全合规测试 | `references/testing/api-testing.md` §11 | `references/testing/security-testing.md` | `references/testing/ci-cd-integration.md` |
 
 ### PERF 模式 (新增)
 

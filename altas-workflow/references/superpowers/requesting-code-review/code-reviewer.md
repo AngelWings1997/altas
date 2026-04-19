@@ -96,10 +96,10 @@ git diff {BASE_SHA}..{HEAD_SHA}
 After the general review, dispatch to language-specific experts for deeper checks:
 
 **Go code (.go files):**
-→ Load `../go-code-review/SKILL.md` and apply the full Go checklist (formatting, error handling, concurrency, naming, interfaces, etc.)
+→ Load `references/superpowers/go-code-review/SKILL.md` and apply the full Go checklist (formatting, error handling, concurrency, naming, interfaces, etc.)
 
 **Python code (.py files):**
-→ Load `../python-code-review/SKILL.md` and apply the full Python checklist (PEP8, type safety, async patterns, error handling, common mistakes)
+→ Load `references/superpowers/python-code-review/SKILL.md` and apply the full Python checklist (PEP8, type safety, async patterns, error handling, common mistakes)
 
 ## Critical Rules
 

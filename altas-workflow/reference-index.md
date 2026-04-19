@@ -472,6 +472,16 @@
 
 ### Code Review 参考索引
 
+> **⚠️ 重要**：所有代码审查任务**必须**先通过 `receiving-code-review/SKILL.md` 进入，然后再根据代码语言分发到对应的语言专家。
+>
+> **流程**：`receiving-code-review` → 识别语言 → `python-code-review` / `go-code-review` → `implementation-verify`
+
+#### Code Review 入口（必经）
+
+| 文件 | 主题 |
+|------|------|
+| `references/superpowers/receiving-code-review/SKILL.md` | **代码审查入口**：验证反馈合理性、识别代码语言、分发到语言专家 |
+
 #### Go 代码审查
 
 | 文件 | 主题 |

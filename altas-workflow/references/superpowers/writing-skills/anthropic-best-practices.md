@@ -1,5 +1,9 @@
 # Skill authoring best practices
 
+> **来源说明**：本文档来自 [Anthropic 官方文档](https://docs.anthropic.com/en/docs/agents-and-tools/agent-skills/skill-authoring)，用于指导 Skill 编写最佳实践。
+>
+> **关于示例引用**：文档中出现的 `FORMS.md`、`REFERENCE.md`、`EXAMPLES.md`、`advanced.md`、`details.md`、`DOCX-JS.md`、`REDLINING.md`、`OOXML.md` 以及 `reference/finance.md` 等引用，均为**示例代码**，用于演示 Skill 文件组织结构，**非实际存在的文件**。请勿尝试加载这些文件。
+
 > Learn how to write effective Skills that Claude can discover and use successfully.
 
 Good Skills are concise, well-structured, and tested with real usage. This guide provides practical authoring decisions to help you write Skills that Claude can discover and use effectively.

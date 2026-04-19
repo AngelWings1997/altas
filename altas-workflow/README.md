@@ -2,7 +2,7 @@
 
 > **融合三方优势 | 智能深度适配 | 渐进式披露 | 每步可反馈 | 测试工程师友好 | 自我进化**
 
-**Version:** 4.8 (2026-04-19)
+**Version:** 4.11 (2026-04-19)
 
 ALTAS Workflow 是一套汲取了 SDD-RIPER、SDD-RIPER-Optimized 与 Superpowers 精华的综合性 AI 工作流程规范，并增强了**测试工程专项**、**代码审查技能包**、**PRD 分析工作流**和**自我进化机制**能力。
 
@@ -214,7 +214,26 @@ altas-workflow/
 - **来源分布**: SDD-RIPER (14), SDD-RIPER-Opt (6), Superpowers (80+), PRD Analysis (7), 测试工程 (24+), 代码审查 (8+), Self-Improvement (6), Agent 定义 (25), 工具脚本 (10)
 - **目录结构**: references/ (8大类: entry/spec-driven-development/checkpoint-driven/superpowers/testing/prd-analysis/agents/self-improvement), protocols/ (4), docs/ (5), scripts/ (10), .learnings/ (3)
 - **🆕 技能包**: 7 个独立技能包 (API Testing, Go Review, Python Review, Pytest, Requirements Spec, Implementation Verify, Self-Improvement)
-- **版本**: v4.8 (2026-04-19)
+- **版本**: v4.11 (2026-04-19)
+
+---
+
+## v4.11 核心变更
+
+### 🔍 Code Review 流程优化
+
+明确代码审查入口和语言分发规则：
+
+- ✅ **入口强制**：所有代码审查任务必须先通过 `receiving-code-review/SKILL.md` 进入
+- ✅ **语言分发**：自动识别代码语言，分发到 `python-code-review` 或 `go-code-review`
+- ✅ **流程图**：添加清晰的流程图说明 Code Review 完整流程
+- ✅ **索引更新**：在 `reference-index.md` 添加 Code Review 入口说明
+
+### 🔧 悬空引用修复
+
+- ✅ **路径错误**：修复 `docs/团队落地指南.md` 第9行路径空格问题
+- ✅ **重定向文件**：创建 `protocols/SDD-RIPER-ONE.md` 重定向文件
+- ✅ **示例标注**：在 `anthropic-best-practices.md` 标注示例引用
 
 ---
 

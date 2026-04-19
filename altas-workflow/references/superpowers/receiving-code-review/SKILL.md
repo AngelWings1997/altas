@@ -11,6 +11,45 @@ Code review requires technical evaluation, not emotional performance.
 
 **Core principle:** Verify before implementing. Ask before assuming. Technical correctness over social comfort.
 
+## ⚠️ MANDATORY: Code Review Entry Point
+
+> **重要**：所有代码审查任务**必须**先通过本 Skill 进入，然后再根据代码语言分发到对应的语言专家。
+>
+> **禁止**直接调用 `python-code-review` 或 `go-code-review`，必须先经过本 Skill 进行技术验证和语言识别。
+
+### Code Review 完整流程
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    CODE REVIEW ENTRY POINT                       │
+│                                                                 │
+│   1. receiving-code-review (本 Skill)                           │
+│      ├── 验证 review feedback 技术合理性                          │
+│      ├── 识别代码语言                                             │
+│      └── 分发到语言专家                                           │
+│                                                                 │
+│   2. Language-Specific Expert (根据语言自动分发)                  │
+│      ├── Python (.py) → python-code-review                      │
+│      └── Go (.go)     → go-code-review                          │
+│                                                                 │
+│   3. implementation-verify (PRD 覆盖率检查)                      │
+│                                                                 │
+│   4. merge                                                      │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### 语言分发规则
+
+```
+WHEN receiving code review request:
+  1. FIRST: Load this SKILL (receiving-code-review)
+  2. THEN: Identify code language by file extension
+     - .py files → Dispatch to python-code-review
+     - .go files → Dispatch to go-code-review
+     - Other languages → Proceed with general review
+  3. AFTER language review: Run implementation-verify
+```
+
 ## The Response Pattern
 
 ```

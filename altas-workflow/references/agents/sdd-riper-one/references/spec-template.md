@@ -1,5 +1,8 @@
 # SDD Spec Template (Workflow-aligned)
 
+> **Source of Truth**: 本文件为旧版本，主版本 `references/spec-driven-development/spec-template.md` 包含 Scale Re-assessment 和 Test Strategy 等额外章节。
+> 如需修改，请修改主版本后同步至此。常规工作流引用应以 `spec-driven-development/` 目录为准。
+
 本模板包含两个版本：**单项目模板**（默认）和 **多项目模板**（`mode=multi_project` 时使用）。Agent 根据启动模式自动选择对应模板。
 
 ---

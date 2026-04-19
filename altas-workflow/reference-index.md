@@ -46,6 +46,8 @@
 | `references/entry/first-response.md` | 需要初始化提示、首轮响应模板、澄清规则或原子化拆解要求时 |
 | `references/entry/skill-content-map.md` | 需要核对 `SKILL.md` 精简后，被移出内容的落点映射时 |
 | `references/entry/sources.md` | 需要了解入口整合来源、方法论来源映射或做工作流介绍时 |
+| `references/entry/glossary.md` | 需要查看核心术语定义（Spec/CodeMap/SDD/RIPER/触发词/规模等级等）时 |
+| `references/entry/discipline-enforcing.md` | Agent 即将违反铁律、使用借口绕过规则、或出现常见使用错误时 |
 | `references/entry/exceptions-recovery.md` | 遇到问题升级、不确定、需要退出协议或能力降级时 |
 | `references/self-improvement/SKILL.md` | 需要自我进化机制：记录学习、错误、功能请求、经验晋升、技能提取时 |
 
@@ -183,6 +185,7 @@
 | `references/superpowers/systematic-debugging/root-cause-tracing.md` | Superpowers | 根因不明需追溯时 |
 | `references/superpowers/systematic-debugging/defense-in-depth.md` | Superpowers | 需要多层防御时 |
 | `references/superpowers/systematic-debugging/condition-based-waiting.md` | Superpowers | 异步/条件等待问题时 |
+| `references/special-modes/debug.md` | Special Modes | DEBUG 模式协议入口 |
 
 ### MULTI 模式
 
@@ -196,6 +199,7 @@
 | 文件 | 来源 | 调用时机 |
 |------|------|----------|
 | `protocols/RIPER-DOC.md` | SDD-RIPER | 文档撰写模式时 |
+| `references/special-modes/doc.md` | Special Modes | DOC 模式协议入口 |
 
 ### REVIEW 模式 (新增)
 
@@ -317,8 +321,9 @@
 | `protocols/SDD-RIPER-DUAL-COOP.md` | 双模型协作协议 |
 | `docs/从传统编程转向大模型编程.md` | 方法论: 范式转换 |
 | `docs/团队落地指南.md` | 方法论: 团队推广 |
-| `docs/如何快速从零开始落地大模型编程 -- 手把手教程.md` | 方法论: 入门教程 |
+| `docs/如何快速从零开始落地大模型编程-手把手教程.md` | 方法论: 入门教程 |
 | `docs/AI-原生研发范式-从代码中心到文档驱动的演进.md` | 方法论: 理论深化 |
+| `docs/IMPLEMENTATION-PLAN-v4.6.md` | 方法论: 版本升级实施方案 |
 
 ### SDD-RIPER-Optimized (Checkpoint-Driven)
 
@@ -353,6 +358,7 @@
 | `references/superpowers/subagent-driven-development/code-quality-reviewer-prompt.md` | 代码质量审查提示 |
 | `references/superpowers/dispatching-parallel-agents/SKILL.md` | 并行Agent派遣 |
 | `references/superpowers/verification-before-completion/SKILL.md` | 完成前验证 |
+| `references/superpowers/implementation-verify/SKILL.md` | 实现验证（实现与 Spec 一致性校验） |
 | `references/superpowers/finishing-a-development-branch/SKILL.md` | 完成分支 |
 | `references/superpowers/requesting-code-review/SKILL.md` | 请求代码审查 |
 | `references/superpowers/requesting-code-review/code-reviewer.md` | 审查Agent模板 |
@@ -374,6 +380,136 @@
 | `references/prd-analysis/reference/output-format.md` | 状态报告和多角度验证指南 |
 | `references/prd-analysis/examples/good-prd.md` | 优质PRD示例参考 |
 | `references/prd-analysis/examples/output-example.md` | 预期输出格式示例 |
+| `references/prd-analysis/testability-checklist.md` | PRD可测试性评审清单 |
+
+### Agent 定义与参考资料
+
+#### SDD-RIPER-ONE 标准版
+
+| 文件 | 主题 |
+|------|------|
+| `references/agents/sdd-riper-one/SKILL.md` | 标准版 Skill 定义 |
+| `references/agents/sdd-riper-one/README.md` | Agent 使用说明 |
+| `references/agents/sdd-riper-one/CHANGELOG.md` | 版本变更日志 |
+| `references/agents/sdd-riper-one/agents.md` | Agent 配置文件 |
+| `references/agents/sdd-riper-one/agents/openai.yaml` | OpenAI Agent 配置 |
+| `references/agents/sdd-riper-one/references/sdd-riper-one-protocol.md` | Agent 专用 RIPER 协议 |
+| `references/agents/sdd-riper-one/references/spec-template.md` | Agent 专用 Spec 模板 |
+| `references/agents/sdd-riper-one/references/commands.md` | Agent 专用命令参数 |
+| `references/agents/sdd-riper-one/references/workflow-quickref.md` | Agent 快速参考 |
+| `references/agents/sdd-riper-one/references/multi-project.md` | Agent 多项目协作规则 |
+| `references/agents/sdd-riper-one/references/archive-template.md` | Agent 专用归档模板 |
+| `references/agents/sdd-riper-one/references/usage-examples.md` | Agent 使用示例 |
+
+#### SDD-RIPER-ONE Light 轻量版
+
+| 文件 | 主题 |
+|------|------|
+| `references/agents/sdd-riper-one-light/SKILL.md` | 轻量版 Skill 定义 |
+| `references/agents/sdd-riper-one-light/README.md` | 轻量版使用说明 |
+| `references/agents/sdd-riper-one-light/CHANGELOG.md` | 轻量版变更日志 |
+| `references/agents/sdd-riper-one-light/references/spec-lite-template.md` | 轻量版 Spec 模板 |
+| `references/agents/sdd-riper-one-light/references/conventions.md` | 轻量版命名约定 |
+| `references/agents/sdd-riper-one-light/references/modules.md` | 轻量版按需模块 |
+| `references/agents/sdd-riper-one-light/examples/README.md` | 示例说明 |
+| `references/agents/sdd-riper-one-light/examples/codemap/codemap-feature-content-control.md` | CodeMap 示例 |
+| `references/agents/sdd-riper-one-light/examples/specs/spec-light-runtime-compat.md` | 运行时兼容 Spec 示例 |
+| `references/agents/sdd-riper-one-light/examples/specs/spec-standard-security-status-race.md` | 竞态条件 Spec 示例 |
+
+### Self-Improvement 参考索引
+
+| 文件 | 主题 |
+|------|------|
+| `references/self-improvement/SKILL.md` | 自我进化完整机制 |
+| `references/self-improvement/assets/SKILL-TEMPLATE.md` | 技能模板 |
+| `references/self-improvement/references/examples.md` | 自我进化示例 |
+| `references/self-improvement/references/hooks-setup.md` | Hook 配置说明 |
+| `references/self-improvement/references/openclaw-integration.md` | OpenClaw 集成指南 |
+
+### Writing Skills 参考索引
+
+| 文件 | 主题 |
+|------|------|
+| `references/superpowers/writing-skills/SKILL.md` | 编写 Skill |
+| `references/superpowers/writing-skills/persuasion-principles.md` | Skill 说服原则 |
+| `references/superpowers/writing-skills/testing-skills-with-subagents.md` | Skill 测试方法 |
+| `references/superpowers/writing-skills/anthropic-best-practices.md` | Anthropic 最佳实践 |
+| `references/superpowers/writing-skills/examples/CLAUDE_MD_TESTING.md` | Claude.md 测试示例 |
+| `references/superpowers/writing-skills/graphviz-conventions.dot` | Graphviz 流程图源文件 |
+| `references/superpowers/writing-skills/render-graphs.js` | Graphviz 渲染脚本 |
+
+### Using Superpowers 平台工具映射
+
+| 文件 | 主题 |
+|------|------|
+| `references/superpowers/using-superpowers/SKILL.md` | Superpowers 使用总纲 |
+| `references/superpowers/using-superpowers/references/copilot-tools.md` | GitHub Copilot CLI 工具映射 |
+| `references/superpowers/using-superpowers/references/codex-tools.md` | OpenAI Codex 工具映射 |
+| `references/superpowers/using-superpowers/references/gemini-tools.md` | Google Gemini 工具映射 |
+
+### Systematic Debugging 测试索引
+
+| 文件 | 主题 |
+|------|------|
+| `references/superpowers/systematic-debugging/SKILL.md` | 系统化 Debug 四阶段 |
+| `references/superpowers/systematic-debugging/root-cause-tracing.md` | 根因追踪 |
+| `references/superpowers/systematic-debugging/defense-in-depth.md` | 纵深防御 |
+| `references/superpowers/systematic-debugging/condition-based-waiting.md` | 条件等待 |
+| `references/superpowers/systematic-debugging/CREATION-LOG.md` | Skill 创建日志 |
+| `references/superpowers/systematic-debugging/test-academic.md` | 学术场景测试 |
+| `references/superpowers/systematic-debugging/test-pressure-1.md` | 压力测试场景 1 |
+| `references/superpowers/systematic-debugging/test-pressure-2.md` | 压力测试场景 2 |
+| `references/superpowers/systematic-debugging/test-pressure-3.md` | 压力测试场景 3 |
+
+### Subagent-Driven Development 提示词
+
+| 文件 | 主题 |
+|------|------|
+| `references/superpowers/subagent-driven-development/SKILL.md` | Subagent 驱动开发 |
+| `references/superpowers/subagent-driven-development/implementer-prompt.md` | 实现者 Agent 提示词 |
+| `references/superpowers/subagent-driven-development/spec-reviewer-prompt.md` | Spec 审查 Agent 提示词 |
+| `references/superpowers/subagent-driven-development/code-quality-reviewer-prompt.md` | 代码质量审查 Agent 提示词 |
+
+### Code Review 参考索引
+
+#### Go 代码审查
+
+| 文件 | 主题 |
+|------|------|
+| `references/superpowers/go-code-review/SKILL.md` | Go 代码审查主流程 |
+| `references/superpowers/go-code-review/references/WEB-SERVER.md` | Web 服务器审查要点 |
+| `references/superpowers/go-code-review/assets/review-template.md` | Go 审查报告模板 |
+
+#### Python 代码审查
+
+| 文件 | 主题 |
+|------|------|
+| `references/superpowers/python-code-review/SKILL.md` | Python 代码审查主流程 |
+| `references/superpowers/python-code-review/references/pep8-style.md` | PEP8 风格规范 |
+| `references/superpowers/python-code-review/references/type-safety.md` | 类型安全检查 |
+| `references/superpowers/python-code-review/references/async-patterns.md` | 异步模式检查 |
+| `references/superpowers/python-code-review/references/error-handling.md` | 错误处理检查 |
+| `references/superpowers/python-code-review/references/common-mistakes.md` | 常见错误汇总 |
+
+### Testing 模板索引
+
+| 文件 | 主题 |
+|------|------|
+| `references/testing/templates/conftest.py` | pytest conftest 基础模板 |
+| `references/testing/templates/api_client_fixture.py` | API 客户端 fixture 模板 |
+| `references/testing/templates/auth_fixture.py` | 认证 fixture 模板 |
+| `references/testing/templates/db_rollback_fixture.py` | 数据库回滚 fixture 模板 |
+| `references/testing/templates/factories.py` | 测试工厂模板 |
+| `references/testing/templates/pytest_config.toml` | pytest 配置模板 |
+| `references/testing/templates/api_test_matrix.md` | API 测试矩阵模板 |
+| `references/testing/templates/test_report.md` | 测试报告模板 |
+
+### Spec-Driven-Development 使用示例
+
+| 文件 | 主题 |
+|------|------|
+| `references/spec-driven-development/usage-examples.md` | SDD-RIPER 使用示例 (含多项目/Debug/Archive) |
+
 ---
 
 ## 按规模等级索引
@@ -408,6 +544,6 @@
 
 ## 统计
 
-- **参考文件总数**: 75+
-- **来源分布**: SDD-RIPER (14), SDD-RIPER-Opt (6), Superpowers (24+), PRD Analysis (7), 测试开发 (16+), Self-Improvement (6), 工具脚本 (3+)
-- **目录结构**: references/ (8大类: entry/spec-driven-development/checkpoint-driven/superpowers/testing/prd-analysis/agents/self-improvement), protocols/ (4), docs/ (4), scripts/ (3), .learnings/ (3)
+- **参考文件总数**: 147+ (MD), 185+ (含脚本/模板等非 MD 文件)
+- **来源分布**: SDD-RIPER (14), SDD-RIPER-Opt (6), Superpowers (80+), PRD Analysis (7), 测试工程 (24+), 代码审查 (8+), Self-Improvement (6), Agent 定义 (25), 工具脚本 (10)
+- **目录结构**: references/ (8大类: entry/spec-driven-development/checkpoint-driven/superpowers/testing/prd-analysis/agents/self-improvement), protocols/ (4), docs/ (5), scripts/ (10), .learnings/ (3)

@@ -1,5 +1,8 @@
 # SDD-RIPER-ONE
 
+> **Source of Truth**: 本文件与 `references/spec-driven-development/sdd-riper-one-protocol.md` 内容一致。
+> 如需修改协议，请修改主版本后同步至此。常规工作流引用应以 `spec-driven-development/` 目录为准。
+
 # SYSTEMBOOTSEQUENCE: SDD-RIPER-ONE
 
 ## 🛑 CONTEXT & CRITICAL WARNING (ZERO TRUST MODE)

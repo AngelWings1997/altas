@@ -1,6 +1,7 @@
 # 多项目协作详细规则
 
-> 本文件是 `SKILL.md` 中"多项目协作"段落的完整展开。默认不常驻上下文，仅在触发 `MULTI / 多项目` 时按需加载。
+> **Source of Truth**: 本文件与 `references/spec-driven-development/multi-project.md` 内容一致。
+> 如需修改，请修改主版本后同步至此。常规工作流引用应以 `spec-driven-development/` 目录为准。
 
 ## 自动发现（Auto-Discovery）
 

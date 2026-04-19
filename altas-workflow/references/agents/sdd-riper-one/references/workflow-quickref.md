@@ -1,5 +1,8 @@
 # SDD-RIPER Workflow Quick Reference
 
+> **Source of Truth**: 本文件为旧版本，主版本 `references/spec-driven-development/workflow-quickref.md` 包含 Batch Override 等额外内容。
+> 如需修改，请修改主版本后同步至此。常规工作流引用应以 `spec-driven-development/` 目录为准。
+
 总纲：`Pre-Research -> RIPER`，全程按 SDD 维护 Spec。
 
 ## 启动顺序（按复杂度）

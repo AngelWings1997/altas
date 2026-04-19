@@ -1,5 +1,8 @@
 # Spec Lite Template
 
+> **Source of Truth**: 本文件为旧版本，主版本 `references/checkpoint-driven/spec-lite-template.md` 包含 Test Strategy 等额外章节。
+> 如需修改，请修改主版本后同步至此。常规工作流引用应以 `checkpoint-driven/` 目录为准。
+
 spec 是持久化上下文与压缩记忆层；没有最小 spec，不进入代码实现。
 
 ```markdown

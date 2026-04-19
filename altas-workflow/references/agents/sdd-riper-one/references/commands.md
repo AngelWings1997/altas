@@ -1,6 +1,7 @@
 # 原生命令动作详细参数
 
-> 本文件是 `SKILL.md` 中"原生命令动作"段落的完整展开。默认不常驻上下文，仅在需要查看命令详细参数时按需加载。
+> **Source of Truth**: 本文件与 `references/spec-driven-development/commands.md` 内容一致。
+> 如需修改命令参数，请修改主版本后同步至此。常规工作流引用应以 `spec-driven-development/` 目录为准。
 
 ## 1) `create_codemap`
 

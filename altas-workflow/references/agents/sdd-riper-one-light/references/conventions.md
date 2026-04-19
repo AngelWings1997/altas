@@ -1,5 +1,8 @@
 # Conventions Reference
 
+> **Source of Truth**: 本文件与 `references/checkpoint-driven/conventions.md` 内容一致。
+> 如需修改，请修改主版本后同步至此。常规工作流引用应以 `checkpoint-driven/` 目录为准。
+
 仅在需要落盘 spec / codemap 时查看。  
 本文件不是常驻协议，不应在每轮任务中重复注入。
 

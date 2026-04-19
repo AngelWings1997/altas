@@ -1,5 +1,8 @@
 # On-Demand Modules
 
+> **Source of Truth**: 本文件与 `references/checkpoint-driven/modules.md` 内容一致。
+> 如需修改，请修改主版本后同步至此。常规工作流引用应以 `checkpoint-driven/` 目录为准。
+
 只在命中场景时加载对应模块，避免常驻耗 token；所有模块都服从 `No Spec, No Code` 与 `No Approval, No Execute`。
 
 ## Deep Planning

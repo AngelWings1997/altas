@@ -1,5 +1,8 @@
 # Archive Template (Human + LLM)
 
+> **Source of Truth**: 本文件与 `references/spec-driven-development/archive-template.md` 内容一致。
+> 如需修改，请修改主版本后同步至此。常规工作流引用应以 `spec-driven-development/` 目录为准。
+
 本模板用于 `archive` 指令输出，支持 `human` 与 `llm` 两个视角。可按 `snapshot`（单任务）或 `thematic`（跨任务）使用。
 
 ---

@@ -15,7 +15,7 @@ Code review requires technical evaluation, not emotional performance.
 
 > **重要**：所有代码审查任务**必须**先通过本 Skill 进入，然后再根据代码语言分发到对应的语言专家。
 >
-> **禁止**直接调用 `python-code-review` 或 `go-code-review`，必须先经过本 Skill 进行技术验证和语言识别。
+> **禁止**直接调用 `code-review/python` 或 `code-review/go`，必须先经过本 Skill 进行技术验证和语言识别。
 
 ### Code Review 完整流程
 
@@ -44,8 +44,8 @@ Code review requires technical evaluation, not emotional performance.
 WHEN receiving code review request:
   1. FIRST: Load this SKILL (receiving-code-review)
   2. THEN: Identify code language by file extension
-     - .py files → Dispatch to python-code-review
-     - .go files → Dispatch to go-code-review
+     - .py files → Dispatch to code-review/python
+     - .go files → Dispatch to code-review/go
      - Other languages → Proceed with general review
   3. AFTER language review: Run implementation-verify
 ```
@@ -131,9 +131,9 @@ After verifying and understanding review feedback, dispatch to language-specific
 ```
 WHEN implementing review feedback for code changes:
   IF code is Go (.go files):
-    → Dispatch to go-code-review expert
+    → Dispatch to code-review/go expert
   IF code is Python (.py files):
-    → Dispatch to python-code-review expert
+    → Dispatch to code-review/python expert
 ```
 
 ### When to Dispatch
@@ -144,7 +144,7 @@ WHEN implementing review feedback for code changes:
 
 ### Go Code Review Expert
 
-Location: `go-code-review/SKILL.md`
+Location: `references/code-review/go/SKILL.md`
 
 Covers:
 - Formatting (gofmt/goimports)
@@ -161,7 +161,7 @@ Pre-review automation: Run `gofmt -l <path> && go vet ./...`
 
 ### Python Code Review Expert
 
-Location: `python-code-review/SKILL.md`
+Location: `references/code-review/python/SKILL.md`
 
 Covers:
 - PEP8 style (indentation, line length, naming, imports)
@@ -206,7 +206,7 @@ Exit Codes:
 ## Complete Review Pipeline
 
 ```
-receiving-code-review → implement fixes → go-code-review/python-code-review → implementation-verify → merge
+receiving-code-review → implement fixes → code-review/go or code-review/python → implementation-verify → merge
 ```
 
 Each stage validates a different aspect:

@@ -393,13 +393,13 @@
 | `references/agents/sdd-riper-one/CHANGELOG.md` | 版本变更日志 |
 | `references/agents/sdd-riper-one/agents.md` | Agent 配置文件 |
 | `references/agents/sdd-riper-one/agents/openai.yaml` | OpenAI Agent 配置 |
-| `references/agents/sdd-riper-one/references/sdd-riper-one-protocol.md` | Agent 专用 RIPER 协议 |
-| `references/agents/sdd-riper-one/references/spec-template.md` | Agent 专用 Spec 模板 |
-| `references/agents/sdd-riper-one/references/commands.md` | Agent 专用命令参数 |
-| `references/agents/sdd-riper-one/references/workflow-quickref.md` | Agent 快速参考 |
-| `references/agents/sdd-riper-one/references/multi-project.md` | Agent 多项目协作规则 |
-| `references/agents/sdd-riper-one/references/archive-template.md` | Agent 专用归档模板 |
-| `references/agents/sdd-riper-one/references/usage-examples.md` | Agent 使用示例 |
+| `references/spec-driven-development/sdd-riper-one-protocol.md` | 完整 RIPER 协议（主版本） |
+| `references/spec-driven-development/spec-template.md` | Spec 模板（主版本） |
+| `references/spec-driven-development/commands.md` | 命令详细参数（主版本） |
+| `references/spec-driven-development/workflow-quickref.md` | 工作流速查卡（主版本） |
+| `references/spec-driven-development/multi-project.md` | 多项目协作规则（主版本） |
+| `references/spec-driven-development/archive-template.md` | 归档模板（主版本） |
+| `references/spec-driven-development/usage-examples.md` | 使用示例（主版本） |
 
 #### SDD-RIPER-ONE Light 轻量版
 

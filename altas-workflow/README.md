@@ -148,8 +148,8 @@ altas-workflow/
 │   │   ├── subagent-driven-development/ # Subagent 驱动
 │   │   ├── brainstorming/            # 设计头脑风暴
 │   │   ├── writing-plans/            # 写 Plan 最佳实践
-│   │   ├── code-review/              # 🆕 代码审查 (Go/Python)
 │   │   └── ... (更多超级能力)
+│   ├── code-review/            # 🆕 代码审查 (Go/Python)
 │   ├── special-modes/          # 特殊模式协议 (5)
 │   │   ├── test.md             # 🆕 TEST 模式
 │   │   ├── perf.md             # 🆕 PERF 模式
@@ -210,7 +210,7 @@ altas-workflow/
 
 ## 统计
 
-- **参考文件总数**: 147+ (MD), 185+ (含脚本/模板等非 MD 文件)
+- **参考文件总数**: 149 (MD), 185+ (含脚本/模板等非 MD 文件)
 - **来源分布**: SDD-RIPER (14), SDD-RIPER-Opt (6), Superpowers (80+), PRD Analysis (7), 测试工程 (24+), 代码审查 (8+), Self-Improvement (6), Agent 定义 (25), 工具脚本 (10)
 - **目录结构**: references/ (8大类: entry/spec-driven-development/checkpoint-driven/superpowers/testing/prd-analysis/agents/self-improvement), protocols/ (4), docs/ (5), scripts/ (10), .learnings/ (3)
 - **🆕 技能包**: 7 个独立技能包 (API Testing, Go Review, Python Review, Pytest, Requirements Spec, Implementation Verify, Self-Improvement)

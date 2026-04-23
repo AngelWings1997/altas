@@ -18,7 +18,7 @@ echo "Running Go pre-review checks..."
 # Check gofmt
 echo ""
 echo "=== gofmt ==="
-if [ -n "$(gofmt -l .)" ]; then
+if gofmt -l . | grep -q '\.go$'; then
     echo "FAIL: Files not formatted with gofmt:"
     gofmt -l .
     exit 1

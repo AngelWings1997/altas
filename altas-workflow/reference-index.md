@@ -329,7 +329,7 @@
 
 | 文件 | 主题 |
 |------|------|
-| `references/checkpoint-driven/SKILL.md` | 轻量Skill定义 |
+| `references/agents/sdd-riper-one-light/SKILL.md` | 轻量Skill定义 |
 | `references/checkpoint-driven/spec-lite-template.md` | 最小Spec模板 |
 | `references/checkpoint-driven/modules.md` | 按需模块 (Deep/Debug/Review/Multi) |
 | `references/checkpoint-driven/conventions.md` | 命名与目录约定 |
@@ -368,7 +368,7 @@
 | `references/superpowers/writing-skills/SKILL.md` | 编写Skill |
 | `references/superpowers/writing-skills/persuasion-principles.md` | Skill说服原则 |
 | `references/superpowers/writing-skills/testing-skills-with-subagents.md` | Skill测试方法 |
-| `references/agents/code-reviewer.md` | 代码审查Agent定义 |
+| `references/code-review/code-reviewer.md` | 代码审查Agent定义 |
 
 ### PRD Analysis (specify-requirements)
 
@@ -486,20 +486,20 @@
 
 | 文件 | 主题 |
 |------|------|
-| `references/superpowers/go-code-review/SKILL.md` | Go 代码审查主流程 |
-| `references/superpowers/go-code-review/references/WEB-SERVER.md` | Web 服务器审查要点 |
-| `references/superpowers/go-code-review/assets/review-template.md` | Go 审查报告模板 |
+| `references/code-review/go/SKILL.md` | Go 代码审查主流程 |
+| `references/code-review/go/references/WEB-SERVER.md` | Web 服务器审查要点 |
+| `references/code-review/go/assets/review-template.md` | Go 审查报告模板 |
 
 #### Python 代码审查
 
 | 文件 | 主题 |
 |------|------|
-| `references/superpowers/python-code-review/SKILL.md` | Python 代码审查主流程 |
-| `references/superpowers/python-code-review/references/pep8-style.md` | PEP8 风格规范 |
-| `references/superpowers/python-code-review/references/type-safety.md` | 类型安全检查 |
-| `references/superpowers/python-code-review/references/async-patterns.md` | 异步模式检查 |
-| `references/superpowers/python-code-review/references/error-handling.md` | 错误处理检查 |
-| `references/superpowers/python-code-review/references/common-mistakes.md` | 常见错误汇总 |
+| `references/code-review/python/SKILL.md` | Python 代码审查主流程 |
+| `references/code-review/python/references/pep8-style.md` | PEP8 风格规范 |
+| `references/code-review/python/references/type-safety.md` | 类型安全检查 |
+| `references/code-review/python/references/async-patterns.md` | 异步模式检查 |
+| `references/code-review/python/references/error-handling.md` | 错误处理检查 |
+| `references/code-review/python/references/common-mistakes.md` | 常见错误汇总 |
 
 ### Testing 模板索引
 

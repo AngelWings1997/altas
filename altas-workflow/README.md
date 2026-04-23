@@ -297,4 +297,4 @@ altas-workflow/
 *Powered by the integration of SDD-RIPER, SDD-RIPER-Optimized (Checkpoint-Driven), Superpowers, and enhanced with Testing Engineering, Code Review, PRD Analysis & Self-Improvement capabilities.*
 
 **最后更新**: 2026-04-19
-**当前版本**: v4.8
+**当前版本**: v4.11

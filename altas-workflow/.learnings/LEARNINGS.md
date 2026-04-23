@@ -60,4 +60,3 @@ When a learning is promoted to a skill, add these fields:
 ```
 
 ---
-

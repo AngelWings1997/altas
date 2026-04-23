@@ -119,7 +119,7 @@ Brainstorm → Discover → Document → Review → Validate
 
 | 文件 | 说明 |
 |------|------|
-| [SKILL.md](./SKILL.md) | Bootstrap 入口提示词（供AI读取，负责路由/规模/门禁） - v4.8 |
+| [SKILL.md](./SKILL.md) | Bootstrap 入口提示词（供AI读取，负责路由/规模/门禁） - v4.11 |
 | [QUICKSTART.md](./QUICKSTART.md) | 快速启动命令与典型场景 |
 | [reference-index.md](./reference-index.md) | 参考资料统一索引入口 |
 | [workflow-diagrams.md](./workflow-diagrams.md) | Mermaid 流程图集（可视化参考） |

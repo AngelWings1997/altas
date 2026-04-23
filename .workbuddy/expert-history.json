@@ -56,6 +56,15 @@
     ],
     "61a1b0cc3925431898c32aef98768b6a": [
       {
+        "expertId": "WorkflowOptimizationExpert",
+        "name": "流畅畅",
+        "profession": "工作流优化专家",
+        "avatarUrl": "https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/experts/avatars/08-QualityAssurance/WorkflowOptimizationExpert/WorkflowOptimizationExpert.png",
+        "promptUrl": "https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/experts/experts/08-QualityAssurance/WorkflowOptimizationExpert/WorkflowOptimizationExpert_zh.md",
+        "usedAt": 1776967890956,
+        "industryId": "08-QualityAssurance"
+      },
+      {
         "expertId": "TechnicalDocumentationEngineer",
         "name": "文通通",
         "profession": "技术文档工程师",
@@ -63,17 +72,8 @@
         "promptUrl": "https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/experts/experts/02-Engineering/TechnicalDocumentationEngineer/TechnicalDocumentationEngineer_zh.md",
         "usedAt": 1776967885071,
         "industryId": "02-Engineering"
-      },
-      {
-        "expertId": "WorkflowOptimizationExpert",
-        "name": "流畅畅",
-        "profession": "工作流优化专家",
-        "avatarUrl": "https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/experts/avatars/08-QualityAssurance/WorkflowOptimizationExpert/WorkflowOptimizationExpert.png",
-        "promptUrl": "https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/experts/experts/08-QualityAssurance/WorkflowOptimizationExpert/WorkflowOptimizationExpert_zh.md",
-        "usedAt": 1776967315149,
-        "industryId": "08-QualityAssurance"
       }
     ]
   },
-  "lastUpdated": 1776967885075
+  "lastUpdated": 1776968226645
 }

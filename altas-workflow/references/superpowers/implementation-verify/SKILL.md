@@ -116,7 +116,7 @@ WHEN code review is complete:
 REVIEW Phase (三轴评审):
   ├─ 轴 1: 需求达成 → requirements.md / spec.md
   ├─ 轴 2: Spec-Code 一致性 → THIS SKILL
-  └─ 轴 3: 代码质量 → go-code-review / python-code-review
+  └─ 轴 3: 代码质量 → code-review/go / code-review/python
 
 轴 2 使用本技能执行自动化验证，输出 Fulfillment Report。
 ```
@@ -126,7 +126,7 @@ REVIEW Phase (三轴评审):
 After understanding and implementing code review feedback (receiving-code-review):
 
 ```
-receiving-code-review → implement fixes → go-code-review/python-code-review → implementation-verify
+receiving-code-review → implement fixes → code-review/go / code-review/python → implementation-verify
 ```
 
 ### With Requesting Code Review

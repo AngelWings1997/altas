@@ -474,7 +474,7 @@
 
 > **⚠️ 重要**：所有代码审查任务**必须**先通过 `receiving-code-review/SKILL.md` 进入，然后再根据代码语言分发到对应的语言专家。
 >
-> **流程**：`receiving-code-review` → 识别语言 → `python-code-review` / `go-code-review` → `implementation-verify`
+> **流程**：`receiving-code-review` → 识别语言 → `code-review/python` / `code-review/go` → `implementation-verify`
 
 #### Code Review 入口（必经）
 
@@ -554,6 +554,6 @@
 
 ## 统计
 
-- **参考文件总数**: 149 (MD), 185+ (含脚本/模板等非 MD 文件)
+- **参考文件总数**: 141 (MD), 185+ (含脚本/模板等非 MD 文件)
 - **来源分布**: SDD-RIPER (14), SDD-RIPER-Opt (6), Superpowers (80+), PRD Analysis (7), 测试工程 (24+), 代码审查 (8+), Self-Improvement (6), Agent 定义 (25), 工具脚本 (10)
 - **目录结构**: references/ (8大类: entry/spec-driven-development/checkpoint-driven/superpowers/testing/prd-analysis/agents/self-improvement), protocols/ (4), docs/ (5), scripts/ (10), .learnings/ (3)

@@ -325,11 +325,11 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 - `M/L` 必须做三轴评审：需求达成、Spec-Code 一致、代码质量
 - **轴 1**：需求达成，对照 `spec.md` / `requirements.md` 中的需求条目
 - **轴 2**：Spec-Code 一致性，使用 `implementation-verify` 自动化验证；覆盖率阈值与动作见 `references/superpowers/implementation-verify/SKILL.md`
-- **轴 3**：代码质量，**必须先通过** `receiving-code-review/SKILL.md` 进入，再根据代码语言分发到 `go-code-review` 或 `python-code-review`
+- **轴 3**：代码质量，**必须先通过** `receiving-code-review/SKILL.md` 进入，再根据代码语言分发到 `code-review/go` 或 `code-review/python`
 - 轴 1 或轴 2 FAIL，回到 Research/Plan
 - 轴 3 FAIL，回到 Execute 修复代码问题
 - 读取 `references/checkpoint-driven/modules.md`
-- **完整 review pipeline**：`receiving-code-review` → 识别语言 → `python-code-review` / `go-code-review` → `implementation-verify`
+- **完整 review pipeline**：`receiving-code-review` → 识别语言 → `code-review/python` / `code-review/go` → `implementation-verify`
 
 ### ARCHIVE
 

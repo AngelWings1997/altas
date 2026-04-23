@@ -225,7 +225,7 @@ altas-workflow/
 明确代码审查入口和语言分发规则：
 
 - ✅ **入口强制**：所有代码审查任务必须先通过 `receiving-code-review/SKILL.md` 进入
-- ✅ **语言分发**：自动识别代码语言，分发到 `python-code-review` 或 `go-code-review`
+- ✅ **语言分发**：自动识别代码语言，分发到 `code-review/python` 或 `code-review/go`
 - ✅ **流程图**：添加清晰的流程图说明 Code Review 完整流程
 - ✅ **索引更新**：在 `reference-index.md` 添加 Code Review 入口说明
 

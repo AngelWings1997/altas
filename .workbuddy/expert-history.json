@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "sessions": {
+    "fdb9f620f0264bc0ba9a91538832fe16": [
+      {
+        "expertId": "WorkflowOptimizationExpert",
+        "name": "流畅畅",
+        "profession": "工作流优化专家",
+        "avatarUrl": "https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/experts/avatars/08-QualityAssurance/WorkflowOptimizationExpert/WorkflowOptimizationExpert.png",
+        "promptUrl": "https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/experts/experts/08-QualityAssurance/WorkflowOptimizationExpert/WorkflowOptimizationExpert_zh.md",
+        "usedAt": 1776954327692,
+        "industryId": "08-QualityAssurance"
+      }
+    ]
+  },
+  "lastUpdated": 1776954380477
+}

@@ -29,8 +29,8 @@ Code review requires technical evaluation, not emotional performance.
 │      └── 分发到语言专家                                           │
 │                                                                 │
 │   2. Language-Specific Expert (根据语言自动分发)                  │
-│      ├── Python (.py) → python-code-review                      │
-│      └── Go (.go)     → go-code-review                          │
+│      ├── Python (.py) → code-review/python                      │
+│      └── Go (.go)     → code-review/go                          │
 │                                                                 │
 │   3. implementation-verify (PRD 覆盖率检查)                      │
 │                                                                 │

@@ -14,9 +14,9 @@
 
 当用户只输入触发词或仅表示“进入 ALTAS”而未给出具体目标时，输出初始化提示并暂停：
 
-> **ALTAS Workflow v4.8 已加载**
+> **ALTAS Workflow v4.11 已加载**
 >
-> **COMMITMENT:** I am using ALTAS Workflow v4.8 for this session. I will follow all Iron Rules without exception.
+> **COMMITMENT:** I am using ALTAS Workflow v4.11 for this session. I will follow all Iron Rules without exception.
 >
 > 当前状态：`[IDLE]`
 > 可用触发（主形式）: `>>` / `FAST` | `sdd_bootstrap` | `DEEP` | `DEBUG` | `MULTI` | `CROSS` | `DOC` | `MAP` | `PROJECT MAP` | `ARCHIVE` | `REVIEW` | `REVIEW SPEC` | `REVIEW EXECUTE` | `REFACTOR` | `TEST` | `PERF` | `MIGRATE`

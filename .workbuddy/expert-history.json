@@ -42,7 +42,29 @@
         "usedAt": 1776957343012,
         "industryId": "08-QualityAssurance"
       }
+    ],
+    "bc6ff940e9774373b923e53aa817090a": [
+      {
+        "expertId": "ToolEvaluationExpert",
+        "name": "选品品",
+        "profession": "工具评估专家",
+        "avatarUrl": "https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/experts/avatars/08-QualityAssurance/ToolEvaluationExpert/ToolEvaluationExpert.png",
+        "promptUrl": "https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/experts/experts/08-QualityAssurance/ToolEvaluationExpert/ToolEvaluationExpert_zh.md",
+        "usedAt": 1776965152263,
+        "industryId": "08-QualityAssurance"
+      }
+    ],
+    "61a1b0cc3925431898c32aef98768b6a": [
+      {
+        "expertId": "WorkflowOptimizationExpert",
+        "name": "流畅畅",
+        "profession": "工作流优化专家",
+        "avatarUrl": "https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/experts/avatars/08-QualityAssurance/WorkflowOptimizationExpert/WorkflowOptimizationExpert.png",
+        "promptUrl": "https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/experts/experts/08-QualityAssurance/WorkflowOptimizationExpert/WorkflowOptimizationExpert_zh.md",
+        "usedAt": 1776967315149,
+        "industryId": "08-QualityAssurance"
+      }
     ]
   },
-  "lastUpdated": 1776957394198
+  "lastUpdated": 1776967415379
 }

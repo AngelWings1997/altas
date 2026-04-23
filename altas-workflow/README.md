@@ -129,7 +129,7 @@ Brainstorm → Discover → Document → Review → Validate
 
 ```
 altas-workflow/
-├── SKILL.md                    # 主入口 Skill v4.8
+├── SKILL.md                    # 主入口 Skill v4.11
 ├── QUICKSTART.md               # 快速启动指南
 ├── reference-index.md          # 参考资料总索引
 ├── workflow-diagrams.md        # 流程图集
@@ -138,8 +138,8 @@ altas-workflow/
 │   ├── LEARNINGS.md            # 学习/纠正/最佳实践
 │   ├── ERRORS.md               # 命令失败/异常
 │   └── FEATURE_REQUESTS.md     # 用户请求的不支持能力
-├── references/                 # 按需加载的参考资料 (100+)
-│   ├── entry/                  # 入口相关 (5)
+├── references/                 # 按需加载的参考资料 (140+)
+│   ├── entry/                  # 入口相关 (7)
 │   ├── spec-driven-development/# SDD-RIPER 完整协议 (7)
 │   ├── checkpoint-driven/      # Checkpoint 轻量模式 (4)
 │   ├── superpowers/            # TDD/Debug/Subagent 技能 (50+)
@@ -150,18 +150,20 @@ altas-workflow/
 │   │   ├── writing-plans/            # 写 Plan 最佳实践
 │   │   └── ... (更多超级能力)
 │   ├── code-review/            # 🆕 代码审查 (Go/Python)
-│   ├── special-modes/          # 特殊模式协议 (5)
+│   ├── special-modes/          # 特殊模式协议 (7)
+│   │   ├── debug.md            # DEBUG 模式
+│   │   ├── doc.md              # DOC 模式
 │   │   ├── test.md             # 🆕 TEST 模式
 │   │   ├── perf.md             # 🆕 PERF 模式
 │   │   ├── review.md           # 🆕 REVIEW 模式
 │   │   ├── refactor.md         # 🆕 REFACTOR 模式
 │   │   └── migrate.md          # 🆕 MIGRATE 模式
-│   ├── prd-analysis/           # 🆕 PRD 分析工作流 (6)
+│   ├── prd-analysis/           # 🆕 PRD 分析工作流 (7)
 │   │   ├── SKILL.md            # PRD 分析主流程
 │   │   ├── template.md         # PRD 模板
 │   │   ├── validation.md       # PRD 校验标准
 │   │   └── examples/           # PRD 示例
-│   ├── testing/                # 🆕 测试工程专项 (18+)
+│   ├── testing/                # 🆕 测试工程专项 (21)
 │   │   ├── test-strategy-template.md    # 测试策略模板
 │   │   ├── pytest-patterns.md           # Pytest 最佳实践
 │   │   ├── e2e-testing.md               # E2E 测试指引
@@ -175,7 +177,7 @@ altas-workflow/
 │   │   └── templates/                   # 测试脚手架模板
 │   ├── self-improvement/       # 🆕 自我进化机制
 │   │   └── SKILL.md            # 自我进化完整机制
-│   └── agents/                 # Agent 定义 (22)
+│   └── agents/                 # Agent 定义 (14)
 │       ├── sdd-riper-one/      # 标准 RIPER Agent
 │       └── sdd-riper-one-light/# Checkpoint 轻量 Agent
 ├── protocols/                  # 专用协议 (4)
@@ -210,7 +212,7 @@ altas-workflow/
 
 ## 统计
 
-- **参考文件总数**: 149 (MD), 185+ (含脚本/模板等非 MD 文件)
+- **参考文件总数**: 141 (MD), 185+ (含脚本/模板等非 MD 文件)
 - **来源分布**: SDD-RIPER (14), SDD-RIPER-Opt (6), Superpowers (80+), PRD Analysis (7), 测试工程 (24+), 代码审查 (8+), Self-Improvement (6), Agent 定义 (25), 工具脚本 (10)
 - **目录结构**: references/ (8大类: entry/spec-driven-development/checkpoint-driven/superpowers/testing/prd-analysis/agents/self-improvement), protocols/ (4), docs/ (5), scripts/ (10), .learnings/ (3)
 - **🆕 技能包**: 7 个独立技能包 (API Testing, Go Review, Python Review, Pytest, Requirements Spec, Implementation Verify, Self-Improvement)

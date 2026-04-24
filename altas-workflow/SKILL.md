@@ -124,22 +124,8 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 ### 动作语法与工具映射
 
 - `create_codemap` / `build_context_bundle` / `sdd_bootstrap` / `archive` 是内部动作语义，而非终端 Shell 命令。
-- **工具映射规则**：
-  - **检索与分析**：必须使用宿主平台的原生检索/读取工具（例如 `SearchCodebase`, `Grep`, `Glob`, `Read`）进行代码探索，禁止猜测文件内容。
-  - **修改与落盘**：必须使用宿主平台的原生文件编辑工具（例如 `Write`, `Edit`, `SearchReplace`, `apply_patch` 或等价能力）进行代码与文档修改，严禁使用 `sed`/`awk`/`echo` 等 Shell 命令绕过原生工具写文件。
-  - **执行与验证**：使用 `RunCommand` 执行构建、测试或启动服务。
-  - **计划与跟踪**：复杂任务必须使用 `TodoWrite` 进行任务分解与状态跟踪。
-- 若宿主平台工具名不同，按下表映射到等价能力执行：
-
-| 能力 | Cursor / Trae / Qoder | Claude Code | OpenAI Codex |
-|------|----------------------|-------------|-------------|
-| 代码检索 | `SearchCodebase` / `Grep` | `Skill` (search) | 平台内置搜索 |
-| 读取文件 | `Read` / `Glob` | `Read` / `Glob` | 平台内置读取 |
-| 编辑文件 | `Edit` / `Write` | `Edit` / `Write` | 平台内置编辑 |
-| 执行命令 | `Bash` / `RunCommand` | `Bash` | 平台内置终端 |
-| 任务跟踪 | `TodoWrite` | `TodoWrite` | 文本 Checklist |
-
-若上表未覆盖，读取 `references/superpowers/using-superpowers/SKILL.md` 及其 `references/superpowers/using-superpowers/references/copilot-tools.md`（Copilot CLI）/ `references/superpowers/using-superpowers/references/codex-tools.md`（Codex）获取完整映射。
+- **工具映射规则**：检索用原生工具（`SearchCodebase`/`Grep`/`Read`）；修改用原生编辑工具（`Write`/`Edit`/`SearchReplace`）；执行用 `RunCommand`；跟踪用 `TodoWrite`。严禁用 `sed`/`awk`/`echo` 绕过原生工具写文件。
+- 完整平台工具映射表见 `references/entry/entry-contract.md`。
 
 ### 只读纪律
 
@@ -186,40 +172,31 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 
 ### 路由冲突优先级
 
-- 当一句话同时命中多个触发词、别名或模式意图时，禁止凭感觉挑一个模式直接进入执行
-- 默认按以下顺序裁决主路由：
-  1. **用户显式主触发词**：如 `DEBUG`、`REVIEW`、`DOC`、`MIGRATE`
-  2. **安全/只读门禁**：若请求明确要求审查、地图、只看代码，则优先落入只读路由
-  3. **特殊模式优先于默认 Coding**：`DEBUG / REVIEW / REFACTOR / TEST / PERF / MIGRATE / DOC / ARCHIVE` 优先于普通"改代码"
-  4. **默认 Coding**：只有在未命中特殊模式时才进入
-- `MULTI` / `CROSS` 默认视为**作用域修饰词**，用于决定是否扫描或修改多个项目，不自动覆盖主任务类型
-- 若用户同时表达多个主任务且无法判定主次，例如"跨项目排查并顺手补文档"，必须先输出候选路由与理由，再请用户确认主目标和本轮优先级
-
-### 路由冲突快速判定树
-
-```
-用户输入
-  ├─ 是否有显式主触发词 (DEBUG/REVIEW/DOC/MIGRATE/…)?
-  │   ├─ YES → 使用该主触发词路由
-  │   └─ NO ↓
-  ├─ 是否涉及只读需求 (MAP/REVIEW/只看代码)?
-  │   ├─ YES → 优先落入只读路由
-  │   └─ NO ↓
-  ├─ 是否命中特殊模式 (REFACTOR/TEST/PERF/ARCHIVE)?
-  │   ├─ YES → 使用特殊模式
-  │   └─ NO ↓
-  └─ 默认 Coding 流（可带 MULTI/CROSS 修饰）
-```
+当一句话同时命中多个触发词时，按以下顺序裁决：1) 用户显式主触发词 → 2) 只读门禁 → 3) 特殊模式优先 → 4) 默认 Coding。完整判定树见 `references/entry/aliases.md > ## 路由冲突判定树`。
 
 ## 规模评估
 
-| 规模 | 典型信号 | Spec要求 | 默认流转 |
-|------|----------|----------|----------|
+| 规模 | 典型信号 | Spec 深度 | 默认流转 |
+|------|----------|-----------|----------|
 | **XS** | typo、配置值、日志、小于 10 行 | 跳过，事后 1 行 summary | 直接执行 -> 验证 -> summary |
-| **S** | 1-2 文件、逻辑清晰、影响小 | micro-spec（1-3 句） | micro-spec -> 批准 -> 执行 -> 回写 |
-| **M** | 3-10 文件、模块内、需要计划 | 轻量 Spec 落盘；建议 brainstorming 防止需求跑偏 | Research -> Plan -> Execute(TDD) -> Review |
-| **复杂 M** | M 的变体，方案复杂度高但影响面仍局域 | 轻量 Spec + 建议 Innovate + brainstorming | 与 L 同，**建议 INNOVATE + brainstorming** |
-| **L** | 跨模块、架构级、迁移、多项目 | 完整 Spec + **必须 Innovate + brainstorming** + Archive | Research -> **INNOVATE(brainstorming)** -> Plan -> Execute(TDD) -> Review -> Archive |
+| **S** | 1-2 文件、逻辑清晰、影响小 | **Spec-Lite**（1-3 句） | micro-spec -> 批准 -> 执行 -> 回写 |
+| **M** | 3-10 文件、模块内、需要计划 | **Spec-Standard**（标准模板） | Research -> Plan -> Execute(TDD) -> Review |
+| **复杂 M** | M 的变体，方案复杂度高但影响面仍局域 | **Spec-Standard** + 建议 Innovate | 与 L 同，**建议 INNOVATE + brainstorming** |
+| **L** | 跨模块、架构级、迁移、多项目 | **Spec-Full**（完整模板 + Innovate + Archive） | Research -> **INNOVATE(brainstorming)** -> Plan -> Execute(TDD) -> Review -> Archive |
+
+### Spec 深度说明
+
+- **Spec-Lite**：1-3 句话描述目标、范围、验证标准。适用于 S 和"简单 M"（逻辑清晰、无技术选型争议）
+- **Spec-Standard**：标准 Spec 模板（背景/目标/方案/测试策略/验收标准）。适用于 M
+- **Spec-Full**：完整 Spec + Innovate 多方案对比 + Archive 沉淀。适用于 L
+
+### 复杂 M 判断信号
+
+出现以下任一信号时，M 级任务应按"复杂 M"处理：
+- 方案需要 2+ 种技术选型对比
+- 涉及 3+ 个外部依赖的适配
+- 需要兼容性验证（版本/平台/接口）
+- 不确定时向上取整
 
 ### 判定优先级
 
@@ -359,158 +336,17 @@ ALTAS Workflow 是仓库工程任务的统一 Bootstrap 入口。它负责三件
 
 ## 自我进化契约
 
-> **SELF-IMPROVEMENT PRINCIPLE:** 每次任务完成后，自动评估是否产生了可复用的知识。记录 → 总结 → 晋升 → 进化。
->
-> **TRAE IDE 集成**：已配置 Hook 自动激活（`.claude/settings.json`），每次用户输入和命令执行后自动提醒评估学习机会。
+> **铁律 #11: YOU MUST Log & Promote Learnings** — 每次任务后自检，发现非显而易见的知识必须记录；满足条件的经验必须晋升到工作流规则。
 
-### 自动检测触发（快速参考）
+**原则**：记录 → 总结 → 晋升 → 进化。不确定时暂停并找用户确认。
 
-| 触发信号 | 动作 | 记录到 |
-|----------|------|--------|
-| 用户纠正（"不对"、"应该是"、"你搞错了"...） | 立即记录，不要争辩 | `.learnings/LEARNINGS.md`, category=`correction` |
-| 命令/操作失败、异常输出、超时、构建/测试失败 | 记录错误上下文和解决方案 | `.learnings/ERRORS.md` |
-| 用户请求不支持的能力（"能不能"、"为什么不能"...） | 记录需求和使用场景 | `.learnings/FEATURE_REQUESTS.md` |
-| 发现文档过时/知识缺口 | 记录正确信息和来源 | `.learnings/LEARNINGS.md`, category=`knowledge_gap` |
-| 发现更优方案 | 记录对比和选择理由 | `.learnings/LEARNINGS.md`, category=`best_practice` |
-| 用户明确要求（"记住这个"、"以后都这样"...） | 立即记录为高优先级 | `.learnings/LEARNINGS.md`, category=`user_explicit` |
-| 用户提供新思路/方案 | 记录方案和适用场景 | `.learnings/LEARNINGS.md`, category=`new_insight` |
-| 用户提供替代建议 | 记录替代方案和权衡 | `.learnings/LEARNINGS.md`, category=`alternative` |
-| 用户质疑推理 | 反思推理过程，记录假设或知识缺口 | `.learnings/LEARNINGS.md`, category=`correction` 或 `knowledge_gap` |
-| 用户分享经验 | 记录经验教训和避免方法 | `.learnings/LEARNINGS.md`, category=`lesson_learned` |
+| 信号 | 动作 | 记录到 |
+|------|------|--------|
+| 用户纠正 | 立即记录，不要争辩 | `.learnings/LEARNINGS.md` |
+| 命令/操作失败 | 记录错误上下文和解决方案 | `.learnings/ERRORS.md` |
+| 新发现/更优方案 | 记录方案和适用场景 | `.learnings/LEARNINGS.md` |
 
-### TRAE IDE 工作流集成
-
-在 TRAE IDE 中，自我改进机制通过以下方式与工作流深度集成：
-
-#### 1. Hook 自动提醒（已激活 ✅）
-
-- **UserPromptSubmit Hook**: 每次用户输入后，自动显示学习评估提醒
-- **PostToolUse Hook (RunCommand)**: 每次命令执行后，自动检测错误并提示记录
-
-#### 2. 与 TodoWrite 集成
-
-当发现需要记录的学习时，使用 TodoWrite 跟踪：
-
-```markdown
-任务：记录学习 [LRN-YYYYMMDD-XXX]
-状态：in_progress
-优先级：high（如果是 correction/user_explicit）
-内容：记录用户纠正/新思路/错误到 .learnings/
-```
-
-记录完成后标记为 completed。
-
-#### 3. 与检查点流程对齐
-
-| ALTAS 阶段 | 自我改进动作 | 输出位置 |
-|------------|--------------|----------|
-| **首轮响应** | 回顾过往相关学习（`grep -l "Area**: <当前区域>" .learnings/*.md`） | 检查点中说明 |
-| **RESEARCH 结束** | 自检是否有知识缺口或误解 | 如有则记录到 LEARNINGS.md |
-| **PLAN 阶段** | 如果用户纠正了方案方向，立即记录 | LEARNINGS.md (correction) |
-| **EXECUTE 中** | 遇到非预期错误时，记录到 ERRORS.md | ERRORS.md |
-| **REVIEW 阶段**（M/L 必须） | **强制自检**：是否有可捕获的学习？ | 检查点 + .learnings/ |
-| **ARCHIVE 阶段**（L 必须） | 回顾本任务所有学习，评估晋升条件 | 更新 Status 或 Promote |
-
-#### 4. 实际工作流示例
-
-**场景 A：用户在执行过程中纠正**
-
-```
-用户：不对，这里应该用异步方式
-Agent：
-1. 立即停止当前实现
-2. 创建 LRN 条目记录纠正
-3. 使用 TodoWrite 添加记录任务
-4. 调整方案并继续执行
-5. 在检查点中说明调整原因
-```
-
-**场景 B：命令执行失败**
-
-```
-Agent 执行 npm test → 失败
-Hook 自动触发 error-detector.sh → 显示记录提醒
-Agent 判断：
-  - 这是常见问题？→ 记录到 ERRORS.md
-  - 这是环境特定问题？→ 仅记录如果可能重复出现
-  - 这是我犯的错误？→ 记录到 LEARNINGS.md (correction)
-```
-
-**场景 C：用户提供新思路**
-
-```
-用户：我觉得可以用观察者模式来实现这个
-Agent：
-1. 评估方案的可行性
-2. 记录到 LEARNINGS.md (new_insight)
-3. 如果采用，在 Plan 中说明理由
-4. 如果不采用，记录原因以备后续参考
-```
-
-### 记录时机
-
-1. **任务完成后**（Review/Archive 阶段）：自检是否有非显而易见的答案/变通/模式
-2. **错误发生时**：立即记录错误上下文、复现步骤、解决方案（Hook 会自动提醒）
-3. **用户纠正时**：不要争辩，立即记录正确的做法（这是最高优先级）
-4. **用户新思路时**：即使不立即采用也要记录，可能是未来的最佳方案
-5. **大任务开始前**：回顾 `.learnings/` 中相关区域的过往学习
-6. **任何时候**：当 Hook 提醒触发时，快速评估是否符合记录条件
-
-### 快速记录决策树
-
-```
-检测到信号
-  ├─ 是用户纠正？
-  │   └─ YES → 立即记录到 LEARNINGS.md (correction)，Priority=high
-  │   └─ NO ↓
-  ├─ 是命令错误？
-  │   └─ YES → 判断是否值得记录
-  │       ├─ 非预期/需调查/可能重复 → 记录到 ERRORS.md
-  │       └─ 明显的拼写错误/权限问题 → 可选记录
-  │   └─ NO ↓
-  ├─ 是用户新思路？
-  │   └─ YES → 记录到 LEARNINGS.md (new_insight 或 alternative)
-  │   └─ NO ↓
-  ├─ 是功能请求？
-  │   └─ YES → 记录到 FEATURE_REQUESTS.md
-  │   └─ NO ↓
-  └─ 是我自己发现的改进？
-      └─ YES → 记录到 LEARNINGS.md (best_practice)
-```
-
-### 晋升规则
-
-当学习条目同时满足以下条件时，晋升到工作流规则文件：
-- `Recurrence-Count >= 3`（重复出现 ≥3 次）
-- 跨越 ≥2 个不同任务
-- 在 30 天窗口期内
-
-| 学习类型 | 晋升到 |
-|----------|--------|
-| 路由/触发词修正 | SKILL.md 路由表或 `references/entry/aliases.md` |
-| 规模评估修正 | SKILL.md 规模评估表 |
-| 铁律/门禁补充 | SKILL.md Hard Rules 或阶段门禁 |
-| 阶段门禁强化 | SKILL.md 阶段门禁 |
-| 工具/平台适配 | SKILL.md 工具映射表 |
-| 别名补充 | `references/entry/aliases.md` |
-| 测试策略强化 | `references/testing/` 对应文件 |
-| 审查规则强化 | `references/special-modes/review.md` |
-| 调试策略强化 | `references/superpowers/systematic-debugging/` |
-| 通用最佳实践 | 对应 `references/` 子目录 |
-
-完整晋升流程（晋升格式、晋升后更新、Pattern-Key去重）见 `references/self-improvement/SKILL.md > ## 晋升规则`。
-
-### 技能提取
-
-当学习足够通用（跨项目复用、非显而易见、已验证）时，提取为独立 Skill 到 `references/superpowers/` 或新建目录。详细流程见 `references/self-improvement/SKILL.md > ## 技能提取`。
-
-### 铁律关联
-
-自我进化是铁律的补充：
-
-| # | 铁律 | 含义 |
-|---|------|------|
-| 11 | **YOU MUST Log & Promote Learnings** | 每次任务后自检，发现非显而易见的知识必须记录到 `.learnings/`；满足条件的经验必须晋升到工作流规则。 |
+完整机制（触发信号、记录格式、晋升规则、技能提取、TRAE IDE 集成）见 `references/self-improvement/SKILL.md`。
 
 
 ## Usage Guide

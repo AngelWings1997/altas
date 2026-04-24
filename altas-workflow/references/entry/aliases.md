@@ -74,6 +74,38 @@ ALTAS Workflow 的触发词采用三种格式，各有其用途：
 | 查看项目注册表 | `REGISTRY` | `项目列表` | 展示当前 Project Registry |
 | 回到本地作用域 | `SCOPE LOCAL` | `回到本地` | 重置 `change_scope=local` |
 
+## 路由冲突判定树
+
+当一句话同时命中多个触发词、别名或模式意图时，禁止凭感觉挑一个模式直接进入执行。
+
+### 裁决优先级
+
+1. **用户显式主触发词**：如 `DEBUG`、`REVIEW`、`DOC`、`MIGRATE`
+2. **安全/只读门禁**：若请求明确要求审查、地图、只看代码，则优先落入只读路由
+3. **特殊模式优先于默认 Coding**：`DEBUG / REVIEW / REFACTOR / TEST / PERF / MIGRATE / DOC / ARCHIVE` 优先于普通"改代码"
+4. **默认 Coding**：只有在未命中特殊模式时才进入
+
+### 作用域修饰词
+
+- `MULTI` / `CROSS` 默认视为**作用域修饰词**，用于决定是否扫描或修改多个项目，不自动覆盖主任务类型
+- 若用户同时表达多个主任务且无法判定主次，例如"跨项目排查并顺手补文档"，必须先输出候选路由与理由，再请用户确认主目标和本轮优先级
+
+### 快速判定树
+
+```
+用户输入
+  ├─ 是否有显式主触发词 (DEBUG/REVIEW/DOC/MIGRATE/…)?
+  │   ├─ YES → 使用该主触发词路由
+  │   └─ NO ↓
+  ├─ 是否涉及只读需求 (MAP/REVIEW/只看代码)?
+  │   ├─ YES → 优先落入只读路由
+  │   └─ NO ↓
+  ├─ 是否命中特殊模式 (REFACTOR/TEST/PERF/ARCHIVE)?
+  │   ├─ YES → 使用特殊模式
+  │   └─ NO ↓
+  └─ 默认 Coding 流（可带 MULTI/CROSS 修饰）
+```
+
 ## 维护规则
 
 - **同步义务**（强制）：`trigger_keywords` 的同步是强制的。修改本文件后**必须**同步更新 `SKILL.md` frontmatter `trigger_keywords`，遗漏视为违规。

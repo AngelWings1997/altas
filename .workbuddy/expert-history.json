@@ -73,7 +73,29 @@
         "usedAt": 1776967885071,
         "industryId": "02-Engineering"
       }
+    ],
+    "6e243cfbe5cc4d10a0c9eee01b655659": [
+      {
+        "expertId": "TechnicalDocumentationEngineer",
+        "name": "文通通",
+        "profession": "技术文档工程师",
+        "avatarUrl": "https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/experts/avatars/02-Engineering/TechnicalDocumentationEngineer/TechnicalDocumentationEngineer.png",
+        "promptUrl": "https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/experts/experts/02-Engineering/TechnicalDocumentationEngineer/TechnicalDocumentationEngineer_zh.md",
+        "usedAt": 1776968578234,
+        "industryId": "02-Engineering"
+      }
+    ],
+    "55435953ef974f839adb46b35d4bc575": [
+      {
+        "expertId": "TechnicalDocumentationEngineer",
+        "name": "文通通",
+        "profession": "技术文档工程师",
+        "avatarUrl": "https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/experts/avatars/02-Engineering/TechnicalDocumentationEngineer/TechnicalDocumentationEngineer.png",
+        "promptUrl": "https://acc-1258344699.cos.accelerate.myqcloud.com/workbuddy/experts/experts/02-Engineering/TechnicalDocumentationEngineer/TechnicalDocumentationEngineer_zh.md",
+        "usedAt": 1776989875071,
+        "industryId": "02-Engineering"
+      }
     ]
   },
-  "lastUpdated": 1776968226645
+  "lastUpdated": 1776990344072
 }

@@ -220,79 +220,13 @@ altas-workflow/
 
 ---
 
-## v4.11 核心变更
+## 变更日志
 
-### 🔍 Code Review 流程优化
+- **v4.11** (2026-04-19): Code Review 流程优化、悬空引用修复、流程效率优化（入口精简、索引去重、自我进化简化、Spec 深度解耦、跨模式切换协议）
+- **v4.8**: 自我进化机制（自动检测、三日志、晋升规则、技能提取、铁律 #11）
+- **v4.7**: 测试工程专项、代码审查技能包、PRD 分析工作流
 
-明确代码审查入口和语言分发规则：
-
-- ✅ **入口强制**：所有代码审查任务必须先通过 `receiving-code-review/SKILL.md` 进入
-- ✅ **语言分发**：自动识别代码语言，分发到 `code-review/python` 或 `code-review/go`
-- ✅ **流程图**：添加清晰的流程图说明 Code Review 完整流程
-- ✅ **索引更新**：在 `reference-index.md` 添加 Code Review 入口说明
-
-### 🔧 悬空引用修复
-
-- ✅ **路径错误**：修复 `docs/团队落地指南.md` 第9行路径空格问题
-- ✅ **重定向文件**：创建 `protocols/SDD-RIPER-ONE.md` 重定向文件
-- ✅ **示例标注**：在 `anthropic-best-practices.md` 标注示例引用
-
----
-
-## v4.8 核心变更
-
-### 🔄 自我进化机制 (Self-Improvement System)
-
-自动记录、总结、晋升经验，使工作流持续进化：
-
-- ✅ **自动检测触发**: 用户纠正、命令失败、知识缺口、更优方案自动识别
-- ✅ **三日志文件**: LEARNINGS.md / ERRORS.md / FEATURE_REQUESTS.md
-- ✅ **标准化格式**: LRN-/ERR-/FEAT- ID 系统，包含优先级/区域/元数据
-- ✅ **晋升规则**: 重复 ≥3 次 + 跨 ≥2 任务 + 30 天内 → 晋升到工作流规则
-- ✅ **技能提取**: 通用经验提取为独立 Skill，可跨项目复用
-- ✅ **铁律 #11**: Log & Promote Learnings — 任务后自检，经验必须晋升
-- ✅ **钩子脚本**: self-improvement-activator.sh / error-detector.sh
-
----
-
-## v4.7 核心变更
-
-### 🧪 测试工程专项 (Testing Engineering Specialty)
-
-新增完整的测试工程体系：
-
-- ✅ **E2E 测试框架**: Playwright/Cypress 集成指南
-- ✅ **性能/负载测试**: 压测策略、基准测试、性能指标
-- ✅ **API 测试**: 契约测试、安全测试、测试矩阵模板
-- ✅ **Pytest 测试模式**: Fixture、参数化、Mock、覆盖率
-- ✅ **测试数据管理**: 工厂模式、Fixture 层级、测试隔离
-- ✅ **测试环境管理**: Docker Compose、依赖注入、环境一致性
-- ✅ **CI/CD 集成**: 自动化流水线、质量门禁、测试报告
-- ✅ **测试脚手架**: 开箱即用的模板集合
-
-### 🔍 代码审查技能包 (Code Review Skills)
-
-多语言代码审查标准化：
-
-- ✅ **Go 代码审查**: 静态分析、并发安全、性能审计
-- ✅ **Python 代码审查**: 类型安全、异步模式、错误处理
-- ✅ **高级 API 测试**: 幂等性、输入验证、错误处理、并发测试
-
-### 📋 PRD 分析工作流 (PRD Analysis Workflow)
-
-结构化需求分析：
-
-- ✅ **五阶段流程**: Brainstorm → Discover → Document → Review → Validate
-- ✅ **PRD 模板**: 产品概述、用户画像、旅程、功能需求、成功指标
-- ✅ **校验标准**: 结构完整性、内容质量、边界验证、跨节一致性
-- ✅ **示例参考**: 优质 PRD 示例和输出格式
-
-### 🛠️ 其他改进
-
-- ✅ 别名同步验证脚本
-- ✅ 项目脚手架自动化工具
-- ✅ 实现验证技能包
-- ✅ 需求规格说明技能包
+历史变更详见 `references/agents/sdd-riper-one/CHANGELOG.md`。
 
 ---
 

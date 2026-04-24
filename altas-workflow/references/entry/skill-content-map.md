@@ -42,6 +42,13 @@
 | `自我进化契约 > 快速记录决策树（21行树形图）` | 移除（可从Checklist和最佳实践推断） | `references/self-improvement/SKILL.md` > `## TRAE IDE 快速操作指南 > ### 常见场景 Checklist` |
 | `检查点契约 > SOCIAL PROOF说明` | 移除（非核心路由信息） | 无需落点（原则性说明） |
 | `自我进化契约 > 晋升规则完整流程（晋升格式、晋升后更新、Pattern-Key去重）` | 保留核心条件+映射表，详细流程引用 | `references/self-improvement/SKILL.md` > `## 晋升规则` |
+| `自我进化契约 > 自动检测触发表（10+信号类型含中英文关键词）` | 精简为3类信号（用户纠正/命令失败/新发现），详细信号表引用 | `references/self-improvement/SKILL.md` > `## 触发机制` |
+| `自我进化契约 > TRAE IDE Hook配置详情` | 移除（入口不需要） | `references/self-improvement/SKILL.md` > `## TRAE IDE 快速操作指南` |
+| `自我进化契约 > 与TodoWrite/检查点对齐表/工作流示例` | 移除（入口不需要） | `references/self-improvement/SKILL.md` > `## TRAE IDE 快速操作指南`、`## ALTAS 特定示例` |
+| `自我进化契约 > 铁律关联表` | 移除（入口只保留铁律#11一句话） | `references/self-improvement/SKILL.md` > `## 铁律关联` |
+| `路由冲突优先级 > 完整裁决规则+判定树` | 精简为一句话+引用 | `references/entry/aliases.md` > `## 路由冲突判定树` |
+| `Entry Contract > 平台工具映射表（5行×3列）` | 精简为规则+引用 | `references/entry/entry-contract.md` > `## 工具映射规则` |
+| `Entry Contract > 只读纪律/能力降级/规则合并` | 移除（入口不需要） | `references/entry/entry-contract.md` > `## 只读纪律`、`## 能力降级`、`## 规则合并` |
 
 ## 当前约束
 

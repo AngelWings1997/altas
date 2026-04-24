@@ -79,10 +79,25 @@
 
 ### 3) 确认测试框架
 
-- **Python/pytest 项目**: 加载 `references/testing/pytest-patterns.md`
-- **Python API 项目**: 额外加载 `references/testing/api-testing.md`
-- **Go 项目**: 加载 `references/testing/go-testing.md`（testify / ginkgo / httptest）
-- **微服务项目**: 额外加载 `references/testing/contract-testing.md`（Pact 消费者驱动契约测试）
+**首轮必加载（核心 3 文件）**：
+- `references/special-modes/test.md`（本文件）
+- `references/testing/pytest-patterns.md`
+- `references/testing/api-testing.md`
+
+**按需加载（扩展文件）**：
+- **Go 项目**: `references/testing/go-testing.md`
+- **微服务项目**: `references/testing/contract-testing.md`
+- **E2E 测试**: `references/testing/e2e-testing.md`
+- **性能测试**: `references/testing/performance-testing.md`
+- **安全测试**: `references/testing/security-testing.md`
+- **视觉测试**: `references/testing/visual-testing.md`
+- **移动端**: `references/testing/mobile-testing.md`
+- **CI/CD**: `references/testing/ci-cd-integration.md`
+- **质量度量**: `references/testing/test-quality-metrics.md`
+- **测试维护**: `references/testing/test-maintenance.md`
+- **测试环境**: `references/testing/test-environment.md`
+- **测试数据**: `references/testing/test-data-management.md`
+- **测试骨架**: `references/testing/test-scaffold-templates.md`
 - **其他语言**: 按项目实际框架编写，遵循对应语言的测试最佳实践
 
 ### 4) 基于契约生成测试矩阵（API 项目默认动作）
